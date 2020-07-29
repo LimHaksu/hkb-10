@@ -3,7 +3,6 @@
     "target": "ES2016",
     "moduleResolution": "node",
     "allowJs": true,
-    "noEmit": true,
     "strict": true,
     "isolatedModules": false
   }
