@@ -1,6 +1,7 @@
 {
   "name": "back",
   "version": "0.0.0",
+  "license": "ISC",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src",
     "start:dev": "nodemon"
