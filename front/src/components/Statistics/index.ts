@@ -1,10 +1,10 @@
 import Component from "../Component";
 
-export default class History extends Component {
+export default class Statistics extends Component {
   constructor() {
     super();
 
     this.view = document.createElement("div");
-    this.view.innerText = "history";
+    this.view.innerText = "statistics";
   }
 }
