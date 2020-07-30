@@ -1,6 +1,6 @@
 interface EventListeners {
   type: string;
-  listener: () => void;
+  listener: (event: Event) => void;
 }
 
 export interface ComponentOption {
@@ -12,7 +12,7 @@ export interface ComponentOption {
 
 export default class Component {
   view: HTMLElement;
-  children: Component[] = [];
+  children: Map<string, Component> = new Map();
   eventListeners: EventListeners[] = [];
 
   constructor(tag: string = "div", option?: ComponentOption) {
@@ -51,16 +51,19 @@ export default class Component {
     this.view.remove();
   }
 
+  appendChildren(elements: Component[]) {
+    elements.forEach((element) => {
+      this.appendChild(element);
+    });
+    return this;
+  }
+
   appendChild(element: Component) {
-    this.children.push(element);
+    this.children.set(element.view.id, element);
     this.view.appendChild(element.view);
   }
 
   setInnerHtml(html: string) {
     this.view.innerHTML = html;
-  }
-
-  setText(text: string) {
-    this.view.textContent = text;
   }
 }
