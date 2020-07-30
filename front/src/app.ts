@@ -1,31 +1,35 @@
-import Component from "./components/Component";
-import TestModel from "./models/TestModel";
+import path from "./router/Path";
+import router from "./router/Router";
 
-const app = document.getElementById("app");
+import Header from "./components/Main/Header";
+import Menu from "./components/Main/Menu";
 
-const testModel = new TestModel();
-const button = new Component("button", {
-  text: "button",
-  eventListeners: [
-    {
-      type: "click",
-      listener: () => {
-        testModel.addTodo("new element");
-      },
-    },
-  ],
-});
-app!.appendChild(button.view);
+import History from "./components/History";
+import Calendar from "./components/Calendar";
+import Statistics from "./components/Statistics";
 
-const div = new Component("div");
-testModel.subscribe("console", (data: any[]) => {
-  console.log(data);
-  testModel.unsubscribe("console");
-});
-app!.appendChild(div.view);
+router.setComponent("/history", new History());
+router.setComponent("/calendar", new Calendar());
+router.setComponent("/statistics", new Statistics());
 
-testModel.subscribe("div", (data: any[]) => {
-  div.view.innerText = data.join(", ");
+path.subscribe("changePath", (path: string) => {
+  router.changeComponent(path);
 });
 
-// testModel.getInitialData();
+function init() {
+  const app = document.getElementById("app");
+  if (!app) {
+    return;
+  }
+
+  const url = new URL(document.URL);
+  const pathName = url instanceof URL ? url.pathname : url;
+
+  app.appendChild(new Header().view);
+  app.appendChild(new Menu().view);
+
+  app.appendChild(router.getWrapper());
+  path.changePath(pathName);
+}
+
+init();
