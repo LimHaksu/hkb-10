@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const WatchExternalFilesPlugin = require("webpack-watch-files-plugin").default;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -9,6 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
+    publicPath: "/",
   },
   resolve: {
     extensions: [".ts", ".js"],
@@ -17,6 +20,7 @@ module.exports = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 8080,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -42,7 +46,14 @@ module.exports = {
   },
   plugins: [
     new WatchExternalFilesPlugin({
-      files: ["./src/**/*.js", "./src/**/*.ts"],
+      files: [
+        "./src/**/*.js",
+        "./src/**/*.ts",
+        "./src/**/*.scss",
+        "./src/**/*.css",
+        "./src/**/*.sass",
+        "./src/**/*.json",
+      ],
     }),
     new HtmlWebpackPlugin({
       // index.html 템플릿을 기반으로 빌드 결과물을 추가해줌

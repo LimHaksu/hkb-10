@@ -1,35 +1,35 @@
-// import Component from "./components/Component";
-// import TestModel from "./models/TestModel";
+import path from "./router/Path";
+import router from "./router/Router";
+
+import Header from "./components/Main/Header";
+import Menu from "./components/Main/Menu";
+
 import History from "./components/History";
-import "./reset.css";
+import Calendar from "./components/Calendar";
+import Statistics from "./components/Statistics";
 
-const app = document.getElementById("app");
+router.setComponent("/history", new History());
+router.setComponent("/calendar", new Calendar());
+router.setComponent("/statistics", new Statistics());
 
-const history = new History();
-app!.appendChild(history.view);
-// const testModel = new TestModel();
-// const button = new Component("button", {
-//   text: "button",
-//   eventListeners: [
-//     {
-//       type: "click",
-//       listener: () => {
-//         testModel.addTodo("new element");
-//       },
-//     },
-//   ],
-// });
-// app!.appendChild(button.view);
+path.subscribe("changePath", (path: string) => {
+  router.changeComponent(path);
+});
 
-// const div = new Component("div");
-// testModel.subscribe("console", (data: any[]) => {
-//   console.log(data);
-//   testModel.unsubscribe("console");
-// });
-// app!.appendChild(div.view);
+function init() {
+  const app = document.getElementById("app");
+  if (!app) {
+    return;
+  }
 
-// testModel.subscribe("div", (data: any[]) => {
-//   div.view.innerText = data.join(", ");
-// });
+  const url = new URL(document.URL);
+  const pathName = url instanceof URL ? url.pathname : url;
 
-// testModel.getInitialData();
+  app.appendChild(new Header().view);
+  app.appendChild(new Menu().view);
+
+  app.appendChild(router.getWrapper());
+  path.changePath(pathName);
+}
+
+init();

@@ -1,0 +1,89 @@
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+section.menu {
+  margin-top: var(--header-height);
+  padding: 20px;
+  height: 100px;
+}
+
+section.menu div.month {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+}
+
+section.menu div.month button {
+  height: inherit;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  transition: all 0.2s;
+}
+
+section.menu div.month button:hover {
+  background-color: #dddddd;
+}
+
+section.menu div.month button:active {
+  outline: none;
+  background-color: #cccccc;
+}
+
+section.menu div.month p {
+  margin: 0 20px 0 20px;
+  font-size: 1.5rem;
+}
+
+section.menu div.tab {
+  height: 50px;
+
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  background-color: #dddddd;
+  border-radius: 20px;
+}
+
+section.menu div.tab button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+  margin: 5px;
+
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  background-color: transparent;
+  width: 200px;
+}
+
+section.menu div.tab hr {
+  background-color: #000000;
+  outline: none;
+  border: none;
+}
+
+section.menu div.tab button:hover {
+  background-color: #ffffff;
+}
+
+section.menu div.tab div.hover {
+  position: absolute;
+  margin: 10px 0 10px 0;
+  width: 190px;
+  height: 30px;
+
+  background-color: #ffffff;
+  opacity: 0.5;
+  border-radius: 20px;
+}
