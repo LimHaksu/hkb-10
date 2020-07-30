@@ -15,12 +15,12 @@ export default class Component {
   children: Map<string, Component> = new Map();
   eventListeners: EventListeners[] = [];
 
-  constructor(tag: string = "div", option?: ComponentOption) {
+  constructor(tag = "div", option?: ComponentOption) {
     this.view = document.createElement(tag);
     this.setOption(option);
   }
 
-  setOption(option?: ComponentOption) {
+  setOption(option?: ComponentOption): void {
     if (!option) return;
     if (option.id) this.view.id = option.id;
     if (option.classes) {
@@ -40,30 +40,30 @@ export default class Component {
     }
   }
 
-  desctuctor() {
+  destructor(): void {
     this.children.forEach((child) => {
-      child.desctuctor();
+      child.destructor();
     });
-    this.eventListeners.forEach((eventListenr) => {
-      const { type, listener } = eventListenr;
+    this.eventListeners.forEach((eventListener) => {
+      const { type, listener } = eventListener;
       this.view.removeEventListener(type, listener);
     });
     this.view.remove();
   }
 
-  appendChildren(elements: Component[]) {
+  appendChildren(elements: Component[]): Component {
     elements.forEach((element) => {
       this.appendChild(element);
     });
     return this;
   }
 
-  appendChild(element: Component) {
+  appendChild(element: Component): void {
     this.children.set(element.view.id, element);
     this.view.appendChild(element.view);
   }
 
-  setInnerHtml(html: string) {
+  setInnerHtml(html: string): void {
     this.view.innerHTML = html;
   }
 }
