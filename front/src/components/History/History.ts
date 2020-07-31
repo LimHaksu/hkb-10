@@ -3,16 +3,28 @@ import InputForm from "./InputForm";
 import HistoryList from "./HistoryList";
 import Input from "../common/Input";
 import Label from "../common/Label";
+import fetch, { HistoryDataType } from "../../fetch";
 import "./History.scss";
 
 class History extends Component {
   constructor() {
     super("div", { id: "history", classes: ["history"] });
 
-    this.render();
+    this.init();
   }
 
-  render() {
+  init() {
+    fetch
+      .getHistories(2020, 7)
+      .then((data: HistoryDataType[]) => {
+        this.render(data);
+      })
+      .catch((error: Error) => {
+        console.log(error);
+      });
+  }
+
+  render(data: HistoryDataType[]) {
     const inputForm = new InputForm();
 
     const divIncome = new Component("div", {
@@ -38,10 +50,13 @@ class History extends Component {
       for: "history-checkbox-income",
       textContent: "수입",
     });
-    const spanIncomeAmount = new Component("span", { innerHtml: `1000000` });
+    const spanIncomeAmount = new Component("span", {
+      classes: ["history-income-amount"],
+      innerHtml: `1000000`,
+    });
 
     const divOutcome = new Component("div", {
-      id: "history-div-income",
+      id: "history-div-outcome",
       classes: ["history-div", "history-div-outcome"],
     });
     const checkboxOutcome = new Input({
@@ -63,17 +78,22 @@ class History extends Component {
       for: "history-checkbox-outcome",
       textContent: "지출",
     });
-    const spanOutcomeAmount = new Component("span", { innerHtml: `1000000` });
+    const spanOutcomeAmount = new Component("span", {
+      classes: ["history-outcome-amount"],
+      innerHtml: `1000000`,
+    });
 
+    const historyItemOptions = data.map((element) => {
+      const { category, detail, paymentMethod, income, outcome } = element;
+      return {
+        category,
+        detail,
+        paymentMethod,
+        amount: income || outcome || 0,
+      };
+    });
     const historyList = new HistoryList({
-      historyItemDatas: [
-        {
-          category: "카테고리1",
-          detail: "밥 값",
-          paymentMethod: "현대카드",
-          amount: 8000,
-        },
-      ],
+      historyItemOptions,
     });
 
     this.appendChildren([
