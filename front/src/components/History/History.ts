@@ -83,15 +83,6 @@ class History extends Component {
       innerHtml: `1000000`,
     });
 
-    const historyItemOptions = data.map((element) => {
-      const { category, detail, paymentMethod, income, outcome } = element;
-      return {
-        category,
-        detail,
-        paymentMethod,
-        amount: income || outcome || 0,
-      };
-    });
     const historyList = new HistoryList({
       historyItemOptions: data,
     });
