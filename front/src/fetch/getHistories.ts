@@ -6,8 +6,8 @@ interface HistoryDataType {
   day: number;
   category: string;
   paymentMethod: string;
-  income?: number;
-  outcome?: number;
+  income: boolean;
+  amount: number;
   detail: string;
 }
 
