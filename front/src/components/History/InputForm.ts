@@ -149,7 +149,7 @@ class InputForm extends Component {
       classes: ["label-detail"],
       textContent: "내용",
     });
-    const inputDetail = new Component("input", {
+    const inputDetail = new Input({
       id: "input-detail",
       classes: ["input-detail", "input-select-common"],
     });
