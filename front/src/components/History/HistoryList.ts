@@ -1,6 +1,7 @@
 import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
+import "./HistoryList.scss";
 
 interface HistoryItemOption extends ComponentOption {
   category: string;
@@ -15,7 +16,7 @@ interface HistoryListOption extends ComponentOption {
 
 class HistoryList extends Component {
   constructor(option?: HistoryListOption) {
-    super("div", option);
+    super("div", { ...option, classes: ["history-list"] });
 
     this.render(option);
   }
