@@ -1,0 +1,69 @@
+@import "./variable.scss";
+
+.input-form {
+  .button {
+    border: solid 2px;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin: 0.2rem;
+    cursor: pointer;
+  }
+
+  .button-primary {
+    color: white;
+    background-color: $mint-color;
+  }
+
+  .button-secondary {
+    color: $mint-color;
+    background-color: white;
+  }
+
+  .button-form-submit {
+    width: 100%;
+    margin: 1rem 0 1rem 0;
+  }
+
+  .history-row {
+    display: flex;
+    justify-content: space-between;
+    height: 2.4rem;
+    margin-bottom: 5px;
+
+    .row-flex {
+      flex-grow: 1;
+
+      .label-date,
+      .label-category,
+      .label-payment-method,
+      .label-amount,
+      .label-detail {
+        margin-right: 0.5rem;
+      }
+
+      .input-select-common {
+        height: 100%;
+        box-sizing: border-box;
+        border: 0;
+        border-bottom: 1px solid;
+        font-size: medium;
+        text-align-last: center;
+      }
+
+      .input-date,
+      .select-category,
+      .select-payment-method {
+        width: 160px;
+      }
+      .input-amount,
+      .input-detail {
+        width: 300px;
+      }
+
+      .select-category,
+      .select-payment-method {
+        // text-align-last: center;
+      }
+    }
+  }
+}

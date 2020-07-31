@@ -1,5 +1,6 @@
 import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
+import "./InputForm.scss";
 
 class InputForm extends Component {
   constructor() {
@@ -73,7 +74,7 @@ class InputForm extends Component {
     const inputDate = new Input({
       type: "date",
       id: "input-date",
-      classes: ["input-date"],
+      classes: ["input-date", "input-select-common"],
     });
 
     const labelCategory = new Label({
@@ -83,7 +84,7 @@ class InputForm extends Component {
     });
     const selectCategory = new Select({
       id: "select-category",
-      classes: ["select-category"],
+      classes: ["select-category", "input-select-common"],
       selectOptions: [
         {
           textContent: "선택하세요",
@@ -133,7 +134,7 @@ class InputForm extends Component {
     });
     const inputAmount = new Input({
       id: "input-amount",
-      classes: ["input-amount"],
+      classes: ["input-amount", "input-select-common"],
       eventListeners: [
         {
           type: "change",
@@ -150,7 +151,7 @@ class InputForm extends Component {
     });
     const inputDetail = new Component("input", {
       id: "input-detail",
-      classes: ["input-detail"],
+      classes: ["input-detail", "input-select-common"],
     });
     const buttonSubmit = new Button({
       id: "button-form-submit",
@@ -176,16 +177,28 @@ class InputForm extends Component {
         buttonDelete,
       ]),
       divRow2.appendChildren([
-        new Component("span").appendChildren([labelDate, inputDate]),
-        new Component("span").appendChildren([labelCategory, selectCategory]),
-        new Component("span").appendChildren([
+        new Component("span", { classes: ["row-flex"] }).appendChildren([
+          labelDate,
+          inputDate,
+        ]),
+        new Component("span", { classes: ["row-flex"] }).appendChildren([
+          labelCategory,
+          selectCategory,
+        ]),
+        new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelPaymentMethod,
           selectPaymentMethod,
         ]),
       ]),
       divRow3.appendChildren([
-        new Component("span").appendChildren([labelAmount, inputAmount]),
-        new Component("span").appendChildren([labelDetail, inputDetail]),
+        new Component("span", { classes: ["row-flex"] }).appendChildren([
+          labelAmount,
+          inputAmount,
+        ]),
+        new Component("span", { classes: ["row-flex"] }).appendChildren([
+          labelDetail,
+          inputDetail,
+        ]),
       ]),
       buttonSubmit,
     ]);
