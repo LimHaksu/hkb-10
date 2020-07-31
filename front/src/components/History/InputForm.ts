@@ -10,8 +10,7 @@ class InputForm extends Component {
 
   render() {
     const divRow1 = new Component("div", { classes: ["history-row"] });
-    const divRow2 = new Component("div", { classes: ["history-row"] });
-    const divRow3 = new Component("div", { classes: ["history-row"] });
+
     const spanClassification = new Component("span", {
       id: "classification",
       classes: ["classification"],
@@ -63,6 +62,8 @@ class InputForm extends Component {
         },
       ],
     });
+
+    const divRow2 = new Component("div", { classes: ["history-row"] });
 
     const labelDate = new Label({
       id: "label-date",
@@ -122,6 +123,9 @@ class InputForm extends Component {
         { textContent: "신한카드", value: "신한카드" },
       ],
     });
+
+    const divRow3 = new Component("div", { classes: ["history-row"] });
+
     const labelAmount = new Label({
       id: "label-amount",
       classes: ["label-amount"],
