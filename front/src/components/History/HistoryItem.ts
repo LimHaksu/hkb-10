@@ -1,4 +1,5 @@
 import Component, { ComponentOption } from "../Component";
+import "./HistoryItem.scss";
 
 interface HistoryItemOption extends ComponentOption {
   category: string;
@@ -15,7 +16,7 @@ class HistoryItem extends Component {
       `<span class="history-item-category">
     ${option.category}
 </span>
-<span class="history-item-category">
+<span class="history-item-detail">
     ${option.detail}
 </span>
 <span class="history-item-payment-method">
