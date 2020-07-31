@@ -1,4 +1,5 @@
 import Component, { ComponentOption } from "../Component";
+import "./HistoryDay.scss";
 
 interface HistoryDayOption extends ComponentOption {
   month: number;

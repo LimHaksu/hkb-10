@@ -1,0 +1,31 @@
+@import "./variable.scss";
+
+.history-day {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  border-top: 1px solid gray;
+  padding: 0.5rem 0 0.5rem 0;
+
+  .history-day-first {
+    .history-day-month {
+    }
+
+    .history-day-day {
+    }
+
+    .history-day-week-day {
+      color: gray;
+      margin-left: 0.5rem;
+    }
+  }
+  .history-day-second {
+    .history-day-total-income {
+      color: $blue-color;
+      margin-right: 1rem;
+    }
+    .history-day-total-outcome {
+      color: $mint-color;
+    }
+  }
+}
