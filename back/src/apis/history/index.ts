@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import getDailyHistories from "./GetDailyHistories";
+import getDailyHistories from "./getDailyHistories";
 import getHistories from "./getHistories";
 
 const historyRouter = Router();
