@@ -6,7 +6,7 @@ interface EventListeners {
 export interface ComponentOption {
   id?: string;
   classes?: string[];
-  text?: string;
+  innerHtml?: string;
   eventListeners?: EventListeners[];
 }
 
@@ -28,8 +28,8 @@ export default class Component {
         this.view.classList.add(c);
       });
     }
-    if (option.text) {
-      this.view.textContent = option.text;
+    if (option.innerHtml) {
+      this.setInnerHtml(option.innerHtml);
     }
     if (option.eventListeners) {
       option.eventListeners.forEach((eventListener) => {

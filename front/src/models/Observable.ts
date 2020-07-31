@@ -1,13 +1,13 @@
 export default class Observable {
-  private observers: Map<String, Function> = new Map();
+  private observers: Map<string, Function> = new Map();
 
   constructor() {}
 
-  subscribe(key: String, callback: Function) {
+  subscribe(key: string, callback: Function) {
     this.observers.set(key, callback);
   }
 
-  unsubscribe(key: String) {
+  unsubscribe(key: string) {
     this.observers.delete(key);
   }
 

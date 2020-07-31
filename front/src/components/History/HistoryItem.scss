@@ -1,0 +1,35 @@
+@import "./variable.scss";
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #b0b0b0;
+  padding: 0.5rem 0 0.5rem 0;
+
+  .history-item-category {
+    color: white;
+    background-color: $mint-color;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    flex-grow: 0.7;
+    margin-right: 1rem;
+    text-align: center;
+  }
+
+  .history-item-detail {
+    flex-grow: 4;
+    padding: 0.5rem;
+  }
+
+  .history-item-payment-method {
+    flex-grow: 1;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .history-item-amount {
+    flex-grow: 1;
+    padding: 0.5rem;
+    text-align: right;
+  }
+}
