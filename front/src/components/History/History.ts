@@ -93,7 +93,7 @@ class History extends Component {
       };
     });
     const historyList = new HistoryList({
-      historyItemOptions,
+      historyItemOptions: data,
     });
 
     this.appendChildren([
