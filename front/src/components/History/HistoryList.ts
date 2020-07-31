@@ -1,7 +1,8 @@
 import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
+import HistoryDay from "./HistoryDay";
 
-interface HistoryItemData {
+interface HistoryItemOption extends ComponentOption {
   category: string;
   detail: string;
   paymentMethod: string;
@@ -9,7 +10,7 @@ interface HistoryItemData {
 }
 
 interface HistoryListOption extends ComponentOption {
-  historyItemDatas?: HistoryItemData[];
+  historyItemOptions?: HistoryItemOption[];
 }
 
 class HistoryList extends Component {
@@ -21,9 +22,19 @@ class HistoryList extends Component {
 
   render(option?: HistoryListOption) {
     if (!option) return;
-    if (option.historyItemDatas) {
-      const historyItems = option.historyItemDatas.map(
-        (data) => new HistoryItem(data)
+    if (option.historyItemOptions) {
+      const historyDay = new HistoryDay({
+        month: 7,
+        day: 31,
+        weekDay: "금",
+        totalIncome: 50000,
+        totalOutcome: 10000,
+        classes: ["history-day"],
+      });
+      this.appendChild(historyDay);
+
+      const historyItems = option.historyItemOptions.map(
+        (option) => new HistoryItem({ ...option, classes: ["history-item"] })
       );
       this.appendChildren(historyItems);
     }
