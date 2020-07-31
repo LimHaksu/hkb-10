@@ -60,6 +60,14 @@ table.calendar tbody td div p.income {
   color: var(--income-color);
 }
 
+table.calendar tbody.hide_income td div p.income {
+  display: none;
+}
+
+table.calendar tbody.hide_outcome td div p.outcome {
+  display: none;
+}
+
 table.calendar tbody td div p.outcome {
   color: var(--outcome-color);
 }

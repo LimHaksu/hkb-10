@@ -1,6 +1,8 @@
 import Component from "../Component";
 import "./Calendar.scss";
 
+import RootModel from "../../models/RootModel";
+
 type dayMoney = {
   day: number;
   income: number;
@@ -37,21 +39,40 @@ function numberWithCommas(number: number) {
 }
 
 export default class Calendar extends Component {
-  $tbody: HTMLElement | null;
+  $tbody: HTMLTableSectionElement;
   year: number;
   month: number;
 
-  constructor(year: number, month: number, data?: dayMoney[]) {
+  constructor() {
     super();
-    this.year = year;
-    this.month = month;
+    this.year = RootModel.getYear();
+    this.month = RootModel.getMonth();
 
     this.view = document.createElement("table");
     this.view.className = "calendar";
 
     this.view.innerHTML = calendarHTML;
 
-    this.$tbody = this.view.querySelector("tbody");
+    this.$tbody =
+      this.view.querySelector("tbody") || document.createElement("tbody");
+
+    this.setCalendar();
+    this.subscriptions();
+  }
+
+  changeDate(year: number, month: number): void {
+    this.year = year;
+    this.month = month;
+
+    this.$tbody.innerHTML = ``;
+
+    // newFetch();
+
+    this.setCalendar();
+  }
+
+  setData(data: dayMoney[]): void {
+    this.$tbody.innerHTML = ``;
 
     this.setCalendar(data);
   }
@@ -86,7 +107,7 @@ export default class Calendar extends Component {
 
           td.className = "null";
           beforeCount += 1;
-        } else if (dayCount < currentMonthDays) {
+        } else if (dayCount <= currentMonthDays) {
           const content = document.createElement("div");
 
           if (
@@ -127,5 +148,31 @@ export default class Calendar extends Component {
 
       if (dayCount == currentMonthDays) break;
     }
+  }
+
+  hideContent(income: boolean, outcome: boolean): void {
+    const hideIncome = "hide_income";
+    const hideOutcome = "hide_outcome";
+
+    if (!income) {
+      this.$tbody?.classList.add(hideIncome);
+    } else {
+      this.$tbody?.classList.remove(hideIncome);
+    }
+
+    if (!outcome) {
+      this.$tbody?.classList.add(hideOutcome);
+    } else {
+      this.$tbody?.classList.remove(hideOutcome);
+    }
+  }
+
+  private subscriptions() {
+    RootModel.subscribe(
+      "changeCalendarContent",
+      (data: { year: number; month: number }) => {
+        this.changeDate(data.year, data.month);
+      }
+    );
   }
 }
