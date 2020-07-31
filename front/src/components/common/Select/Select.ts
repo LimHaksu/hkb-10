@@ -2,7 +2,12 @@ import Component, { ComponentOption } from "../../Component";
 import Option from "./Option";
 
 interface SelectOption extends ComponentOption {
-  selectOptions: string[];
+  selectOptions: {
+    textContent: string;
+    value: string;
+    disabled?: boolean;
+    selected?: boolean;
+  }[];
 }
 
 class Select extends Component {
@@ -14,7 +19,13 @@ class Select extends Component {
 
   setSelectOption(option: SelectOption) {
     option.selectOptions.forEach((selectOption) => {
-      const optionComponent = new Option({ textContent: selectOption });
+      const { textContent, value, disabled, selected } = selectOption;
+      const optionComponent = new Option({
+        textContent,
+        value,
+        disabled,
+        selected,
+      });
       (<HTMLSelectElement>this.view).options.add(
         <HTMLOptionElement>optionComponent.view
       );

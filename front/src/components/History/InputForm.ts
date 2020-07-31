@@ -84,16 +84,22 @@ class InputForm extends Component {
       id: "select-category",
       classes: ["select-category"],
       selectOptions: [
-        "월급",
-        "용돈",
-        "기타수입",
-        "식비",
-        "생활",
-        "쇼핑/뷰티",
-        "교통",
-        "의료/건강",
-        "문화/여가",
-        "미분류",
+        {
+          textContent: "선택하세요",
+          value: "none",
+          disabled: true,
+          selected: true,
+        },
+        { textContent: "월급", value: "salary" },
+        { textContent: "용돈", value: "pocket-money" },
+        { textContent: "기타수입", value: "other-income" },
+        { textContent: "식비", value: "food" },
+        { textContent: "생활", value: "life" },
+        { textContent: "쇼핑/뷰티", value: "shopping-beauty" },
+        { textContent: "교통", value: "traffic" },
+        { textContent: "의료/건강", value: "medical-health" },
+        { textContent: "문화/여가", value: "culture-leisure" },
+        { textContent: "미분류", value: "etc" },
       ],
     });
     const labelPaymentMethod = new Label({
@@ -103,8 +109,18 @@ class InputForm extends Component {
     });
     const selectPaymentMethod = new Select({
       id: "select-payment-method",
-      classes: ["select-payment-method"],
-      selectOptions: ["결제수단1", "결제수단2", "결제수단3"],
+      classes: ["select-payment-method", "input-select-common"],
+      selectOptions: [
+        {
+          textContent: "선택하세요",
+          value: "none",
+          disabled: true,
+          selected: true,
+        },
+        { textContent: "현대카드", value: "현대카드" },
+        { textContent: "삼성카드", value: "삼성카드" },
+        { textContent: "신한카드", value: "신한카드" },
+      ],
     });
     const labelAmount = new Label({
       id: "label-amount",
