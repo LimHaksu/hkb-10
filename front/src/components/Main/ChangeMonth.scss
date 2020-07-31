@@ -1,0 +1,27 @@
+section.menu div.month {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+}
+
+section.menu div.month button {
+  height: inherit;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  transition: all 0.2s;
+}
+
+section.menu div.month button:hover {
+  background-color: #dddddd;
+}
+
+section.menu div.month button:active {
+  outline: none;
+  background-color: #cccccc;
+}
+
+section.menu div.month p {
+  margin: 0 20px 0 20px;
+  font-size: 1.5rem;
+}

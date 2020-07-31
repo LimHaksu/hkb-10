@@ -1,0 +1,37 @@
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  height: 50px;
+  margin: 10px;
+}
+
+.checkboxes div.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkboxes div.check p {
+  margin: 0 10px 0 5px;
+  padding: 0;
+}
+
+.checkboxes div.check input {
+  margin: 5px;
+  width: 1rem;
+  height: 1rem;
+}
+
+.checkboxes div.check p.income {
+  margin-left: 20px;
+  color: var(--income-color);
+}
+
+.checkboxes div.check p.outcome {
+  margin-left: 20px;
+  color: var(--outcome-color);
+}
