@@ -1,52 +1,28 @@
+@import "./variable.scss";
+
 .history {
   display: flex;
   flex-direction: column;
-  width: 700px;
-
-  .button {
-    border: solid 2px;
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    margin: 0.2rem;
-    cursor: pointer;
-  }
-  .button-primary {
-    color: white;
-    background-color: #2cb5ad;
-  }
-
-  .button-secondary {
-    color: #2cb5ad;
-    background-color: white;
-  }
-  .button-form-submit {
-    width: 100%;
-  }
-
-  .history-row {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    margin-bottom: 5px;
-    .label-date,
-    .label-category,
-    .label-payment-method,
-    .label-amount,
-    .label-detail {
-      margin-right: 0.5rem;
-    }
-    .classification {
-    }
-  }
+  // min-width: px;
 
   .history-div {
     display: flex;
     justify-content: center;
-    .history-label-income {
+    margin-top: 0.5rem;
+
+    .history-label-income,
+    .history-income-amount {
+      color: $blue-color;
       margin-left: 0.5rem;
     }
-    .history-label-outcome {
+
+    .history-label-outcome,
+    .history-outcome-amount {
+      color: $mint-color;
       margin-left: 0.5rem;
+    }
+
+    .history-outcome-amount {
     }
   }
 }

@@ -3,7 +3,7 @@ import InputForm from "./InputForm";
 import HistoryList from "./HistoryList";
 import Input from "../common/Input";
 import Label from "../common/Label";
-import "./history.scss";
+import "./History.scss";
 
 class History extends Component {
   constructor() {
