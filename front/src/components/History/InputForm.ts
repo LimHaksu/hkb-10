@@ -5,6 +5,8 @@ import {
   ClassificationModel,
   DateModel,
   PaymentMethodModel,
+  TypeClassificaion,
+  SelectOption,
 } from "../../models/HistoryModel";
 import "./InputForm.scss";
 
