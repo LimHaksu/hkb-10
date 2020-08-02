@@ -1,6 +1,7 @@
 import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
 import {
+  AmountModel,
   CategoryModel,
   ClassificationModel,
   DateModel,
@@ -15,10 +16,12 @@ class InputForm extends Component {
   dateModel: typeof DateModel;
   categoryModel: typeof CategoryModel;
   paymentMethodModel: typeof PaymentMethodModel;
+  amountModel: typeof AmountModel;
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
   inputDate: Input | null = null;
   selectCategory: Select | null = null;
+  selectPaymentMethod: Select | null = null;
   constructor() {
     super("div", { classes: ["input-form"] });
 
@@ -27,6 +30,7 @@ class InputForm extends Component {
     this.dateModel = DateModel;
     this.categoryModel = CategoryModel;
     this.paymentMethodModel = PaymentMethodModel;
+    this.amountModel = AmountModel;
     this.subscribeModels();
     this.initDatas();
   }
@@ -261,9 +265,14 @@ class InputForm extends Component {
       classes: ["input-amount", "input-select-common"],
       eventListeners: [
         {
-          type: "change",
+          type: "keyup",
           listener: (event) => {
-            console.log("변경");
+            const value = (<HTMLInputElement>event.currentTarget).value;
+            // todo... 입력값 validation (숫자)
+            // todo... 세자리 콤마 찍기, 뒤에 '원' 붙이기
+
+            const amount = parseInt(value);
+            this.amountModel.setAmount(amount);
           },
         },
       ],
