@@ -9,12 +9,8 @@ class ClassificationModel extends Observable {
     super();
   }
 
-  changeClassifiacation() {
-    if (this.classification === "income") {
-      this.classification = "outcome";
-    } else {
-      this.classification = "income";
-    }
+  setClassifiacation(classification: TypeClassificaion) {
+    this.classification = classification;
     this.notify(this.classification);
   }
 

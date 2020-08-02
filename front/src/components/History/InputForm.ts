@@ -140,7 +140,7 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            this.classificationModel.changeClassifiacation();
+            this.classificationModel.setClassifiacation("income");
           },
         },
       ],
@@ -154,7 +154,7 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            this.classificationModel.changeClassifiacation();
+            this.classificationModel.setClassifiacation("outcome");
           },
         },
       ],
