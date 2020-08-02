@@ -1,3 +1,4 @@
+import CategoryModel from "./InputForm/CategoryModel";
 import ClassificationModel, {
   TypeClassificaion,
 } from "./InputForm/ClassificationModel";
@@ -11,6 +12,7 @@ interface SelectOption {
 
 export { TypeClassificaion, SelectOption };
 export {
+  CategoryModel,
   ClassificationModel,
   DateModel,
 };

@@ -1,6 +1,7 @@
 import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
 import {
+  CategoryModel,
   ClassificationModel,
   DateModel,
 } from "../../models/HistoryModel";
@@ -9,15 +10,18 @@ import "./InputForm.scss";
 class InputForm extends Component {
   classificationModel: typeof ClassificationModel;
   dateModel: typeof DateModel;
+  categoryModel: typeof CategoryModel;
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
   inputDate: Input | null = null;
+  selectCategory: Select | null = null;
   constructor() {
     super("div", { classes: ["input-form"] });
 
     this.render();
     this.classificationModel = ClassificationModel;
     this.dateModel = DateModel;
+    this.categoryModel = CategoryModel;
     this.subscribeModels();
     this.initDatas();
   }
@@ -55,11 +59,29 @@ class InputForm extends Component {
     this.dateModel.subscribe("subDate", (date: Date) => {
       this.inputDate?.setValue(date.toISOString().split("T")[0]);
     });
+
+    this.categoryModel.subscribe(
+      "subCategory",
+      (categoryOptions: SelectOption[]) => {
+        this.selectCategory?.setSelectOption({
+          selectOptions: [
+            {
+              textContent: "선택하세요",
+              value: "none",
+              disabled: true,
+              selected: true,
+            },
+            ...categoryOptions,
+          ],
+        });
+      }
+    );
   }
 
   initDatas() {
     this.classificationModel.initData();
     this.dateModel.initData();
+    this.categoryModel.initData();
   }
 
   render() {
@@ -146,7 +168,7 @@ class InputForm extends Component {
       classes: ["label-category"],
       textContent: "카테고리",
     });
-    const selectCategory = new Select({
+    this.selectCategory = new Select({
       id: "select-category",
       classes: ["select-category", "input-select-common"],
       selectOptions: [
@@ -156,18 +178,21 @@ class InputForm extends Component {
           disabled: true,
           selected: true,
         },
-        { textContent: "월급", value: "salary" },
-        { textContent: "용돈", value: "pocket-money" },
-        { textContent: "기타수입", value: "other-income" },
-        { textContent: "식비", value: "food" },
-        { textContent: "생활", value: "life" },
-        { textContent: "쇼핑/뷰티", value: "shopping-beauty" },
-        { textContent: "교통", value: "traffic" },
-        { textContent: "의료/건강", value: "medical-health" },
-        { textContent: "문화/여가", value: "culture-leisure" },
-        { textContent: "미분류", value: "etc" },
+      ],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event) => {
+            const target = <HTMLSelectElement>event.currentTarget;
+            const idx = target.selectedIndex;
+            const textContent = target[idx].textContent || "";
+            const value = target[idx].getAttribute("value") || "";
+            this.categoryModel.setSelectedCategory({ textContent, value });
+          },
+        },
       ],
     });
+
     const labelPaymentMethod = new Label({
       id: "label-payment-method",
       classes: ["label-payment-method"],
@@ -247,7 +272,7 @@ class InputForm extends Component {
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelCategory,
-          selectCategory,
+          this.selectCategory,
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelPaymentMethod,
