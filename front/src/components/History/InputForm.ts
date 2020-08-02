@@ -5,6 +5,7 @@ import {
   CategoryModel,
   ClassificationModel,
   DateModel,
+  DetailModel,
   PaymentMethodModel,
   TypeClassificaion,
   SelectOption,
@@ -17,23 +18,30 @@ class InputForm extends Component {
   categoryModel: typeof CategoryModel;
   paymentMethodModel: typeof PaymentMethodModel;
   amountModel: typeof AmountModel;
+  detailModel: typeof DetailModel;
+
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
   inputDate: Input | null = null;
   selectCategory: Select | null = null;
   selectPaymentMethod: Select | null = null;
+
   constructor() {
     super("div", { classes: ["input-form"] });
 
     this.render();
+
     this.classificationModel = ClassificationModel;
     this.dateModel = DateModel;
     this.categoryModel = CategoryModel;
     this.paymentMethodModel = PaymentMethodModel;
     this.amountModel = AmountModel;
+    this.detailModel = DetailModel;
+
     this.subscribeModels();
     this.initDatas();
   }
+
   setButtonIncomePrimary() {
     this.buttonIncome?.view.classList.remove("button-secondary");
     this.buttonIncome?.view.classList.add("button-primary");
@@ -285,6 +293,15 @@ class InputForm extends Component {
     const inputDetail = new Input({
       id: "input-detail",
       classes: ["input-detail", "input-select-common"],
+      eventListeners: [
+        {
+          type: "keyup",
+          listener: (event) => {
+            const value = (<HTMLInputElement>event.currentTarget).value;
+            this.detailModel.setDetail(value);
+          },
+        },
+      ],
     });
     const buttonSubmit = new Button({
       id: "button-form-submit",
