@@ -45,7 +45,6 @@ class Input extends Component {
       (<HTMLInputElement>this.view).placeholder = option.placeholder;
     }
     if (option.value) {
-      console.log(option.value);
       this.view.setAttribute("value", option.value);
     }
   }
