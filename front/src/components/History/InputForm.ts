@@ -1,12 +1,54 @@
 import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
+import {
+  ClassificationModel,
+} from "../../models/HistoryModel";
 import "./InputForm.scss";
 
 class InputForm extends Component {
+  classificationModel: typeof ClassificationModel;
+  buttonIncome: Button | null = null;
+  buttonOutcome: Button | null = null;
   constructor() {
     super("div", { classes: ["input-form"] });
 
     this.render();
+    this.classificationModel = ClassificationModel;
+  }
+  setButtonIncomePrimary() {
+    this.buttonIncome?.view.classList.remove("button-secondary");
+    this.buttonIncome?.view.classList.add("button-primary");
+    this.buttonOutcome?.view.classList.remove("button-primary");
+    this.buttonOutcome?.view.classList.add("button-secondary");
+  }
+
+  setButtonOutcomePrimary() {
+    this.buttonOutcome?.view.classList.remove("button-secondary");
+    this.buttonOutcome?.view.classList.add("button-primary");
+    this.buttonIncome?.view.classList.remove("button-primary");
+    this.buttonIncome?.view.classList.add("button-secondary");
+  }
+
+  subscribeModels() {
+    this.classificationModel.subscribe(
+      "subClassification",
+      (classification: TypeClassificaion) => {
+        switch (classification) {
+          case "income":
+            this.setButtonIncomePrimary();
+            break;
+          case "outcome":
+            this.setButtonOutcomePrimary();
+            break;
+          default:
+            break;
+        }
+      }
+    );
+  }
+
+  initDatas() {
+    this.classificationModel.initData();
   }
 
   render() {
@@ -21,7 +63,7 @@ class InputForm extends Component {
       classes: ["label-classification"],
       textContent: "분류",
     });
-    const buttonIncome = new Button({
+    this.buttonIncome = new Button({
       id: "button-income",
       classes: ["button", "button-secondary"],
       textContent: "수입",
@@ -30,12 +72,12 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            console.log("수입 버튼 클릭");
+            this.classificationModel.changeClassifiacation();
           },
         },
       ],
     });
-    const buttonOutcome = new Button({
+    this.buttonOutcome = new Button({
       id: "button-outcome",
       classes: ["button", "button-primary"],
       textContent: "지출",
@@ -44,7 +86,7 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            console.log("지출 버튼 클릭");
+            this.classificationModel.changeClassifiacation();
           },
         },
       ],
@@ -171,8 +213,8 @@ class InputForm extends Component {
       divRow1.appendChildren([
         spanClassification.appendChildren([
           labelClassification,
-          buttonIncome,
-          buttonOutcome,
+          this.buttonIncome,
+          this.buttonOutcome,
         ]),
         buttonDelete,
       ]),
