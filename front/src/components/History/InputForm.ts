@@ -2,18 +2,24 @@ import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
 import {
   ClassificationModel,
+  DateModel,
 } from "../../models/HistoryModel";
 import "./InputForm.scss";
 
 class InputForm extends Component {
   classificationModel: typeof ClassificationModel;
+  dateModel: typeof DateModel;
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
+  inputDate: Input | null = null;
   constructor() {
     super("div", { classes: ["input-form"] });
 
     this.render();
     this.classificationModel = ClassificationModel;
+    this.dateModel = DateModel;
+    this.subscribeModels();
+    this.initDatas();
   }
   setButtonIncomePrimary() {
     this.buttonIncome?.view.classList.remove("button-secondary");
@@ -45,10 +51,15 @@ class InputForm extends Component {
         }
       }
     );
+
+    this.dateModel.subscribe("subDate", (date: Date) => {
+      this.inputDate?.setValue(date.toISOString().split("T")[0]);
+    });
   }
 
   initDatas() {
     this.classificationModel.initData();
+    this.dateModel.initData();
   }
 
   render() {
@@ -113,10 +124,21 @@ class InputForm extends Component {
       classes: ["label-date"],
       textContent: "날짜",
     });
-    const inputDate = new Input({
+    this.inputDate = new Input({
       type: "date",
       id: "input-date",
       classes: ["input-date", "input-select-common"],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event: Event) => {
+            const dateString = (<HTMLInputElement>event.currentTarget).value;
+            if (dateString) {
+              this.dateModel.setDate(new Date(dateString));
+            }
+          },
+        },
+      ],
     });
 
     const labelCategory = new Label({
@@ -221,7 +243,7 @@ class InputForm extends Component {
       divRow2.appendChildren([
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelDate,
-          inputDate,
+          this.inputDate,
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelCategory,
