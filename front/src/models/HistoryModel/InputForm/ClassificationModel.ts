@@ -3,7 +3,7 @@ import Observable from "../../Observable";
 export type TypeClassificaion = "income" | "outcome";
 
 class ClassificationModel extends Observable {
-  private classification: TypeClassificaion = "income";
+  private classification: TypeClassificaion = "outcome";
 
   constructor() {
     super();
