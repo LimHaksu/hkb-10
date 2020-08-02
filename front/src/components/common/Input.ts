@@ -45,12 +45,13 @@ class Input extends Component {
       (<HTMLInputElement>this.view).placeholder = option.placeholder;
     }
     if (option.value) {
-      this.view.nodeValue = option.value;
+      console.log(option.value);
+      this.view.setAttribute("value", option.value);
     }
   }
 
   setValue(value: string) {
-    this.view.nodeValue = value;
+    this.view.setAttribute("value", value);
   }
 }
 
