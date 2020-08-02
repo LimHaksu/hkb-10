@@ -3,13 +3,20 @@ import InputForm from "./InputForm";
 import HistoryList from "./HistoryList";
 import Input from "../common/Input";
 import Label from "../common/Label";
+import { CheckboxModel } from "../../models/HistoryModel";
 import "./History.scss";
 
 class History extends Component {
+  checkbox: typeof CheckboxModel;
+
+  checkboxIncome: Input | null = null;
+  checkboxOutcome: Input | null = null;
   constructor() {
     super("div", { id: "history", classes: ["history"] });
 
     this.render();
+
+    this.checkbox = CheckboxModel;
   }
 
   render() {
@@ -19,7 +26,7 @@ class History extends Component {
       id: "history-div-income",
       classes: ["history-div", "history-div-income"],
     });
-    const checkboxIncome = new Input({
+    this.checkboxIncome = new Input({
       type: "checkbox",
       id: "history-checkbox-income",
       classes: ["history-checkbox-income"],
@@ -27,7 +34,8 @@ class History extends Component {
         {
           type: "click",
           listener: (event) => {
-            console.log("수입 체크박스 클릭");
+            const isChecked = (<HTMLInputElement>event.currentTarget).checked;
+            this.checkbox.setIsIncomeChecked(isChecked);
           },
         },
       ],
@@ -47,15 +55,16 @@ class History extends Component {
       id: "history-div-outcome",
       classes: ["history-div", "history-div-outcome"],
     });
-    const checkboxOutcome = new Input({
+    this.checkboxOutcome = new Input({
       type: "checkbox",
       id: "history-checkbox-outcome",
       classes: ["history-checkbox-outcome"],
       eventListeners: [
         {
           type: "click",
-          listener: () => {
-            console.log("지출 체크박스 클릭");
+          listener: (event) => {
+            const isChecked = (<HTMLInputElement>event.currentTarget).checked;
+            this.checkbox.setIsOutcomeChecked(isChecked);
           },
         },
       ],
@@ -75,9 +84,13 @@ class History extends Component {
 
     this.appendChildren([
       inputForm,
-      divIncome.appendChildren([checkboxIncome, labelIncome, spanIncomeAmount]),
+      divIncome.appendChildren([
+        this.checkboxIncome,
+        labelIncome,
+        spanIncomeAmount,
+      ]),
       divOutcome.appendChildren([
-        checkboxOutcome,
+        this.checkboxOutcome,
         labelOutcome,
         spanOutcomeAmount,
       ]),
