@@ -17,6 +17,10 @@ class History extends Component {
 
   checkboxIncome: Input | null = null;
   checkboxOutcome: Input | null = null;
+  spanIncomeAmount: Component | null = null;
+  spanOutcomeAmount: Component | null = null;
+  totalIncome: number = 0;
+  totalOutcome: number = 0;
   historyList: HistoryList | null = null;
 
   constructor() {
@@ -31,6 +35,20 @@ class History extends Component {
     this.initDatas();
   }
 
+  setTotalIncomeOutcome(historyDatas: HistoryDataType[]) {
+    this.totalIncome = 0;
+    this.totalOutcome = 0;
+    historyDatas.forEach((data) => {
+      if (data.income) {
+        this.totalIncome += data.amount;
+      } else {
+        this.totalOutcome += data.amount;
+      }
+    });
+    this.spanIncomeAmount?.setInnerHtml(`${this.totalIncome}원`);
+    this.spanOutcomeAmount?.setInnerHtml(`${this.totalOutcome}원`);
+  }
+
   subscribeModels() {
     this.checkbox.subscribe(
       "subCheckboxInHistory",
@@ -41,6 +59,7 @@ class History extends Component {
           isChecked.outcome;
       }
     );
+
     this.historyListData.subscribe(
       "subHistoryListInHistory",
       (historyDatas: HistoryDataType[]) => {
@@ -49,6 +68,7 @@ class History extends Component {
           historyItemOptions: historyDatas,
         });
         this.appendChild(this.historyList);
+        this.setTotalIncomeOutcome(historyDatas);
       }
     );
   }
@@ -85,9 +105,8 @@ class History extends Component {
       for: "history-checkbox-income",
       textContent: "수입",
     });
-    const spanIncomeAmount = new Component("span", {
+    this.spanIncomeAmount = new Component("span", {
       classes: ["history-income-amount"],
-      innerHtml: `1000000`,
     });
 
     const divOutcome = new Component("div", {
@@ -114,9 +133,8 @@ class History extends Component {
       for: "history-checkbox-outcome",
       textContent: "지출",
     });
-    const spanOutcomeAmount = new Component("span", {
+    this.spanOutcomeAmount = new Component("span", {
       classes: ["history-outcome-amount"],
-      innerHtml: `1000000`,
     });
 
     this.historyList = new HistoryList();
@@ -124,14 +142,18 @@ class History extends Component {
     this.appendChildren([
       inputForm,
       divIncome.appendChildren([
-        this.checkboxIncome,
-        labelIncome,
-        spanIncomeAmount,
+        new Component("span").appendChildren([
+          this.checkboxIncome,
+          labelIncome,
+        ]),
+        this.spanIncomeAmount,
       ]),
       divOutcome.appendChildren([
-        this.checkboxOutcome,
-        labelOutcome,
-        spanOutcomeAmount,
+        new Component("span").appendChildren([
+          this.checkboxOutcome,
+          labelOutcome,
+        ]),
+        this.spanOutcomeAmount,
       ]),
       this.historyList,
     ]);
