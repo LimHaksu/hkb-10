@@ -5,6 +5,9 @@ import ClassificationModel, {
 } from "./InputForm/ClassificationModel";
 import DateModel from "./InputForm/DateModel";
 import DetailModel from "./InputForm/DetailModel";
+import HistoryListModel, {
+  HistoryDataType,
+} from "./HistoryList/HistoryListModel";
 import PaymentMethodModel from "./InputForm/PaymentMethodModel";
 
 interface SelectOption {
@@ -14,12 +17,13 @@ interface SelectOption {
   selected?: boolean;
 }
 
-export { TypeClassificaion, SelectOption };
+export { HistoryDataType, SelectOption, TypeClassificaion };
 export {
   AmountModel,
   CategoryModel,
   ClassificationModel,
   DateModel,
   DetailModel,
+  HistoryListModel,
   PaymentMethodModel,
 };

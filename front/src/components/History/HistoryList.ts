@@ -1,24 +1,15 @@
 import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
+import { HistoryListModel, HistoryDataType } from "../../models/HistoryModel";
 import "./HistoryList.scss";
 
-interface HistoryItemOption extends ComponentOption {
-  year: number;
-  month: number;
-  day: number;
-  category: string;
-  detail: string;
-  paymentMethod: string;
-  income: boolean;
-  amount: number;
-}
-
 interface HistoryListOption extends ComponentOption {
-  historyItemOptions?: HistoryItemOption[];
+  historyItemOptions?: HistoryDataType[];
 }
 
 class HistoryList extends Component {
+  historyList: typeof HistoryListModel;
   prevDay: number = 0;
   totalIncome: number = 0;
   totalOutcome: number = 0;
@@ -27,45 +18,54 @@ class HistoryList extends Component {
   constructor(option?: HistoryListOption) {
     super("div", { ...option, classes: ["history-list"] });
 
-    this.render(option);
+    this.historyList = HistoryListModel;
+
+    this.subscribeModels();
+    this.initDatas();
   }
 
-  render(option?: HistoryListOption) {
-    if (!option) return;
-    if (option.historyItemOptions) {
-      option.historyItemOptions.forEach((historyItemOption) => {
-        const { year, month, day, income, amount } = historyItemOption;
+  subscribeModels() {
+    this.historyList.subscribe(
+      "subHistoryList",
+      (historyList: HistoryDataType[]) => {
+        historyList.forEach((historyListItem) => {
+          const { year, month, day, income, amount } = historyListItem;
 
-        const historyItem = new HistoryItem({
-          ...historyItemOption,
-          classes: ["history-item"],
-        });
-        this.listItems.push(historyItem);
-
-        if (income) {
-          this.totalIncome += amount;
-        } else {
-          this.totalOutcome += amount;
-        }
-
-        if (this.isNextDay(day)) {
-          const historyDay = new HistoryDay({
-            month,
-            day,
-            weekDay: this.getWeekDay(year, month, day),
-            totalIncome: this.totalIncome,
-            totalOutcome: this.totalOutcome,
-            classes: ["history-day"],
+          const historyItem = new HistoryItem({
+            ...historyListItem,
+            classes: ["history-item"],
           });
-          this.listItems.push(historyDay);
-          this.resetTotal();
-        }
-      });
-      this.listItems = this.listItems.reverse();
-      this.listItems.forEach((item) => {
-        this.appendChild(item);
-      });
-    }
+          this.listItems.push(historyItem);
+
+          if (income) {
+            this.totalIncome += amount;
+          } else {
+            this.totalOutcome += amount;
+          }
+
+          if (this.isNextDay(day)) {
+            const historyDay = new HistoryDay({
+              month,
+              day,
+              weekDay: this.getWeekDay(year, month, day),
+              totalIncome: this.totalIncome,
+              totalOutcome: this.totalOutcome,
+              classes: ["history-day"],
+            });
+            this.listItems.push(historyDay);
+            this.resetTotal();
+          }
+        });
+        this.listItems = this.listItems.reverse();
+        this.listItems.forEach((item) => {
+          this.appendChild(item);
+        });
+      }
+    );
+  }
+
+  initDatas() {
+    this.historyList.initData();
   }
 
   getWeekDay(year: number, month: number, day: number) {

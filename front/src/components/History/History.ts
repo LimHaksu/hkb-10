@@ -3,28 +3,16 @@ import InputForm from "./InputForm";
 import HistoryList from "./HistoryList";
 import Input from "../common/Input";
 import Label from "../common/Label";
-import fetch, { HistoryDataType } from "../../fetch";
 import "./History.scss";
 
 class History extends Component {
   constructor() {
     super("div", { id: "history", classes: ["history"] });
 
-    this.init();
+    this.render();
   }
 
-  init() {
-    fetch
-      .getHistories(2020, 7)
-      .then((data: HistoryDataType[]) => {
-        this.render(data);
-      })
-      .catch((error: Error) => {
-        console.log(error);
-      });
-  }
-
-  render(data: HistoryDataType[]) {
+  render() {
     const inputForm = new InputForm();
 
     const divIncome = new Component("div", {
@@ -83,9 +71,7 @@ class History extends Component {
       innerHtml: `1000000`,
     });
 
-    const historyList = new HistoryList({
-      historyItemOptions: data,
-    });
+    const historyList = new HistoryList();
 
     this.appendChildren([
       inputForm,
