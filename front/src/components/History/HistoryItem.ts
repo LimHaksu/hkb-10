@@ -9,9 +9,19 @@ interface HistoryItemOption extends ComponentOption {
   amount: number;
 }
 
+interface TypeData {
+  income: boolean;
+  amount: number;
+}
+
 class HistoryItem extends Component {
+  data: TypeData;
+
   constructor(option: HistoryItemOption) {
     super("div", option);
+
+    const { income, amount } = option;
+    this.data = { income, amount };
 
     this.setInnerHtml(
       `<span class="history-item-category">

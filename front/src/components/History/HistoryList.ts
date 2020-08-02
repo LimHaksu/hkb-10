@@ -1,7 +1,11 @@
 import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
-import { HistoryDataType } from "../../models/HistoryModel";
+import {
+  CheckboxModel,
+  TypeCheckbox,
+  HistoryDataType,
+} from "../../models/HistoryModel";
 import "./HistoryList.scss";
 
 interface HistoryListOption extends ComponentOption {
@@ -9,6 +13,8 @@ interface HistoryListOption extends ComponentOption {
 }
 
 class HistoryList extends Component {
+  checkbox: typeof CheckboxModel;
+
   prevDay: number = 0;
   totalIncome: number = 0;
   totalOutcome: number = 0;
@@ -17,7 +23,42 @@ class HistoryList extends Component {
   constructor(option?: HistoryListOption) {
     super("div", { ...option, classes: ["history-list"] });
 
+    this.checkbox = CheckboxModel;
+
     this.setHistoryListOption(option);
+
+    this.subscribeModels();
+  }
+
+  subscribeModels() {
+    this.checkbox.subscribe(
+      "subCheckboxInHistoryList",
+      (isChecked: TypeCheckbox) => {
+        this.setHidden(isChecked);
+      }
+    );
+  }
+
+  setHidden(isChecked: TypeCheckbox) {
+    this.listItems.forEach((item) => {
+      if (item instanceof HistoryItem) {
+        if (item.data.income) {
+          // true : item 이 수입
+          if (isChecked.income) {
+            item.view.classList.remove("history-item-hidden");
+          } else {
+            item.view.classList.add("history-item-hidden");
+          }
+        } else {
+          // item 이 지출
+          if (isChecked.outcome) {
+            item.view.classList.remove("history-item-hidden");
+          } else {
+            item.view.classList.add("history-item-hidden");
+          }
+        }
+      }
+    });
   }
 
   setHistoryListOption(option?: HistoryListOption) {
