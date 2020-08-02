@@ -1,12 +1,122 @@
 import Component from "../Component";
 import { Button, Input, Label, Select } from "../common";
+import {
+  AmountModel,
+  CategoryModel,
+  ClassificationModel,
+  DateModel,
+  DetailModel,
+  PaymentMethodModel,
+  TypeClassificaion,
+  SelectOption,
+} from "../../models/HistoryModel";
 import "./InputForm.scss";
 
 class InputForm extends Component {
+  classificationModel: typeof ClassificationModel;
+  dateModel: typeof DateModel;
+  categoryModel: typeof CategoryModel;
+  paymentMethodModel: typeof PaymentMethodModel;
+  amountModel: typeof AmountModel;
+  detailModel: typeof DetailModel;
+
+  buttonIncome: Button | null = null;
+  buttonOutcome: Button | null = null;
+  inputDate: Input | null = null;
+  selectCategory: Select | null = null;
+  selectPaymentMethod: Select | null = null;
+
   constructor() {
     super("div", { classes: ["input-form"] });
 
     this.render();
+
+    this.classificationModel = ClassificationModel;
+    this.dateModel = DateModel;
+    this.categoryModel = CategoryModel;
+    this.paymentMethodModel = PaymentMethodModel;
+    this.amountModel = AmountModel;
+    this.detailModel = DetailModel;
+
+    this.subscribeModels();
+    this.initDatas();
+  }
+
+  setButtonIncomePrimary() {
+    this.buttonIncome?.view.classList.remove("button-secondary");
+    this.buttonIncome?.view.classList.add("button-primary");
+    this.buttonOutcome?.view.classList.remove("button-primary");
+    this.buttonOutcome?.view.classList.add("button-secondary");
+  }
+
+  setButtonOutcomePrimary() {
+    this.buttonOutcome?.view.classList.remove("button-secondary");
+    this.buttonOutcome?.view.classList.add("button-primary");
+    this.buttonIncome?.view.classList.remove("button-primary");
+    this.buttonIncome?.view.classList.add("button-secondary");
+  }
+
+  subscribeModels() {
+    this.classificationModel.subscribe(
+      "subClassification",
+      (classification: TypeClassificaion) => {
+        switch (classification) {
+          case "income":
+            this.setButtonIncomePrimary();
+            break;
+          case "outcome":
+            this.setButtonOutcomePrimary();
+            break;
+          default:
+            break;
+        }
+      }
+    );
+
+    this.dateModel.subscribe("subDate", (date: Date) => {
+      this.inputDate?.setValue(date.toISOString().split("T")[0]);
+    });
+
+    this.categoryModel.subscribe(
+      "subCategory",
+      (categoryOptions: SelectOption[]) => {
+        this.selectCategory?.setSelectOption({
+          selectOptions: [
+            {
+              textContent: "선택하세요",
+              value: "none",
+              disabled: true,
+              selected: true,
+            },
+            ...categoryOptions,
+          ],
+        });
+      }
+    );
+
+    this.paymentMethodModel.subscribe(
+      "subPaymentMethod",
+      (paymentMethodOptions: SelectOption[]) => {
+        this.selectPaymentMethod?.setSelectOption({
+          selectOptions: [
+            {
+              textContent: "선택하세요",
+              value: "none",
+              disabled: true,
+              selected: true,
+            },
+            ...paymentMethodOptions,
+          ],
+        });
+      }
+    );
+  }
+
+  initDatas() {
+    this.classificationModel.initData();
+    this.dateModel.initData();
+    this.categoryModel.initData();
+    this.paymentMethodModel.initData();
   }
 
   render() {
@@ -21,7 +131,7 @@ class InputForm extends Component {
       classes: ["label-classification"],
       textContent: "분류",
     });
-    const buttonIncome = new Button({
+    this.buttonIncome = new Button({
       id: "button-income",
       classes: ["button", "button-secondary"],
       textContent: "수입",
@@ -30,12 +140,12 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            console.log("수입 버튼 클릭");
+            this.classificationModel.setClassifiacation("income");
           },
         },
       ],
     });
-    const buttonOutcome = new Button({
+    this.buttonOutcome = new Button({
       id: "button-outcome",
       classes: ["button", "button-primary"],
       textContent: "지출",
@@ -44,7 +154,7 @@ class InputForm extends Component {
           type: "click",
           listener: (event) => {
             event.preventDefault();
-            console.log("지출 버튼 클릭");
+            this.classificationModel.setClassifiacation("outcome");
           },
         },
       ],
@@ -71,10 +181,21 @@ class InputForm extends Component {
       classes: ["label-date"],
       textContent: "날짜",
     });
-    const inputDate = new Input({
+    this.inputDate = new Input({
       type: "date",
       id: "input-date",
       classes: ["input-date", "input-select-common"],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event: Event) => {
+            const dateString = (<HTMLInputElement>event.currentTarget).value;
+            if (dateString) {
+              this.dateModel.setDate(new Date(dateString));
+            }
+          },
+        },
+      ],
     });
 
     const labelCategory = new Label({
@@ -82,7 +203,7 @@ class InputForm extends Component {
       classes: ["label-category"],
       textContent: "카테고리",
     });
-    const selectCategory = new Select({
+    this.selectCategory = new Select({
       id: "select-category",
       classes: ["select-category", "input-select-common"],
       selectOptions: [
@@ -92,24 +213,27 @@ class InputForm extends Component {
           disabled: true,
           selected: true,
         },
-        { textContent: "월급", value: "salary" },
-        { textContent: "용돈", value: "pocket-money" },
-        { textContent: "기타수입", value: "other-income" },
-        { textContent: "식비", value: "food" },
-        { textContent: "생활", value: "life" },
-        { textContent: "쇼핑/뷰티", value: "shopping-beauty" },
-        { textContent: "교통", value: "traffic" },
-        { textContent: "의료/건강", value: "medical-health" },
-        { textContent: "문화/여가", value: "culture-leisure" },
-        { textContent: "미분류", value: "etc" },
+      ],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event) => {
+            const target = <HTMLSelectElement>event.currentTarget;
+            const idx = target.selectedIndex;
+            const textContent = target[idx].textContent || "";
+            const value = target[idx].getAttribute("value") || "";
+            this.categoryModel.setSelectedCategory({ textContent, value });
+          },
+        },
       ],
     });
+
     const labelPaymentMethod = new Label({
       id: "label-payment-method",
       classes: ["label-payment-method"],
       textContent: "결제수단",
     });
-    const selectPaymentMethod = new Select({
+    this.selectPaymentMethod = new Select({
       id: "select-payment-method",
       classes: ["select-payment-method", "input-select-common"],
       selectOptions: [
@@ -119,9 +243,21 @@ class InputForm extends Component {
           disabled: true,
           selected: true,
         },
-        { textContent: "현대카드", value: "현대카드" },
-        { textContent: "삼성카드", value: "삼성카드" },
-        { textContent: "신한카드", value: "신한카드" },
+      ],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event) => {
+            const target = <HTMLSelectElement>event.currentTarget;
+            const idx = target.selectedIndex;
+            const textContent = target[idx].textContent || "";
+            const value = target[idx].getAttribute("value") || "";
+            this.paymentMethodModel.setSelectedPaymentMethod({
+              textContent,
+              value,
+            });
+          },
+        },
       ],
     });
 
@@ -137,9 +273,14 @@ class InputForm extends Component {
       classes: ["input-amount", "input-select-common"],
       eventListeners: [
         {
-          type: "change",
+          type: "keyup",
           listener: (event) => {
-            console.log("변경");
+            const value = (<HTMLInputElement>event.currentTarget).value;
+            // todo... 입력값 validation (숫자)
+            // todo... 세자리 콤마 찍기, 뒤에 '원' 붙이기
+
+            const amount = parseInt(value);
+            this.amountModel.setAmount(amount);
           },
         },
       ],
@@ -152,6 +293,15 @@ class InputForm extends Component {
     const inputDetail = new Input({
       id: "input-detail",
       classes: ["input-detail", "input-select-common"],
+      eventListeners: [
+        {
+          type: "keyup",
+          listener: (event) => {
+            const value = (<HTMLInputElement>event.currentTarget).value;
+            this.detailModel.setDetail(value);
+          },
+        },
+      ],
     });
     const buttonSubmit = new Button({
       id: "button-form-submit",
@@ -171,23 +321,23 @@ class InputForm extends Component {
       divRow1.appendChildren([
         spanClassification.appendChildren([
           labelClassification,
-          buttonIncome,
-          buttonOutcome,
+          this.buttonIncome,
+          this.buttonOutcome,
         ]),
         buttonDelete,
       ]),
       divRow2.appendChildren([
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelDate,
-          inputDate,
+          this.inputDate,
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelCategory,
-          selectCategory,
+          this.selectCategory,
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelPaymentMethod,
-          selectPaymentMethod,
+          this.selectPaymentMethod,
         ]),
       ]),
       divRow3.appendChildren([

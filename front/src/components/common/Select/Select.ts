@@ -18,6 +18,9 @@ class Select extends Component {
   }
 
   setSelectOption(option: SelectOption) {
+    // 기존에 있던 select options 을 지움
+    this.setInnerHtml("");
+
     option.selectOptions.forEach((selectOption) => {
       const { textContent, value, disabled, selected } = selectOption;
       const optionComponent = new Option({

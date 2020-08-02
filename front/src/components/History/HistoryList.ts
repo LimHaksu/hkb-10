@@ -1,21 +1,11 @@
 import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
+import { HistoryDataType } from "../../models/HistoryModel";
 import "./HistoryList.scss";
 
-interface HistoryItemOption extends ComponentOption {
-  year: number;
-  month: number;
-  day: number;
-  category: string;
-  detail: string;
-  paymentMethod: string;
-  income: boolean;
-  amount: number;
-}
-
 interface HistoryListOption extends ComponentOption {
-  historyItemOptions?: HistoryItemOption[];
+  historyItemOptions?: HistoryDataType[];
 }
 
 class HistoryList extends Component {
@@ -27,17 +17,17 @@ class HistoryList extends Component {
   constructor(option?: HistoryListOption) {
     super("div", { ...option, classes: ["history-list"] });
 
-    this.render(option);
+    this.setHistoryListOption(option);
   }
 
-  render(option?: HistoryListOption) {
+  setHistoryListOption(option?: HistoryListOption) {
     if (!option) return;
     if (option.historyItemOptions) {
-      option.historyItemOptions.forEach((historyItemOption) => {
-        const { year, month, day, income, amount } = historyItemOption;
+      option.historyItemOptions.forEach((historyListItem) => {
+        const { year, month, day, income, amount } = historyListItem;
 
         const historyItem = new HistoryItem({
-          ...historyItemOption,
+          ...historyListItem,
           classes: ["history-item"],
         });
         this.listItems.push(historyItem);
