@@ -4,6 +4,7 @@ import {
   CategoryModel,
   ClassificationModel,
   DateModel,
+  PaymentMethodModel,
 } from "../../models/HistoryModel";
 import "./InputForm.scss";
 
@@ -11,6 +12,7 @@ class InputForm extends Component {
   classificationModel: typeof ClassificationModel;
   dateModel: typeof DateModel;
   categoryModel: typeof CategoryModel;
+  paymentMethodModel: typeof PaymentMethodModel;
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
   inputDate: Input | null = null;
@@ -22,6 +24,7 @@ class InputForm extends Component {
     this.classificationModel = ClassificationModel;
     this.dateModel = DateModel;
     this.categoryModel = CategoryModel;
+    this.paymentMethodModel = PaymentMethodModel;
     this.subscribeModels();
     this.initDatas();
   }
@@ -76,12 +79,30 @@ class InputForm extends Component {
         });
       }
     );
+
+    this.paymentMethodModel.subscribe(
+      "subPaymentMethod",
+      (paymentMethodOptions: SelectOption[]) => {
+        this.selectPaymentMethod?.setSelectOption({
+          selectOptions: [
+            {
+              textContent: "선택하세요",
+              value: "none",
+              disabled: true,
+              selected: true,
+            },
+            ...paymentMethodOptions,
+          ],
+        });
+      }
+    );
   }
 
   initDatas() {
     this.classificationModel.initData();
     this.dateModel.initData();
     this.categoryModel.initData();
+    this.paymentMethodModel.initData();
   }
 
   render() {
@@ -198,7 +219,7 @@ class InputForm extends Component {
       classes: ["label-payment-method"],
       textContent: "결제수단",
     });
-    const selectPaymentMethod = new Select({
+    this.selectPaymentMethod = new Select({
       id: "select-payment-method",
       classes: ["select-payment-method", "input-select-common"],
       selectOptions: [
@@ -208,9 +229,21 @@ class InputForm extends Component {
           disabled: true,
           selected: true,
         },
-        { textContent: "현대카드", value: "현대카드" },
-        { textContent: "삼성카드", value: "삼성카드" },
-        { textContent: "신한카드", value: "신한카드" },
+      ],
+      eventListeners: [
+        {
+          type: "change",
+          listener: (event) => {
+            const target = <HTMLSelectElement>event.currentTarget;
+            const idx = target.selectedIndex;
+            const textContent = target[idx].textContent || "";
+            const value = target[idx].getAttribute("value") || "";
+            this.paymentMethodModel.setSelectedPaymentMethod({
+              textContent,
+              value,
+            });
+          },
+        },
       ],
     });
 
@@ -276,7 +309,7 @@ class InputForm extends Component {
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelPaymentMethod,
-          selectPaymentMethod,
+          this.selectPaymentMethod,
         ]),
       ]),
       divRow3.appendChildren([
