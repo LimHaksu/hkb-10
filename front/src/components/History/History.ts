@@ -3,20 +3,59 @@ import InputForm from "./InputForm";
 import HistoryList from "./HistoryList";
 import Input from "../common/Input";
 import Label from "../common/Label";
-import { CheckboxModel } from "../../models/HistoryModel";
+import {
+  CheckboxModel,
+  TypeCheckbox,
+  HistoryListModel,
+  HistoryDataType,
+} from "../../models/HistoryModel";
 import "./History.scss";
 
 class History extends Component {
   checkbox: typeof CheckboxModel;
+  historyListData: typeof HistoryListModel;
 
   checkboxIncome: Input | null = null;
   checkboxOutcome: Input | null = null;
+  historyList: HistoryList | null = null;
+
   constructor() {
     super("div", { id: "history", classes: ["history"] });
 
     this.render();
 
     this.checkbox = CheckboxModel;
+    this.historyListData = HistoryListModel;
+
+    this.subscribeModels();
+    this.initDatas();
+  }
+
+  subscribeModels() {
+    this.checkbox.subscribe(
+      "subCheckboxInHistory",
+      (isChecked: TypeCheckbox) => {
+        (<HTMLInputElement>this.checkboxIncome?.view).checked =
+          isChecked.income;
+        (<HTMLInputElement>this.checkboxOutcome?.view).checked =
+          isChecked.outcome;
+      }
+    );
+    this.historyListData.subscribe(
+      "subHistoryListInHistory",
+      (historyDatas: HistoryDataType[]) => {
+        this.historyList?.destructor();
+        this.historyList = new HistoryList({
+          historyItemOptions: historyDatas,
+        });
+        this.appendChild(this.historyList);
+      }
+    );
+  }
+
+  initDatas() {
+    this.checkbox.initData();
+    this.historyListData.initData();
   }
 
   render() {
@@ -80,7 +119,7 @@ class History extends Component {
       innerHtml: `1000000`,
     });
 
-    const historyList = new HistoryList();
+    this.historyList = new HistoryList();
 
     this.appendChildren([
       inputForm,
@@ -94,7 +133,7 @@ class History extends Component {
         labelOutcome,
         spanOutcomeAmount,
       ]),
-      historyList,
+      this.historyList,
     ]);
   }
 }

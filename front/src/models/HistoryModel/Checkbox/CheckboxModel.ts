@@ -14,13 +14,15 @@ class Checkbox extends Observable {
 
   setIsIncomeChecked(check: boolean) {
     this.isChecked.income = check;
-
     this.notify(this.isChecked);
   }
 
   setIsOutcomeChecked(check: boolean) {
     this.isChecked.outcome = check;
+    this.notify(this.isChecked);
+  }
 
+  initData() {
     this.notify(this.isChecked);
   }
 }
