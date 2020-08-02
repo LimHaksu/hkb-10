@@ -26,6 +26,7 @@ interface InputOption extends ComponentOption {
     | "url"
     | "week";
   placeholder?: string;
+  value?: string;
 }
 
 class Input extends Component {
@@ -43,10 +44,13 @@ class Input extends Component {
     if (option.placeholder) {
       (<HTMLInputElement>this.view).placeholder = option.placeholder;
     }
+    if (option.value) {
+      this.view.nodeValue = option.value;
+    }
   }
 
-  setTextContent(textContent: string) {
-    this.view.textContent = textContent;
+  setValue(value: string) {
+    this.view.nodeValue = value;
   }
 }
 
