@@ -14,4 +14,8 @@ export default class Statistics extends Component {
 
     this.view.appendChild(this.$lineGraph.view);
   }
+
+  reRender(): void {
+    this.$lineGraph.reRender();
+  }
 }
