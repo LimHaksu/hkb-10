@@ -1,3 +1,4 @@
+import getCategories from "./getCategories";
 import getHistories from "./getHistories";
 import getPaymentMethods from "./getPaymentMethods";
 import postHistory from "./postHistory";
@@ -17,4 +18,4 @@ interface PaymentMethodDataType {
 }
 
 export { HistoryDataType, PaymentMethodDataType };
-export default { getHistories, getPaymentMethods, postHistory };
+export default { getCategories, getHistories, getPaymentMethods, postHistory };
