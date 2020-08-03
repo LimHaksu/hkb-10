@@ -1,13 +1,29 @@
 import { Request, Response } from "express";
 
-import dummyData from "./getHistoriesDummy";
+import HistoryDAO from "../../daos/HistoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  // const { year, month } = req.params;
+  const { year, month } = req.params;
+  const histories = await HistoryDAO.getHistories(year, month);
+
+  const data = histories.map((history) => {
+    const { date, category, paymentMethod, income, amount, detail } = history;
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+      category,
+      paymentMethod,
+      income,
+      amount,
+      detail,
+    };
+  });
+  console.log(histories);
 
   const ret = {
     success: true,
-    data: dummyData,
+    data,
   };
 
   res.status(200).json(ret);
