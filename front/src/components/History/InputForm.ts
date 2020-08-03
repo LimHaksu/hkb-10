@@ -139,9 +139,8 @@ class InputForm extends Component {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
-
     // 카테고리 가져오기
-    const category = this.categoryModel.getSelectedCategory().textContent;
+    const category = this.categoryModel.getSelectedCategory().value;
 
     // 결제수단 가져오기
     const paymentMethod = this.paymentMethodModel.getSelectedPaymentMethod()
