@@ -185,7 +185,7 @@ class InputForm extends Component {
     const buttonDelete = new Button({
       id: "button-delete",
       classes: ["button-delete"],
-      textContent: "삭제",
+      textContent: "내용 지우기",
       eventListeners: [
         {
           type: "click",

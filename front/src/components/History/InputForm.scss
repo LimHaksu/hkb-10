@@ -25,6 +25,14 @@
     margin: 1rem 0 1rem 0;
   }
 
+  .button-delete {
+    color: $mint-color;
+    background-color: white;
+    border: 0;
+    height: 1rem;
+    cursor: pointer;
+  }
+
   .history-row {
     display: flex;
     justify-content: space-between;
