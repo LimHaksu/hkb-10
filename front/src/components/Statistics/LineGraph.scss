@@ -1,0 +1,38 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.graph .average,
+.graph .labels {
+  dominant-baseline: central;
+}
+
+.graph .labels.x-labels {
+  text-anchor: middle;
+}
+
+.graph .labels.y-labels {
+  text-anchor: end;
+}
+
+.graph {
+  padding: 50px;
+}
+
+.graph .grid {
+  stroke: #ccc;
+  stroke-dasharray: 0;
+  stroke-width: 1;
+}
+
+.graph g polyline {
+  fill: none;
+  stroke: var(--main-color);
+  stroke-width: 3;
+}
+
+.graph circle {
+  fill: #ffffff;
+  stroke: var(--main-color);
+  stroke-width: 3px;
+}
