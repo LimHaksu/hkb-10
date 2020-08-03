@@ -112,7 +112,7 @@ class HistoryDAO extends DAO {
         detail,
         income,
       } = history;
-      const date = `${year}-${month + 1}-${day}`;
+      const date = `${year}-${month}-${day}`;
       const is_income = income ? 1 : 0;
       const firstHistoryeRow = await this.executeQuery(
         connection,

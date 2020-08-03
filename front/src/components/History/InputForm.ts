@@ -6,6 +6,7 @@ import {
   ClassificationModel,
   DateModel,
   DetailModel,
+  HistoryListModel,
   PaymentMethodModel,
   TypeClassificaion,
   SelectOption,
@@ -14,6 +15,8 @@ import fetch from "../../fetch/";
 import "./InputForm.scss";
 
 class InputForm extends Component {
+  historyListModel: typeof HistoryListModel;
+
   classificationModel: typeof ClassificationModel;
   dateModel: typeof DateModel;
   categoryModel: typeof CategoryModel;
@@ -37,6 +40,7 @@ class InputForm extends Component {
 
     this.render();
 
+    this.historyListModel = HistoryListModel;
     this.classificationModel = ClassificationModel;
     this.dateModel = DateModel;
     this.categoryModel = CategoryModel;
@@ -137,7 +141,7 @@ class InputForm extends Component {
     // 날짜 가져오기
     const date = this.dateModel.getDate();
     const year = date.getFullYear();
-    const month = date.getMonth();
+    const month = date.getMonth() + 1;
     const day = date.getDate();
     // 카테고리 가져오기
     const category = this.categoryModel.getSelectedCategory().value;
@@ -162,7 +166,12 @@ class InputForm extends Component {
       amount,
       detail,
     };
-    fetch.postHistory(history);
+
+    fetch.postHistory(history).then((response) => {
+      this.historyListModel.fetchGetHistories(year, month);
+    });
+
+    this.resetInputs();
   }
 
   subscribeModels() {
