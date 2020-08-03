@@ -108,6 +108,12 @@ class InputForm extends Component {
 
     // 내용 초기화
     (<HTMLInputElement>this.inputDetail?.view).value = "";
+
+    // 확인버튼을 위한 유효성 검사 초기화
+    this.validationMap.forEach((_, key) => {
+      this.validationMap.set(key, false);
+    });
+    this.checkAllInputsValidation();
   }
 
   setButtonIncomePrimary() {
