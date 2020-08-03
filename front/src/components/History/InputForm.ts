@@ -25,6 +25,7 @@ class InputForm extends Component {
   inputDate: Input | null = null;
   selectCategory: Select | null = null;
   selectPaymentMethod: Select | null = null;
+  inputAmount: Input | null = null;
 
   constructor() {
     super("div", { classes: ["input-form"] });
@@ -110,6 +111,19 @@ class InputForm extends Component {
         });
       }
     );
+
+    this.amountModel.subscribe("subAmountInInputForm", (amount: number) => {
+      // 금액 입력창에 콤마, 원 붙여주기
+      const inputAmountView = <HTMLInputElement>this.inputAmount?.view;
+      if (amount > 0) {
+        inputAmountView.value = `${amount.toLocaleString()}원`;
+      } else {
+        inputAmountView.value = "원";
+      }
+      // 커서를 '원' 이전에 놓기
+      inputAmountView.selectionStart = inputAmountView.value.length - 1;
+      inputAmountView.selectionEnd = inputAmountView.value.length - 1;
+    });
   }
 
   initDatas() {
@@ -117,6 +131,7 @@ class InputForm extends Component {
     this.dateModel.initData();
     this.categoryModel.initData();
     this.paymentMethodModel.initData();
+    this.amountModel.initData();
   }
 
   render() {
@@ -268,7 +283,7 @@ class InputForm extends Component {
       classes: ["label-amount"],
       textContent: "금액",
     });
-    const inputAmount = new Input({
+    this.inputAmount = new Input({
       id: "input-amount",
       classes: ["input-amount", "input-select-common"],
       eventListeners: [
@@ -276,10 +291,14 @@ class InputForm extends Component {
           type: "keyup",
           listener: (event) => {
             const value = (<HTMLInputElement>event.currentTarget).value;
-            // todo... 입력값 validation (숫자)
-            // todo... 세자리 콤마 찍기, 뒤에 '원' 붙이기
 
-            const amount = parseInt(value);
+            // comma 제거
+            const commaRemoved = value.replace(/[^0-9]/g, "");
+            let amount = 0;
+            if (commaRemoved) {
+              amount = parseInt(commaRemoved);
+            }
+
             this.amountModel.setAmount(amount);
           },
         },
@@ -343,7 +362,7 @@ class InputForm extends Component {
       divRow3.appendChildren([
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelAmount,
-          inputAmount,
+          this.inputAmount,
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelDetail,

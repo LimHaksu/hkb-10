@@ -45,8 +45,12 @@ class History extends Component {
         this.totalOutcome += data.amount;
       }
     });
-    this.spanIncomeAmount?.setInnerHtml(`${this.totalIncome}원`);
-    this.spanOutcomeAmount?.setInnerHtml(`${this.totalOutcome}원`);
+    this.spanIncomeAmount?.setInnerHtml(
+      `${this.totalIncome.toLocaleString()}원`
+    );
+    this.spanOutcomeAmount?.setInnerHtml(
+      `${this.totalOutcome.toLocaleString()}원`
+    );
   }
 
   subscribeModels() {

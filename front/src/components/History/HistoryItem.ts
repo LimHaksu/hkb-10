@@ -38,7 +38,7 @@ class HistoryItem extends Component {
           ? "history-item-amount-income"
           : "history-item-amount-outcome"
       }">
-    ${(option.income ? "+" : "-") + option.amount}
+    ${(option.income ? "+" : "-") + option.amount.toLocaleString()}원
 </span>`
     );
   }
