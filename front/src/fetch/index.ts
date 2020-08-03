@@ -1,5 +1,6 @@
 import getHistories from "./getHistories";
 import getPaymentMethods from "./getPaymentMethods";
+import postHistory from "./postHistory";
 
 interface HistoryDataType {
   year: number;
@@ -16,4 +17,4 @@ interface PaymentMethodDataType {
 }
 
 export { HistoryDataType, PaymentMethodDataType };
-export default { getHistories, getPaymentMethods };
+export default { getHistories, getPaymentMethods, postHistory };

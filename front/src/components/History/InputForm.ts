@@ -10,6 +10,7 @@ import {
   TypeClassificaion,
   SelectOption,
 } from "../../models/HistoryModel";
+import fetch from "../../fetch/";
 import "./InputForm.scss";
 
 class InputForm extends Component {
@@ -121,6 +122,42 @@ class InputForm extends Component {
     this.buttonOutcome?.view.classList.add("button-primary");
     this.buttonIncome?.view.classList.remove("button-primary");
     this.buttonIncome?.view.classList.add("button-secondary");
+  }
+
+  handleButtonSubmitClicked() {
+    // 수입, 지출 여부 가져오기
+    const income = this.classificationModel.getClassification() === "income";
+
+    // 날짜 가져오기
+    const date = this.dateModel.getDate();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    // 카테고리 가져오기
+    const category = this.categoryModel.getSelectedCategory().textContent;
+
+    // 결제수단 가져오기
+    const paymentMethod = this.paymentMethodModel.getSelectedPaymentMethod()
+      .textContent;
+
+    // 금액 가져오기
+    const amount = this.amountModel.getAmount();
+
+    // 내용 가져오기
+    const detail = this.detailModel.getDetail();
+
+    const history = {
+      income,
+      year,
+      month,
+      day,
+      category,
+      paymentMethod,
+      amount,
+      detail,
+    };
+    fetch.postHistory(history);
   }
 
   subscribeModels() {
@@ -437,7 +474,7 @@ class InputForm extends Component {
         {
           type: "click",
           listener: () => {
-            console.log("확인 버튼 클릭");
+            this.handleButtonSubmitClicked();
           },
         },
       ],
