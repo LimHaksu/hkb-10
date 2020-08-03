@@ -58,7 +58,7 @@ export function createAverageLine(
 
   const averageY = (1 - percent / 100) * graphHeight + size.top;
 
-  return `<line x1="80" x2="720" y1="${averageY}" y2="${averageY}" stroke-dasharray="5,5" stroke-width="2">
+  return /*html*/ `<line x1="80" x2="720" y1="${averageY}" y2="${averageY}" stroke-dasharray="5,5" stroke-width="2">
     <animate attributeName="y1" begin="0s" dur="${ANIMATION_TIME}s"
     from="${graphHeight + size.top}" to="${averageY}" ${ANIMATION_CALC}/>
     <animate attributeName="y2" begin="0s" dur="${ANIMATION_TIME}s"
@@ -80,7 +80,7 @@ export function createStandardsLine(
 
   dateArray.forEach((cur, index) => {
     const curY = graphHeight - index * standard + size.top;
-    const template = `<line x1="80" x2="720" y1="${curY}" y2="${curY}"></line>`;
+    const template = /*html*/ `<line x1="80" x2="720" y1="${curY}" y2="${curY}"></line>`;
     elements.push(template);
   });
 
@@ -97,7 +97,7 @@ export function createStandards(
 
   dateArray.forEach((cur, index) => {
     const curY = graphHeight - index * standard + size.top;
-    const template = `<text x="50" y="${curY}">${cur}${
+    const template = /*html*/ `<text x="50" y="${curY}">${cur}${
       cur === 0 ? "" : "만"
     }</text>`;
     elements.push(template);
@@ -115,7 +115,7 @@ export function createDateStandards(
   const dateCount = new Date(year, month, -1).getDate() + 1;
 
   for (let date = 1; date <= dateCount; date += 5) {
-    const template = `<text x="${(arr.length + 1) * 100}" y="${
+    const template = /*html*/ `<text x="${(arr.length + 1) * 100}" y="${
       size.height - 20
     }">${month}.${date}</text>`;
     arr.push(template);
@@ -139,7 +139,9 @@ export function createDots(
 
     const curY = (1 - percent / 100) * graphHeight + size.top;
 
-    const template = `<circle cx="${100 + index * 20}" cy="${curY}" r="5">
+    const template = /*html*/ `<circle cx="${
+      100 + index * 20
+    }" cy="${curY}" r="5">
     <animate attributeName="cy" begin="0s" dur="${ANIMATION_TIME}s"
     from="${graphHeight + size.top}" to="${curY}" ${ANIMATION_CALC}/>
   </circle>`;
@@ -192,7 +194,7 @@ export function createPolyLine(
   last: number,
   size: GraphSize
 ): string {
-  const template = `<polyline points="${creatPoints(
+  const template = /*html*/ `<polyline points="${creatPoints(
     dataArray,
     first,
     last,

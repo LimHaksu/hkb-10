@@ -8,7 +8,6 @@ import {
   createStandardsLine,
   createPolyLine,
   GraphSize,
-  DateData,
 } from "./LineGraphFunction";
 import data from "./dummyData";
 
@@ -31,7 +30,7 @@ export default class LineGraph extends Component {
     const first = array[0];
     const last = array[array.length - 1];
 
-    const content = `
+    const content = /*html*/ `
 <svg class="graph" width="${this._size.width}" height="${this._size.height}">
 <g class="grid y-grid">
   <line x1="80" x2="720" y1="${
