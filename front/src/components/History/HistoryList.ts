@@ -74,6 +74,20 @@ class HistoryList extends Component {
         const { year, month, day, income, amount } = historyListItem;
         currentDay = day;
 
+        if (this.isNextDay(day)) {
+          const historyDay = new HistoryDay({
+            month,
+            day: this.prevDay,
+            weekDay: this.getWeekDay(year, month, this.prevDay),
+            totalIncome: this.totalIncome,
+            totalOutcome: this.totalOutcome,
+            classes: ["history-day"],
+          });
+          this.listItems.push(historyDay);
+          this.resetTotal();
+          this.prevDay = day;
+        }
+
         const historyItem = new HistoryItem({
           ...historyListItem,
           classes: ["history-item"],
@@ -84,19 +98,6 @@ class HistoryList extends Component {
           this.totalIncome += amount;
         } else {
           this.totalOutcome += amount;
-        }
-
-        if (this.isNextDay(day)) {
-          const historyDay = new HistoryDay({
-            month,
-            day,
-            weekDay: this.getWeekDay(year, month, day),
-            totalIncome: this.totalIncome,
-            totalOutcome: this.totalOutcome,
-            classes: ["history-day"],
-          });
-          this.listItems.push(historyDay);
-          this.resetTotal();
         }
       });
 
@@ -127,7 +128,6 @@ class HistoryList extends Component {
 
   isNextDay(day: number) {
     if (day > this.prevDay) {
-      this.prevDay = day;
       return true;
     }
     return false;
