@@ -64,8 +64,15 @@ class HistoryList extends Component {
   setHistoryListOption(option?: HistoryListOption) {
     if (!option) return;
     if (option.historyItemOptions) {
+      // 첫날 설정
+      this.prevDay = option.historyItemOptions[0].day;
+
+      const currentYear = option.historyItemOptions[0].year;
+      const currentMonth = option.historyItemOptions[0].month;
+      let currentDay = 0;
       option.historyItemOptions.forEach((historyListItem) => {
         const { year, month, day, income, amount } = historyListItem;
+        currentDay = day;
 
         const historyItem = new HistoryItem({
           ...historyListItem,
@@ -92,6 +99,19 @@ class HistoryList extends Component {
           this.resetTotal();
         }
       });
+
+      // 마지막 날짜에 대한 표기
+      const historyDay = new HistoryDay({
+        month: currentMonth,
+        day: currentDay,
+        weekDay: this.getWeekDay(currentYear, currentMonth, currentDay),
+        totalIncome: this.totalIncome,
+        totalOutcome: this.totalOutcome,
+        classes: ["history-day"],
+      });
+      this.listItems.push(historyDay);
+      this.resetTotal();
+
       this.listItems = this.listItems.reverse();
       this.listItems.forEach((item) => {
         this.appendChild(item);
