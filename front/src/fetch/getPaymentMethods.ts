@@ -1,9 +1,5 @@
 const baseUrl = "http://localhost:3000/api";
 
-interface PaymentMethodDataType {
-  name: string;
-}
-
 const getPaymentMethods = async () => {
   try {
     const response = await fetch(`${baseUrl}/payment-method`, {
@@ -19,4 +15,4 @@ const getPaymentMethods = async () => {
   }
 };
 
-export { getPaymentMethods, PaymentMethodDataType };
+export default getPaymentMethods;
