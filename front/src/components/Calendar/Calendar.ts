@@ -3,7 +3,7 @@ import "./Calendar.scss";
 
 import RootModel from "../../models/RootModel";
 
-type dayMoney = {
+type DayMoney = {
   day: number;
   income: number;
   outcome: number;
@@ -66,18 +66,16 @@ export default class Calendar extends Component {
 
     this.$tbody.innerHTML = ``;
 
-    // newFetch();
-
     this.setCalendar();
   }
 
-  setData(data: dayMoney[]): void {
+  setData(data: DayMoney[]): void {
     this.$tbody.innerHTML = ``;
 
     this.setCalendar(data);
   }
 
-  setCalendar(data?: dayMoney[]): void {
+  setCalendar(data?: DayMoney[]): void {
     if (!this.$tbody) {
       return;
     }
@@ -96,7 +94,7 @@ export default class Calendar extends Component {
     let beforeCount = lastMonthDays - (startDay - 1);
     let dayCount = 1;
     let newCount = 1;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       const tr = document.createElement("tr");
 
       for (let day = 0; day < 7; day++) {
@@ -174,5 +172,10 @@ export default class Calendar extends Component {
         this.changeDate(data.year, data.month);
       }
     );
+  }
+
+  reRender(): void {
+    this.$tbody.innerHTML = ``;
+    this.setCalendar();
   }
 }
