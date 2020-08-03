@@ -1,7 +1,7 @@
 const data = {
   year: 2020,
   month: 7,
-  data: [
+  dates: [
     { date: 1, amount: 19 },
     { date: 2, amount: 31 },
     { date: 3, amount: 21 },
