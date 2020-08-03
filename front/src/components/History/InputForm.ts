@@ -26,6 +26,10 @@ class InputForm extends Component {
   selectCategory: Select | null = null;
   selectPaymentMethod: Select | null = null;
   inputAmount: Input | null = null;
+  inputDetail: Input | null = null;
+  buttonSubmit: Button | null = null;
+
+  validationMap: Map<Component, boolean> = new Map();
 
   constructor() {
     super("div", { classes: ["input-form"] });
@@ -41,6 +45,68 @@ class InputForm extends Component {
 
     this.subscribeModels();
     this.initDatas();
+
+    this.initValidationMap();
+    this.checkAllInputsValidation();
+  }
+
+  initValidationMap() {
+    if (this.inputDate) {
+      this.validationMap.set(this.inputDate, true);
+    }
+    if (this.selectCategory) {
+      this.validationMap.set(this.selectCategory, false);
+    }
+    if (this.selectPaymentMethod) {
+      this.validationMap.set(this.selectPaymentMethod, false);
+    }
+    if (this.inputAmount) {
+      this.validationMap.set(this.inputAmount, false);
+    }
+    if (this.inputDetail) {
+      this.validationMap.set(this.inputDetail, false);
+    }
+  }
+
+  areAllInputsValid(): boolean {
+    let valid = true;
+    this.validationMap.forEach((value) => {
+      if (!value) {
+        valid = false;
+      }
+    });
+    return valid;
+  }
+
+  checkAllInputsValidation() {
+    if (this.areAllInputsValid()) {
+      (<HTMLButtonElement>this.buttonSubmit?.view).disabled = false;
+      (<HTMLButtonElement>this.buttonSubmit?.view).classList.remove(
+        "button-disabled"
+      );
+    } else {
+      (<HTMLButtonElement>this.buttonSubmit?.view).disabled = true;
+      (<HTMLButtonElement>this.buttonSubmit?.view).classList.add(
+        "button-disabled"
+      );
+    }
+  }
+
+  resetInputs() {
+    // 날짜 초기화
+    this.dateModel.setDate(new Date(Date.now()));
+
+    // 카테고리 초가화
+    (<HTMLSelectElement>this.selectCategory?.view).selectedIndex = 0;
+
+    // 결제수단 초기화
+    (<HTMLSelectElement>this.selectPaymentMethod?.view).selectedIndex = 0;
+
+    // 금액 초기화
+    (<HTMLInputElement>this.inputAmount?.view).value = "원";
+
+    // 내용 초기화
+    (<HTMLInputElement>this.inputDetail?.view).value = "";
   }
 
   setButtonIncomePrimary() {
@@ -75,7 +141,6 @@ class InputForm extends Component {
     );
 
     this.dateModel.subscribe("subDate", (date: Date) => {
-      console.log("구독", date);
       (<HTMLInputElement>this.inputDate?.view).value = date
         .toISOString()
         .split("T")[0];
@@ -190,8 +255,7 @@ class InputForm extends Component {
         {
           type: "click",
           listener: (event) => {
-            event.preventDefault();
-            console.log("삭제 버튼 클릭");
+            this.resetInputs();
           },
         },
       ],
@@ -246,6 +310,14 @@ class InputForm extends Component {
             const textContent = target[idx].textContent || "";
             const value = target[idx].getAttribute("value") || "";
             this.categoryModel.setSelectedCategory({ textContent, value });
+
+            // 인풋 체크
+            // 선택한 index가 0보다 큼 === '선택하세요'가 아님
+            const flag =
+              (<HTMLSelectElement>this.selectCategory?.view).selectedIndex > 0;
+
+            this.validationMap.set(this.selectCategory!, flag);
+            this.checkAllInputsValidation();
           },
         },
       ],
@@ -279,6 +351,15 @@ class InputForm extends Component {
               textContent,
               value,
             });
+
+            // 인풋 체크
+            // 선택한 index가 0보다 큼 === '선택하세요'가 아님
+            const flag =
+              (<HTMLSelectElement>this.selectPaymentMethod?.view)
+                .selectedIndex > 0;
+
+            this.validationMap.set(this.selectPaymentMethod!, flag);
+            this.checkAllInputsValidation();
           },
         },
       ],
@@ -308,6 +389,12 @@ class InputForm extends Component {
             }
 
             this.amountModel.setAmount(amount);
+
+            // 인풋 체크
+            const flag = amount > 0;
+            this.validationMap.set(this.inputAmount!, flag);
+
+            this.checkAllInputsValidation();
           },
         },
         {
@@ -323,7 +410,7 @@ class InputForm extends Component {
       classes: ["label-detail"],
       textContent: "내용",
     });
-    const inputDetail = new Input({
+    this.inputDetail = new Input({
       id: "input-detail",
       classes: ["input-detail", "input-select-common"],
       eventListeners: [
@@ -332,11 +419,17 @@ class InputForm extends Component {
           listener: (event) => {
             const value = (<HTMLInputElement>event.currentTarget).value;
             this.detailModel.setDetail(value);
+
+            // 인풋 체크
+            const flag = value.length > 0;
+
+            this.validationMap.set(this.inputDetail!, flag);
+            this.checkAllInputsValidation();
           },
         },
       ],
     });
-    const buttonSubmit = new Button({
+    this.buttonSubmit = new Button({
       id: "button-form-submit",
       classes: ["button", "button-primary", "button-form-submit"],
       textContent: "확인",
@@ -380,10 +473,10 @@ class InputForm extends Component {
         ]),
         new Component("span", { classes: ["row-flex"] }).appendChildren([
           labelDetail,
-          inputDetail,
+          this.inputDetail,
         ]),
       ]),
-      buttonSubmit,
+      this.buttonSubmit,
     ]);
   }
 }

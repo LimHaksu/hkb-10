@@ -33,6 +33,11 @@
     cursor: pointer;
   }
 
+  .button-disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
   .history-row {
     display: flex;
     justify-content: space-between;
