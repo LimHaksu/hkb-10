@@ -75,7 +75,10 @@ class InputForm extends Component {
     );
 
     this.dateModel.subscribe("subDate", (date: Date) => {
-      this.inputDate?.setValue(date.toISOString().split("T")[0]);
+      console.log("구독", date);
+      (<HTMLInputElement>this.inputDate?.view).value = date
+        .toISOString()
+        .split("T")[0];
     });
 
     this.categoryModel.subscribe(
