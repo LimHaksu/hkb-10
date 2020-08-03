@@ -120,10 +120,15 @@ class InputForm extends Component {
       } else {
         inputAmountView.value = "원";
       }
-      // 커서를 '원' 이전에 놓기
-      inputAmountView.selectionStart = inputAmountView.value.length - 1;
-      inputAmountView.selectionEnd = inputAmountView.value.length - 1;
+      this.setAmountInputCursorBeforeWon();
     });
+  }
+
+  // 커서를 '원' 이전에 놓기
+  setAmountInputCursorBeforeWon() {
+    const inputAmountView = <HTMLInputElement>this.inputAmount?.view;
+    inputAmountView.selectionStart = inputAmountView.value.length - 1;
+    inputAmountView.selectionEnd = inputAmountView.value.length - 1;
   }
 
   initDatas() {
@@ -300,6 +305,12 @@ class InputForm extends Component {
             }
 
             this.amountModel.setAmount(amount);
+          },
+        },
+        {
+          type: "click",
+          listener: (event) => {
+            this.setAmountInputCursorBeforeWon();
           },
         },
       ],
