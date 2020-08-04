@@ -3,6 +3,7 @@
 const path = require("path");
 const WatchExternalFilesPlugin = require("webpack-watch-files-plugin").default;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
@@ -45,6 +46,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new Dotenv({
+      path: "./env/.production.env",
+    }),
     new WatchExternalFilesPlugin({
       files: [
         "./src/**/*.js",
