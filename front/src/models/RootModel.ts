@@ -11,6 +11,15 @@ class RootModel extends Observable {
     this.month = now.getMonth() + 1;
   }
 
+  setDate(date: { year: number; month: number }) {
+    this.year = date.year;
+    this.month = date.month;
+    this.notify({
+      year: this.year,
+      month: this.month,
+    });
+  }
+
   getYear(): number {
     return this.year;
   }

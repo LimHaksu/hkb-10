@@ -6,16 +6,16 @@ import {
   ClassificationModel,
   DateModel,
   DetailModel,
-  HistoryListModel,
   PaymentMethodModel,
   TypeClassificaion,
   SelectOption,
 } from "../../models/HistoryModel";
+import RootModel from "../../models/RootModel";
 import fetch from "../../fetch/";
 import "./InputForm.scss";
 
 class InputForm extends Component {
-  historyListModel: typeof HistoryListModel;
+  rootModel: typeof RootModel;
 
   classificationModel: typeof ClassificationModel;
   dateModel: typeof DateModel;
@@ -40,7 +40,7 @@ class InputForm extends Component {
 
     this.render();
 
-    this.historyListModel = HistoryListModel;
+    this.rootModel = RootModel;
     this.classificationModel = ClassificationModel;
     this.dateModel = DateModel;
     this.categoryModel = CategoryModel;
@@ -168,7 +168,7 @@ class InputForm extends Component {
     };
 
     fetch.postHistory(history).then((response) => {
-      this.historyListModel.fetchGetHistories(year, month);
+      this.rootModel.setDate({ year, month });
     });
 
     this.resetInputs();
@@ -211,6 +211,10 @@ class InputForm extends Component {
             ...categoryOptions,
           ],
         });
+
+        // 카테고리 유효성 검사 다시함
+        this.validationMap.set(this.selectCategory!, false);
+        this.checkAllInputsValidation();
       }
     );
 
