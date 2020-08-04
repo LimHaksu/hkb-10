@@ -24,7 +24,11 @@ class HistoryItem extends Component {
     this.data = { income, amount };
 
     this.setInnerHtml(
-      `<span class="history-item-category">
+      `<span class="history-item-category ${
+        option.income
+          ? "history-item-category-income"
+          : "history-item-category-outcome"
+      }">
     ${option.category}
 </span>
 <span class="history-item-detail">
