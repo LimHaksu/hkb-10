@@ -1,8 +1,8 @@
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const getHistories = async (year: number, month: number) => {
   try {
-    const response = await fetch(`${baseUrl}/histories/${year}/${month}`, {
+    const response = await fetch(`${baseUrl}/api/histories/${year}/${month}`, {
       mode: "cors",
       method: "GET",
     });

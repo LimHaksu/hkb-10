@@ -2,12 +2,9 @@ import Component from "../Component";
 import "./Calendar.scss";
 
 import RootModel from "../../models/RootModel";
+import CalendarModel from "../../models/CalendarModel";
 
-type dayMoney = {
-  day: number;
-  income: number;
-  outcome: number;
-};
+import { DateInfo, DateData } from "../../fetch/getDailyHistories";
 
 const calendarHTML = `<thead>
     <tr>
@@ -56,7 +53,6 @@ export default class Calendar extends Component {
     this.$tbody =
       this.view.querySelector("tbody") || document.createElement("tbody");
 
-    this.setCalendar();
     this.subscriptions();
   }
 
@@ -66,23 +62,16 @@ export default class Calendar extends Component {
 
     this.$tbody.innerHTML = ``;
 
-    // newFetch();
-
     this.setCalendar();
   }
 
-  setData(data: dayMoney[]): void {
-    this.$tbody.innerHTML = ``;
-
-    this.setCalendar(data);
-  }
-
-  setCalendar(data?: dayMoney[]): void {
+  setCalendar(data?: DateInfo[]): void {
     if (!this.$tbody) {
       return;
     }
 
     const tbody = this.$tbody;
+    tbody.innerHTML = ``;
     const { year, month } = this;
 
     const startDay = new Date(`${year}-${month}`).getDay();
@@ -96,7 +85,11 @@ export default class Calendar extends Component {
     let beforeCount = lastMonthDays - (startDay - 1);
     let dayCount = 1;
     let newCount = 1;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
+      if (dayCount > currentMonthDays) {
+        break;
+      }
+
       const tr = document.createElement("tr");
 
       for (let day = 0; day < 7; day++) {
@@ -145,8 +138,6 @@ export default class Calendar extends Component {
       }
 
       tbody.appendChild(tr);
-
-      if (dayCount == currentMonthDays) break;
     }
   }
 
@@ -168,11 +159,14 @@ export default class Calendar extends Component {
   }
 
   private subscriptions() {
-    RootModel.subscribe(
-      "changeCalendarContent",
-      (data: { year: number; month: number }) => {
-        this.changeDate(data.year, data.month);
-      }
-    );
+    CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
+      this.changeDate(data.year, data.month);
+      this.setCalendar(data.data);
+    });
+  }
+
+  reRender(): void {
+    this.$tbody.innerHTML = ``;
+    this.setCalendar();
   }
 }

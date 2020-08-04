@@ -35,6 +35,7 @@ class Route {
       this.$wrapper.removeChild(this.$wrapper.firstChild);
     }
 
+    this.$component.reRender();
     this.$wrapper.appendChild(this.$component.view);
   }
 
