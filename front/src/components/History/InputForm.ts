@@ -15,7 +15,6 @@ import {
 import RootModel from "../../models/RootModel";
 import fetch from "../../fetch/";
 import "./InputForm.scss";
-import SelectedPaymentMethod from "../../models/HistoryModel/InputForm/SelectedPaymentMethod";
 
 class InputForm extends Component {
   rootModel = RootModel;
