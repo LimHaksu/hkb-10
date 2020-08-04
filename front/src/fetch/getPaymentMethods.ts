@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 interface PaymentMethodDataType {
   name: string;
@@ -6,7 +6,7 @@ interface PaymentMethodDataType {
 
 const getPaymentMethods = async () => {
   try {
-    const response = await fetch(`${baseUrl}/payment-method`, {
+    const response = await fetch(`${baseUrl}/api/payment-method`, {
       mode: "cors",
       method: "GET",
     });

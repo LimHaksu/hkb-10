@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import historyRouter from "./history";
+import historyRouter from "./histories";
 import paymentMethodRouter from "./payment-method";
 
 const router = Router();
