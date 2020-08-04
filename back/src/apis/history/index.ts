@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import postHistory from "./postHistory";
 import putHistory from "./putHistory";
+import deleteHistory from "./deleteHistory";
 
 const historyRouter = Router();
 
@@ -23,7 +24,7 @@ const historyRouter = Router();
 historyRouter.post("/", postHistory);
 
 /**
- * @api {post} /history  기존 내역을 수정함
+ * @api {put} /history  기존 내역을 수정함
  * @apiName EditHistory
  * @apiGroup History
  *
@@ -39,6 +40,18 @@ historyRouter.post("/", postHistory);
  * @apiSuccess {Object} data  수정후 내역
  */
 historyRouter.put("/", putHistory);
+
+/**
+ * @api {delete} /history/:id  해당 id를 가진 내역을 갱신함
+ * @apiName DeleteHistory
+ * @apiGroup History
+ *
+ * @apiParam {Number} id  삭제하고자 하는 내역의 id
+ *
+ * @apiSuccess {boolean} success  호출 성공 여부
+ * @apiSuccess {Object} data  삭제한 내역의 데이터
+ */
+historyRouter.delete("/:id", deleteHistory);
 
 // Export the base-router
 export default historyRouter;

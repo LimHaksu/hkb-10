@@ -27,6 +27,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?)`;
 const UPDATE_HISTORY = `UPDATE histories SET pk_user=?, date=?, pk_category=?, payment=?, amount=?, content=?, is_income=?
 WHERE id=?`;
 
+const DELETE_HISTORY = "DELETE FROM histories WHERE id=?";
+
 class HistoryDAO extends DAO {
   constructor(option: mysql.PoolOptions) {
     super(option);
@@ -151,7 +153,6 @@ class HistoryDAO extends DAO {
     try {
       await connection.beginTransaction();
       // UPDATE History
-      console.log("수정", history);
       const {
         id,
         year,
@@ -178,6 +179,31 @@ class HistoryDAO extends DAO {
           is_income.toString(),
           id!.toString(),
         ]
+      );
+
+      result = true;
+      await connection.commit();
+    } catch (error) {
+      console.log("에러", error);
+      connection.rollback();
+    } finally {
+      connection.release();
+    }
+
+    return result;
+  }
+
+  async removeHistory(historyId: string) {
+    const connection = await this.getConnection();
+    let result = false;
+
+    try {
+      await connection.beginTransaction();
+      // DELETE History
+      const firstHistoryeRow = await this.executeQuery(
+        connection,
+        DELETE_HISTORY,
+        [historyId]
       );
 
       result = true;
