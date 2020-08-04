@@ -27,7 +27,6 @@ export default class ChangeMonth extends Component {
       this.view.querySelector("button.next") ||
       document.createElement("button");
 
-    console.log(this.$prevButton, this.$nextButton);
     this.$month =
       this.view.querySelector("p.month") || document.createElement("p");
 
