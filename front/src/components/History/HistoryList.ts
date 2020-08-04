@@ -192,12 +192,11 @@ class HistoryList extends Component {
       year,
       month,
       day,
-      category, // category, value 뽑아내기
-      paymentMethod, // paymentMethod, value 뽑아내기
+      category,
+      paymentMethod,
       amount,
       detail,
     } = historyListItem;
-    console.log(historyListItem);
 
     const incomeType = income ? "income" : "outcome";
     this.classificationModel.setClassifiacation(incomeType);
@@ -213,7 +212,6 @@ class HistoryList extends Component {
       textContent: category,
       value: categoryValue!,
     });
-    // Todo... 선택된 카테고리 모델 변하면 뷰쪽에 선택한거 보여주는거 세팅하기
 
     const paymentMethodValue = this.paymentMethodModel.getValueFromTextContent(
       paymentMethod
