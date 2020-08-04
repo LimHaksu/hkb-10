@@ -3,6 +3,7 @@ import getHistories from "./getHistories";
 import getPaymentMethods from "./getPaymentMethods";
 import postHistory from "./postHistory";
 import putHistory from "./putHistory";
+import deleteHistory from "./deleteHistory";
 
 interface HistoryDataType {
   id?: string;
@@ -26,4 +27,5 @@ export default {
   getPaymentMethods,
   postHistory,
   putHistory,
+  deleteHistory,
 };

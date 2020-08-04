@@ -131,6 +131,8 @@ class InputForm extends Component {
     this.validationMap.forEach((_, key) => {
       this.validationMap.set(key, false);
     });
+
+    this.editFlagModel.setEditMode(false);
     this.checkAllInputsValidation();
   }
 
@@ -225,18 +227,21 @@ class InputForm extends Component {
       }
     );
 
-    this.editFlagModel.subscribe("subEditFlag", (isEditMode: boolean) => {
-      const buttonResetView = <HTMLButtonElement>this.buttonReset?.view;
-      const buttonDeletView = <HTMLButtonElement>this.buttonDelete?.view;
+    this.editFlagModel.subscribe(
+      "subEditFlagInInputForm",
+      (isEditMode: boolean) => {
+        const buttonResetView = <HTMLButtonElement>this.buttonReset?.view;
+        const buttonDeleteView = <HTMLButtonElement>this.buttonDelete?.view;
 
-      if (isEditMode) {
-        buttonResetView.classList.add("button-hidden");
-        buttonDeletView.classList.remove("button-hidden");
-      } else {
-        buttonResetView.classList.remove("button-hidden");
-        buttonDeletView.classList.add("button-hidden");
+        if (isEditMode) {
+          buttonResetView.classList.add("button-hidden");
+          buttonDeleteView.classList.remove("button-hidden");
+        } else {
+          buttonResetView.classList.remove("button-hidden");
+          buttonDeleteView.classList.add("button-hidden");
+        }
       }
-    });
+    );
 
     this.dateModel.subscribe("subDate", (date: Date) => {
       (<HTMLInputElement>this.inputDate?.view).value = date
@@ -406,7 +411,16 @@ class InputForm extends Component {
         {
           type: "click",
           listener: (event) => {
-            new ModalConfirm(() => {});
+            new ModalConfirm(() => {
+              const selectedHistoryId = this.selectedHistoryModel.getSelectedHistoryId();
+              fetch.deleteHistory(selectedHistoryId).then((response) => {
+                const date = this.dateModel.getDate();
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                this.rootModel.setDate({ year, month });
+                this.resetInputs();
+              });
+            });
           },
         },
       ],
