@@ -4,6 +4,7 @@ import pool from "./constants/poolOptions";
 import History from "./dto/History";
 
 interface HistoryDataType {
+  id?: number;
   year: number;
   month: number;
   day: number;
@@ -22,6 +23,9 @@ ORDER BY h.date ASC`;
 
 const INSERT_HISTORY = `INSERT INTO histories (pk_user, date, pk_category, payment, amount, content, is_income)
 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+const UPDATE_HISTORY = `UPDATE histories SET pk_user=?, date=?, pk_category=?, payment=?, amount=?, content=?, is_income=?
+WHERE id=?`;
 
 class HistoryDAO extends DAO {
   constructor(option: mysql.PoolOptions) {
@@ -125,6 +129,54 @@ class HistoryDAO extends DAO {
           amount.toString(),
           detail,
           is_income.toString(),
+        ]
+      );
+
+      result = true;
+      await connection.commit();
+    } catch (error) {
+      console.log("에러", error);
+      connection.rollback();
+    } finally {
+      connection.release();
+    }
+
+    return result;
+  }
+
+  async editHistory(history: HistoryDataType) {
+    const connection = await this.getConnection();
+    let result = false;
+
+    try {
+      await connection.beginTransaction();
+      // UPDATE History
+      console.log("수정", history);
+      const {
+        id,
+        year,
+        month,
+        day,
+        category,
+        paymentMethod,
+        amount,
+        detail,
+        income,
+      } = history;
+      const date = `${year}-${month}-${day}`;
+      const is_income = income ? 1 : 0;
+      const firstHistoryeRow = await this.executeQuery(
+        connection,
+        UPDATE_HISTORY,
+        [
+          "2",
+          date,
+          category,
+          paymentMethod,
+          amount.toString(),
+          detail,
+          is_income.toString(),
+          id!.toString(),
         ]
       );
 
