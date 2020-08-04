@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3000";
+const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 type DateInfo = {
   day: number;
