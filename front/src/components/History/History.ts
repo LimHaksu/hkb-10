@@ -12,8 +12,8 @@ import {
 import "./History.scss";
 
 class History extends Component {
-  checkbox: typeof CheckboxModel;
-  historyListData: typeof HistoryListModel;
+  checkboxModel: typeof CheckboxModel;
+  historyListModel: typeof HistoryListModel;
 
   checkboxIncome: Input | null = null;
   checkboxOutcome: Input | null = null;
@@ -28,8 +28,8 @@ class History extends Component {
 
     this.render();
 
-    this.checkbox = CheckboxModel;
-    this.historyListData = HistoryListModel;
+    this.checkboxModel = CheckboxModel;
+    this.historyListModel = HistoryListModel;
 
     this.subscribeModels();
     this.initDatas();
@@ -54,7 +54,7 @@ class History extends Component {
   }
 
   subscribeModels() {
-    this.checkbox.subscribe(
+    this.checkboxModel.subscribe(
       "subCheckboxInHistory",
       (isChecked: TypeCheckbox) => {
         (<HTMLInputElement>this.checkboxIncome?.view).checked =
@@ -64,7 +64,7 @@ class History extends Component {
       }
     );
 
-    this.historyListData.subscribe(
+    this.historyListModel.subscribe(
       "subHistoryListInHistory",
       (historyDatas: HistoryDataType[]) => {
         this.historyList?.destructor();
@@ -78,8 +78,8 @@ class History extends Component {
   }
 
   initDatas() {
-    this.checkbox.initData();
-    this.historyListData.initData();
+    this.checkboxModel.initData();
+    this.historyListModel.initData();
   }
 
   render() {
@@ -98,7 +98,7 @@ class History extends Component {
           type: "click",
           listener: (event) => {
             const isChecked = (<HTMLInputElement>event.currentTarget).checked;
-            this.checkbox.setIsIncomeChecked(isChecked);
+            this.checkboxModel.setIsIncomeChecked(isChecked);
           },
         },
       ],
@@ -126,7 +126,7 @@ class History extends Component {
           type: "click",
           listener: (event) => {
             const isChecked = (<HTMLInputElement>event.currentTarget).checked;
-            this.checkbox.setIsOutcomeChecked(isChecked);
+            this.checkboxModel.setIsOutcomeChecked(isChecked);
           },
         },
       ],
