@@ -193,6 +193,7 @@ class InputForm extends Component {
         .split("T")[0];
 
       this.validationMap.set(this.inputDate!, true);
+      this.checkAllInputsValidation();
     });
 
     this.categoryModel.subscribe(
@@ -222,6 +223,10 @@ class InputForm extends Component {
         (<HTMLSelectElement>this.selectCategory?.view).selectedIndex = parseInt(
           selectedCategory.value
         );
+
+        // 유효성 검사
+        this.validationMap.set(this.selectCategory!, true);
+        this.checkAllInputsValidation();
       }
     );
 
@@ -247,6 +252,9 @@ class InputForm extends Component {
         (<HTMLSelectElement>(
           this.selectPaymentMethod?.view
         )).selectedIndex = parseInt(selectedPaymentMethod.value);
+
+        this.validationMap.set(this.selectPaymentMethod!, true);
+        this.checkAllInputsValidation();
       }
     );
 
@@ -255,12 +263,18 @@ class InputForm extends Component {
       const inputAmountView = <HTMLInputElement>this.inputAmount?.view;
       const flag = amount > 0;
       inputAmountView.value = `${flag ? amount.toLocaleString() : ""}원`;
-      this.validationMap.set(this.inputAmount!, flag);
+
       this.setAmountInputCursorBeforeWon();
+
+      this.validationMap.set(this.inputAmount!, flag);
+      this.checkAllInputsValidation();
     });
 
     this.detailModel.subscribe("subDetailInInputForm", (detail: string) => {
       (<HTMLInputElement>this.inputDetail?.view).value = detail;
+
+      this.validationMap.set(this.inputDetail!, detail.length > 0);
+      this.checkAllInputsValidation();
     });
   }
 
