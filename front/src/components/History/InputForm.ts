@@ -14,12 +14,26 @@ import {
   TypeClassificaion,
   SelectOption,
 } from "../../models/HistoryModel";
+import { SelectedHistoryModel } from "../../models/HistoryModel/HistoryList";
 import RootModel from "../../models/RootModel";
 import fetch from "../../fetch/";
 import "./InputForm.scss";
 
+interface History {
+  income: boolean;
+  year: number;
+  month: number;
+  day: number;
+  category: string;
+  paymentMethod: string;
+  amount: number;
+  detail: string;
+}
+
 class InputForm extends Component {
   rootModel = RootModel;
+  selectedHistoryModel = SelectedHistoryModel;
+
   classificationModel = ClassificationModel;
   editFlagModel = EditFlagModel;
   dateModel = DateModel;
@@ -134,7 +148,24 @@ class InputForm extends Component {
     this.buttonIncome?.view.classList.add("button-secondary");
   }
 
+  fetchPostHistory(history: History) {
+    const { year, month } = history;
+    fetch.postHistory(history).then((response) => {
+      this.rootModel.setDate({ year, month });
+    });
+  }
+
+  fetchPutHistory(history: History) {
+    const { year, month } = history;
+    const id = this.selectedHistoryModel.getSelectedHistoryId();
+    fetch.putHistory(history).then((response) => {
+      this.rootModel.setDate({ year, month });
+    });
+  }
+
   handleButtonSubmitClicked() {
+    const id = this.selectedHistoryModel.getSelectedHistoryId();
+
     // 수입, 지출 여부 가져오기
     const income = this.classificationModel.getClassification() === "income";
 
@@ -157,6 +188,7 @@ class InputForm extends Component {
     const detail = this.detailModel.getDetail();
 
     const history = {
+      id,
       income,
       year,
       month,
@@ -167,10 +199,12 @@ class InputForm extends Component {
       detail,
     };
 
-    fetch.postHistory(history).then((response) => {
-      this.rootModel.setDate({ year, month });
-    });
-
+    const isEditMode = this.editFlagModel.getEditMode();
+    if (isEditMode) {
+      this.fetchPutHistory(history);
+    } else {
+      this.fetchPostHistory(history);
+    }
     this.resetInputs();
   }
 

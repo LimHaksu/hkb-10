@@ -15,6 +15,7 @@ import {
   TypeCheckbox,
   HistoryDataType,
 } from "../../models/HistoryModel";
+import { SelectedHistoryModel } from "../../models/HistoryModel/HistoryList";
 import "./HistoryList.scss";
 import { Button } from "../common";
 
@@ -23,6 +24,7 @@ interface HistoryListOption extends ComponentOption {
 }
 
 class HistoryList extends Component {
+  selectedHistoryModel = SelectedHistoryModel;
   classificationModel = ClassificationModel;
   editFlagModel = EditFlagModel;
   dateModel = DateModel;
@@ -190,6 +192,7 @@ class HistoryList extends Component {
 
   handleEditButtonClicked(historyListItem: HistoryDataType) {
     const {
+      id,
       income,
       year,
       month,
@@ -226,6 +229,7 @@ class HistoryList extends Component {
     this.detailModel.setDetail(detail);
 
     this.editFlagModel.setEditMode(true);
+    this.selectedHistoryModel.setSelectedHistoryId(parseInt(id!));
   }
 
   resetTotal() {

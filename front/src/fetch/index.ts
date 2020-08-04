@@ -2,8 +2,10 @@ import getCategories from "./getCategories";
 import getHistories from "./getHistories";
 import getPaymentMethods from "./getPaymentMethods";
 import postHistory from "./postHistory";
+import putHistory from "./putHistory";
 
 interface HistoryDataType {
+  id?: string;
   year: number;
   month: number;
   day: number;
@@ -18,4 +20,10 @@ interface PaymentMethodDataType {
 }
 
 export { HistoryDataType, PaymentMethodDataType };
-export default { getCategories, getHistories, getPaymentMethods, postHistory };
+export default {
+  getCategories,
+  getHistories,
+  getPaymentMethods,
+  postHistory,
+  putHistory,
+};
