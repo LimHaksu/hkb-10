@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import PaymentMethodDAO from "../../daos/PaymentMethodDAO";
+import CategoryDAO from "../../daos/CategoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  const paymentMethods = await PaymentMethodDAO.getPaymentMethods();
-  console.log(paymentMethods);
+  const categories = await CategoryDAO.getCategories();
+
   const ret = {
     success: true,
-    data: paymentMethods,
+    data: categories,
   };
 
   res.status(200).json(ret);

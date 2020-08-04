@@ -1,41 +1,60 @@
 import Observable from "../../Observable";
 import ClassificationModel, { TypeClassificaion } from "./ClassificationModel";
 import { SelectOption } from "../";
+import fetch from "../../../fetch";
+
+interface Category {
+  value: number;
+  content: string;
+  income: number;
+}
 
 class CategoryModel extends Observable {
   private classificationModel: typeof ClassificationModel;
 
   private categories: SelectOption[] = [];
-  private classifiedCategories = {
-    income: [
-      { textContent: "월급", value: "salary" },
-      { textContent: "용돈", value: "pocket-money" },
-      { textContent: "기타수입", value: "other-income" },
-    ],
-    outcome: [
-      { textContent: "식비", value: "food" },
-      { textContent: "생활", value: "life" },
-      { textContent: "쇼핑/뷰티", value: "shopping-beauty" },
-      { textContent: "교통", value: "traffic" },
-      { textContent: "의료/건강", value: "medical-health" },
-      { textContent: "문화/여가", value: "culture-leisure" },
-      { textContent: "미분류", value: "etc" },
-    ],
+  private classifiedCategories: {
+    income: { textContent: string; value: string }[];
+    outcome: { textContent: string; value: string }[];
+  } = {
+    income: [],
+    outcome: [],
   };
-  private selectedCategory: SelectOption = { textContent: "", value: "" };
+  private categoryTextContentValueMap: {
+    income: Map<string, string>;
+    outcome: Map<string, string>;
+  } = {
+    income: new Map(),
+    outcome: new Map(),
+  };
 
   constructor() {
     super();
 
     this.classificationModel = ClassificationModel;
+
+    this.init();
   }
 
-  getSelectedCategory() {
-    return this.selectedCategory;
+  init() {
+    fetch.getCategories().then((categories) => {
+      categories.forEach((category: Category) => {
+        const { value, content, income } = category;
+        this.classifiedCategories[income === 1 ? "income" : "outcome"].push({
+          textContent: content,
+          value: value.toString(),
+        });
+        this.categoryTextContentValueMap[
+          income === 1 ? "income" : "outcome"
+        ].set(content, value.toString());
+      });
+
+      this.notify(this.categories);
+    });
   }
 
-  setSelectedCategory(selectedCategory: SelectOption) {
-    this.selectedCategory = selectedCategory;
+  getValueFromTextContent(type: "income" | "outcome", textContent: string) {
+    return this.categoryTextContentValueMap[type].get(textContent);
   }
 
   initData() {

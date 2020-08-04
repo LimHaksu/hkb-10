@@ -1,8 +1,8 @@
-const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
+const baseUrl = "http://localhost:3000/api";
 
-const getPaymentMethods = async () => {
+const getCategories = async () => {
   try {
-    const response = await fetch(`${baseUrl}/api/payment-method`, {
+    const response = await fetch(`${baseUrl}/categories`, {
       mode: "cors",
       method: "GET",
     });
@@ -15,4 +15,4 @@ const getPaymentMethods = async () => {
   }
 };
 
-export default getPaymentMethods;
+export default getCategories;

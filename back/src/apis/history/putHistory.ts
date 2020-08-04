@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import PaymentMethodDAO from "../../daos/PaymentMethodDAO";
+import HistoryDAO from "../../daos/HistoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  const paymentMethods = await PaymentMethodDAO.getPaymentMethods();
-  console.log(paymentMethods);
+  const result = await HistoryDAO.editHistory(req.body);
+
+  //todo.. result === true일때 데이터 리턴 어떻게 할 것인가
+
   const ret = {
     success: true,
-    data: paymentMethods,
+    // data: dummyData,
   };
 
   res.status(200).json(ret);

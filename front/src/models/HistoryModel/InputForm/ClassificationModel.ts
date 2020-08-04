@@ -9,6 +9,10 @@ class ClassificationModel extends Observable {
     super();
   }
 
+  getClassification() {
+    return this.classification;
+  }
+
   setClassifiacation(classification: TypeClassificaion) {
     this.classification = classification;
     this.notify(this.classification);

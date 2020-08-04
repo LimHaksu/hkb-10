@@ -24,7 +24,11 @@ class HistoryItem extends Component {
     this.data = { income, amount };
 
     this.setInnerHtml(
-      `<span class="history-item-category">
+      `<span class="history-item-category ${
+        option.income
+          ? "history-item-category-income"
+          : "history-item-category-outcome"
+      }">
     ${option.category}
 </span>
 <span class="history-item-detail">
@@ -38,7 +42,7 @@ class HistoryItem extends Component {
           ? "history-item-amount-income"
           : "history-item-amount-outcome"
       }">
-    ${(option.income ? "+" : "-") + option.amount}
+    ${(option.income ? "+" : "-") + option.amount.toLocaleString()}원
 </span>`
     );
   }

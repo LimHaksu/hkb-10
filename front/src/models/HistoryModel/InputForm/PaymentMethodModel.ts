@@ -4,29 +4,29 @@ import { SelectOption } from "..";
 
 class PaymentMethodModel extends Observable {
   private paymentMethods: SelectOption[] = [];
-  private selectedPaymentMethod: SelectOption = { textContent: "", value: "" };
+  private paymentMethodTextContentValueMap: Map<string, string> = new Map();
 
   constructor() {
     super();
   }
 
-  getSelectedPaymentMethod() {
-    return this.selectedPaymentMethod;
-  }
-
-  setSelectedPaymentMethod(selectedPaymentMethod: SelectOption) {
-    this.selectedPaymentMethod = selectedPaymentMethod;
-    console.log(this.selectedPaymentMethod);
+  getValueFromTextContent(textContent: string) {
+    return this.paymentMethodTextContentValueMap.get(textContent);
   }
 
   initData() {
     fetch
       .getPaymentMethods()
       .then((paymentMethods: PaymentMethodDataType[]) => {
-        this.paymentMethods = paymentMethods.map((element) => ({
-          textContent: element.name,
-          value: element.name,
-        }));
+        this.paymentMethods = paymentMethods.map((element, idx) => {
+          const textContent = element.name;
+          const value = (idx + 1).toString();
+          this.paymentMethodTextContentValueMap.set(textContent, value);
+          return {
+            textContent,
+            value,
+          };
+        });
         this.notify(this.paymentMethods);
       });
   }

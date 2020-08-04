@@ -7,6 +7,10 @@ class DateModel extends Observable {
     super();
   }
 
+  getDate() {
+    return this.date;
+  }
+
   setDate(date: Date) {
     this.date = date;
     this.notify(this.date);
