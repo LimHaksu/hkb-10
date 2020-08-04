@@ -2,12 +2,9 @@ import Component from "../Component";
 import "./Calendar.scss";
 
 import RootModel from "../../models/RootModel";
+import CalendarModel from "../../models/CalendarModel";
 
-type DayMoney = {
-  day: number;
-  income: number;
-  outcome: number;
-};
+import { DateInfo, DateData } from "../../fetch/getDailyHistories";
 
 const calendarHTML = `<thead>
     <tr>
@@ -56,7 +53,6 @@ export default class Calendar extends Component {
     this.$tbody =
       this.view.querySelector("tbody") || document.createElement("tbody");
 
-    this.setCalendar();
     this.subscriptions();
   }
 
@@ -69,18 +65,13 @@ export default class Calendar extends Component {
     this.setCalendar();
   }
 
-  setData(data: DayMoney[]): void {
-    this.$tbody.innerHTML = ``;
-
-    this.setCalendar(data);
-  }
-
-  setCalendar(data?: DayMoney[]): void {
+  setCalendar(data?: DateInfo[]): void {
     if (!this.$tbody) {
       return;
     }
 
     const tbody = this.$tbody;
+    tbody.innerHTML = ``;
     const { year, month } = this;
 
     const startDay = new Date(`${year}-${month}`).getDay();
@@ -95,6 +86,10 @@ export default class Calendar extends Component {
     let dayCount = 1;
     let newCount = 1;
     for (let i = 0; i < 6; i++) {
+      if (dayCount > currentMonthDays) {
+        break;
+      }
+
       const tr = document.createElement("tr");
 
       for (let day = 0; day < 7; day++) {
@@ -143,8 +138,6 @@ export default class Calendar extends Component {
       }
 
       tbody.appendChild(tr);
-
-      if (dayCount == currentMonthDays) break;
     }
   }
 
@@ -166,12 +159,10 @@ export default class Calendar extends Component {
   }
 
   private subscriptions() {
-    RootModel.subscribe(
-      "changeCalendarContent",
-      (data: { year: number; month: number }) => {
-        this.changeDate(data.year, data.month);
-      }
-    );
+    CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
+      this.changeDate(data.year, data.month);
+      this.setCalendar(data.data);
+    });
   }
 
   reRender(): void {

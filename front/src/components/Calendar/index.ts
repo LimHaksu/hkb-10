@@ -3,12 +3,10 @@ import Calendar from "./Calendar";
 import Checkboxes from "./Checkboxes";
 
 import CalendarCheckboxModel from "../../models/CalendarCheckboxModel";
-import CalendarModel from "../../models/CalendarModel";
 import RootModel from "../../models/RootModel";
 
 import getDailyHistories, {
   ApiResponse,
-  DateData,
   DateInfo,
 } from "../../fetch/getDailyHistories";
 
@@ -41,17 +39,13 @@ export default class CalendarPage extends Component {
       }
     );
 
-    CalendarModel.subscribe("changeDate", (data: DateData) => {
-      this.fetchData(data.year, data.month);
-    });
-
     this.fetchData(RootModel.getYear(), RootModel.getMonth());
   }
 
   fetchData(year: number, month: number): void {
     getDailyHistories(year, month).then((response: ApiResponse) => {
       if (response.success) {
-        this.$calendar.setData(response.data.data);
+        this.$calendar.setCalendar(response.data.data);
 
         let income = 0;
         let outcome = 0;
@@ -64,6 +58,8 @@ export default class CalendarPage extends Component {
           }
         });
         this.$checkboxes.changeCost(income, outcome);
+      } else {
+        this.$calendar.setCalendar();
       }
     });
   }
