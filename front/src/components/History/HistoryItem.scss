@@ -39,3 +39,8 @@
     color: $mint-color;
   }
 }
+
+.history-item:hover {
+  background-color: $mint-hover-color;
+  filter: opacity(0.5);
+}
