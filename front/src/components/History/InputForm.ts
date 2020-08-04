@@ -8,22 +8,25 @@ import {
   DateModel,
   DetailModel,
   PaymentMethodModel,
+  SelectedPaymentMethodModel,
   TypeClassificaion,
   SelectOption,
 } from "../../models/HistoryModel";
 import RootModel from "../../models/RootModel";
 import fetch from "../../fetch/";
 import "./InputForm.scss";
+import SelectedPaymentMethod from "../../models/HistoryModel/InputForm/SelectedPaymentMethod";
 
 class InputForm extends Component {
-  rootModel: typeof RootModel;
-
-  classificationModel: typeof ClassificationModel;
-  dateModel: typeof DateModel;
-  categoryModel: typeof CategoryModel;
-  paymentMethodModel: typeof PaymentMethodModel;
-  amountModel: typeof AmountModel;
-  detailModel: typeof DetailModel;
+  rootModel = RootModel;
+  classificationModel = ClassificationModel;
+  dateModel = DateModel;
+  categoryModel = CategoryModel;
+  selectedCategoryModel = SelectedCategoryModel;
+  paymentMethodModel = PaymentMethodModel;
+  selectedPaymentMethodModel = SelectedPaymentMethodModel;
+  amountModel = AmountModel;
+  detailModel = DetailModel;
 
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
@@ -40,14 +43,6 @@ class InputForm extends Component {
     super("div", { classes: ["input-form"] });
 
     this.render();
-
-    this.rootModel = RootModel;
-    this.classificationModel = ClassificationModel;
-    this.dateModel = DateModel;
-    this.categoryModel = CategoryModel;
-    this.paymentMethodModel = PaymentMethodModel;
-    this.amountModel = AmountModel;
-    this.detailModel = DetailModel;
 
     this.subscribeModels();
     this.initDatas();
@@ -148,7 +143,7 @@ class InputForm extends Component {
     const category = this.selectedCategoryModel.getSelectedCategory().value;
 
     // 결제수단 가져오기
-    const paymentMethod = this.paymentMethodModel.getSelectedPaymentMethod()
+    const paymentMethod = this.selectedPaymentMethodModel.getSelectedPaymentMethod()
       .textContent;
 
     // 금액 가져오기
@@ -196,6 +191,8 @@ class InputForm extends Component {
       (<HTMLInputElement>this.inputDate?.view).value = date
         .toISOString()
         .split("T")[0];
+
+      this.validationMap.set(this.inputDate!, true);
     });
 
     this.categoryModel.subscribe(
@@ -219,6 +216,15 @@ class InputForm extends Component {
       }
     );
 
+    this.selectedCategoryModel.subscribe(
+      "subSelectedCategoryInInputForm",
+      (selectedCategory: SelectOption) => {
+        (<HTMLSelectElement>this.selectCategory?.view).selectedIndex = parseInt(
+          selectedCategory.value
+        );
+      }
+    );
+
     this.paymentMethodModel.subscribe(
       "subPaymentMethod",
       (paymentMethodOptions: SelectOption[]) => {
@@ -235,16 +241,26 @@ class InputForm extends Component {
         });
       }
     );
+    this.selectedPaymentMethodModel.subscribe(
+      "subSelectedPaymentMethodInInputForm",
+      (selectedPaymentMethod: SelectOption) => {
+        (<HTMLSelectElement>(
+          this.selectPaymentMethod?.view
+        )).selectedIndex = parseInt(selectedPaymentMethod.value);
+      }
+    );
 
     this.amountModel.subscribe("subAmountInInputForm", (amount: number) => {
       // 금액 입력창에 콤마, 원 붙여주기
       const inputAmountView = <HTMLInputElement>this.inputAmount?.view;
-      if (amount > 0) {
-        inputAmountView.value = `${amount.toLocaleString()}원`;
-      } else {
-        inputAmountView.value = "원";
-      }
+      const flag = amount > 0;
+      inputAmountView.value = `${flag ? amount.toLocaleString() : ""}원`;
+      this.validationMap.set(this.inputAmount!, flag);
       this.setAmountInputCursorBeforeWon();
+    });
+
+    this.detailModel.subscribe("subDetailInInputForm", (detail: string) => {
+      (<HTMLInputElement>this.inputDetail?.view).value = detail;
     });
   }
 
@@ -406,7 +422,7 @@ class InputForm extends Component {
             const idx = target.selectedIndex;
             const textContent = target[idx].textContent || "";
             const value = target[idx].getAttribute("value") || "";
-            this.paymentMethodModel.setSelectedPaymentMethod({
+            this.selectedPaymentMethodModel.setSelectedPaymentMethod({
               textContent,
               value,
             });

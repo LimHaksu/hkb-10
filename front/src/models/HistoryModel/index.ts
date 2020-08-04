@@ -11,6 +11,7 @@ import HistoryListModel, {
   HistoryDataType,
 } from "./HistoryList/HistoryListModel";
 import PaymentMethodModel from "./InputForm/PaymentMethodModel";
+import SelectedPaymentMethodModel from "./InputForm/SelectedPaymentMethod";
 
 interface SelectOption {
   textContent: string;
@@ -30,4 +31,5 @@ export {
   DetailModel,
   HistoryListModel,
   PaymentMethodModel,
+  SelectedPaymentMethodModel,
 };

@@ -79,7 +79,6 @@ class HistoryDAO extends DAO {
             amount,
             is_income,
           } = history;
-
           histories.push(
             new History(date, category, payment, is_income, amount, detail)
           );

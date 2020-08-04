@@ -16,7 +16,7 @@ class PaymentMethodDAO extends DAO {
 
     try {
       await connection.beginTransaction();
-      // SELECT categories
+      // SELECT payment methods
       const row = await this.executeQuery(
         connection,
         SELECT_PAYMENT_METHOD,

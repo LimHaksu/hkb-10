@@ -2,18 +2,36 @@ import Component, { ComponentOption } from "../Component";
 import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
 import {
+  ClassificationModel,
+  DateModel,
+  CategoryModel,
+  SelectedCategoryModel,
+  PaymentMethodModel,
+  SelectedPaymentMethodModel,
+  AmountModel,
+  DetailModel,
   CheckboxModel,
   TypeCheckbox,
   HistoryDataType,
 } from "../../models/HistoryModel";
 import "./HistoryList.scss";
+import { Button } from "../common";
 
 interface HistoryListOption extends ComponentOption {
   historyItemOptions?: HistoryDataType[];
 }
 
 class HistoryList extends Component {
-  checkbox: typeof CheckboxModel;
+  classificationModel = ClassificationModel;
+  dateModel = DateModel;
+  categoryModel = CategoryModel;
+  selectedCategoryModel = SelectedCategoryModel;
+  paymentMethodModel = PaymentMethodModel;
+  selectedPaymentMethodModel = SelectedPaymentMethodModel;
+  amountModel = AmountModel;
+  detailModel = DetailModel;
+
+  checkbox = CheckboxModel;
 
   prevDay: number = 0;
   totalIncome: number = 0;
@@ -22,8 +40,6 @@ class HistoryList extends Component {
 
   constructor(option?: HistoryListOption) {
     super("div", { ...option, classes: ["history-list"] });
-
-    this.checkbox = CheckboxModel;
 
     this.setHistoryListOption(option);
 
@@ -88,10 +104,47 @@ class HistoryList extends Component {
           this.prevDay = day;
         }
 
+        const editButton = new Button({
+          id: "history-item-hover-button",
+          classes: [
+            "history-item-hover-button",
+            "history-item-hover-button-hidden",
+          ],
+          textContent: "수정",
+          eventListeners: [
+            {
+              type: "click",
+              listener: (event) => {
+                this.handleEditButtonClicked(historyListItem);
+              },
+            },
+          ],
+        });
+
         const historyItem = new HistoryItem({
           ...historyListItem,
           classes: ["history-item"],
+          eventListeners: [
+            {
+              type: "mouseover",
+              listener: (event) => {
+                editButton.view.classList.remove(
+                  "history-item-hover-button-hidden"
+                );
+              },
+            },
+            {
+              type: "mouseout",
+              listener: (event) => {
+                editButton.view.classList.add(
+                  "history-item-hover-button-hidden"
+                );
+              },
+            },
+          ],
         });
+        historyItem.appendChild(editButton);
+
         this.listItems.push(historyItem);
 
         if (income) {
@@ -131,6 +184,46 @@ class HistoryList extends Component {
       return true;
     }
     return false;
+  }
+
+  handleEditButtonClicked(historyListItem: HistoryDataType) {
+    const {
+      income,
+      year,
+      month,
+      day,
+      category, // category, value 뽑아내기
+      paymentMethod, // paymentMethod, value 뽑아내기
+      amount,
+      detail,
+    } = historyListItem;
+    console.log(historyListItem);
+
+    const incomeType = income ? "income" : "outcome";
+    this.classificationModel.setClassifiacation(incomeType);
+
+    // 한국시간이 UTC+09:00 라서 9시간을 더해줘야 달력에 오늘로 나온다.
+    this.dateModel.setDate(new Date(year, month - 1, day, 9));
+
+    const categoryValue = this.categoryModel.getValueFromTextContent(
+      incomeType,
+      category
+    );
+    this.selectedCategoryModel.setSelectedCategory({
+      textContent: category,
+      value: categoryValue!,
+    });
+    // Todo... 선택된 카테고리 모델 변하면 뷰쪽에 선택한거 보여주는거 세팅하기
+
+    const paymentMethodValue = this.paymentMethodModel.getValueFromTextContent(
+      paymentMethod
+    );
+    this.selectedPaymentMethodModel.setSelectedPaymentMethod({
+      textContent: paymentMethod,
+      value: paymentMethodValue!,
+    });
+    this.amountModel.setAmount(amount);
+    this.detailModel.setDetail(detail);
   }
 
   resetTotal() {
