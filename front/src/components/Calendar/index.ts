@@ -3,23 +3,12 @@ import Calendar from "./Calendar";
 import Checkboxes from "./Checkboxes";
 
 import CalendarCheckboxModel from "../../models/CalendarCheckboxModel";
+import RootModel from "../../models/RootModel";
 
-const url = "http://localhost:3000";
-
-type dayInfo = {
-  day: number;
-  income: number;
-  outcome: number;
-};
-
-type apiResponse = {
-  success: boolean;
-  data: {
-    year: number;
-    month: number;
-    data: dayInfo[];
-  };
-};
+import getDailyHistories, {
+  ApiResponse,
+  DateInfo,
+} from "../../fetch/getDailyHistories";
 
 export default class CalendarPage extends Component {
   $checkboxes: Checkboxes;
@@ -29,11 +18,10 @@ export default class CalendarPage extends Component {
 
   constructor() {
     super();
-    this.$checkboxes = new Checkboxes();
+    this.year = RootModel.getYear();
+    this.month = RootModel.getMonth() + 1;
 
-    const now = new Date();
-    this.year = now.getFullYear();
-    this.month = now.getMonth() + 1;
+    this.$checkboxes = new Checkboxes();
 
     this.view = document.createElement("div");
     this.view.id = "calendar";
@@ -51,31 +39,32 @@ export default class CalendarPage extends Component {
       }
     );
 
-    this.fetchData();
+    this.fetchData(RootModel.getYear(), RootModel.getMonth());
   }
 
-  fetchData(): void {
-    fetch(`${url}/api/histories/daily/1/1`, {
-      mode: "cors",
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res: apiResponse) => {
-        if (res.success) {
-          this.$calendar.setData(res.data.data);
+  fetchData(year: number, month: number): void {
+    getDailyHistories(year, month).then((response: ApiResponse) => {
+      if (response.success) {
+        this.$calendar.setCalendar(response.data.data);
 
-          let income = 0;
-          let outcome = 0;
-          res.data.data.forEach((cur) => {
-            if (cur.income) {
-              income += cur.income;
-            }
-            if (cur.outcome) {
-              outcome += cur.outcome;
-            }
-          });
-          this.$checkboxes.changeCost(income, outcome);
-        }
-      });
+        let income = 0;
+        let outcome = 0;
+        response.data.data.forEach((cur: DateInfo) => {
+          if (cur.income) {
+            income += cur.income;
+          }
+          if (cur.outcome) {
+            outcome += cur.outcome;
+          }
+        });
+        this.$checkboxes.changeCost(income, outcome);
+      } else {
+        this.$calendar.setCalendar();
+      }
+    });
+  }
+
+  reRender(): void {
+    this.fetchData(RootModel.getYear(), RootModel.getMonth());
   }
 }

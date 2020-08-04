@@ -8,6 +8,8 @@ import History from "./components/History";
 import Calendar from "./components/Calendar";
 import Statistics from "./components/Statistics";
 
+import "./stylesheet/main.scss";
+
 router.setComponent("/history", new History());
 router.setComponent("/calendar", new Calendar());
 router.setComponent("/statistics", new Statistics());

@@ -1,11 +1,3 @@
-:root {
-  --background-color: #eeeeee;
-  --null-day: #999999;
-  --income-color: #d5aaff;
-  --outcome-color: #ffabab;
-  --come-font-size: 1rem;
-}
-
 table.calendar {
   background: var(--background-color);
   font-size: 20px;
@@ -60,14 +52,14 @@ table.calendar tbody td div p.income {
   color: var(--income-color);
 }
 
+table.calendar tbody td div p.outcome {
+  color: var(--outcome-color);
+}
+
 table.calendar tbody.hide_income td div p.income {
-  display: none;
+  opacity: 0;
 }
 
 table.calendar tbody.hide_outcome td div p.outcome {
-  display: none;
-}
-
-table.calendar tbody td div p.outcome {
-  color: var(--outcome-color);
+  opacity: 0;
 }
