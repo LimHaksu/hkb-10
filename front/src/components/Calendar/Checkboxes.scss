@@ -28,10 +28,15 @@
 
 .checkboxes div.check p.income {
   margin-left: 20px;
+  width: 100px;
+  text-align: right;
   color: var(--income-color);
 }
 
 .checkboxes div.check p.outcome {
   margin-left: 20px;
+  width: 100px;
+  text-align: right;
+
   color: var(--outcome-color);
 }
