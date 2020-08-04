@@ -14,7 +14,7 @@ interface HistoryDataType {
   detail: string;
 }
 
-const SELECT_HISTORY = `SELECT h.date date, c.content category, h.content detail, h.payment payment, h.amount amount, h.is_income is_income
+const SELECT_HISTORY = `SELECT h.id id, h.date date, c.content category, h.content detail, h.payment payment, h.amount amount, h.is_income is_income
 FROM histories h
 JOIN categories c ON h.pk_category = c.id
 WHERE h.date BETWEEN ? AND ?
@@ -72,6 +72,7 @@ class HistoryDAO extends DAO {
       if (row instanceof Array) {
         row.forEach((history: any) => {
           const {
+            id,
             date,
             category,
             detail,
@@ -80,7 +81,7 @@ class HistoryDAO extends DAO {
             is_income,
           } = history;
           histories.push(
-            new History(date, category, payment, is_income, amount, detail)
+            new History(id, date, category, payment, is_income, amount, detail)
           );
         });
       }

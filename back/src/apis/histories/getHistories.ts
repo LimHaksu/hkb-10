@@ -7,8 +7,17 @@ export default async (req: Request, res: Response): Promise<undefined> => {
   const histories = await HistoryDAO.getHistories(year, month);
 
   const data = histories.map((history) => {
-    const { date, category, paymentMethod, income, amount, detail } = history;
+    const {
+      id,
+      date,
+      category,
+      paymentMethod,
+      income,
+      amount,
+      detail,
+    } = history;
     return {
+      id,
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),

@@ -1,4 +1,5 @@
 class History {
+  id: number;
   date: Date;
   category: string;
   paymentMethod: string;
@@ -7,6 +8,7 @@ class History {
   detail: string;
 
   constructor(
+    id: number,
     date: Date,
     category: string,
     paymentMethod: string,
@@ -14,6 +16,7 @@ class History {
     amount: number,
     detail: string
   ) {
+    this.id = id;
     this.date = date;
     this.category = category;
     this.paymentMethod = paymentMethod;
