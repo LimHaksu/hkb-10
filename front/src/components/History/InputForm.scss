@@ -34,7 +34,8 @@
   }
 
   .button-disabled {
-    opacity: 0.6;
+    background-color: $mint-disabled-color;
+    border-color: $mint-disabled-color;
     cursor: default;
   }
 
