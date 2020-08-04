@@ -7,6 +7,7 @@ import ClassificationModel, {
 } from "./InputForm/ClassificationModel";
 import DateModel from "./InputForm/DateModel";
 import DetailModel from "./InputForm/DetailModel";
+import EditFlagModel from "./InputForm/EditFlagModel";
 import HistoryListModel, {
   HistoryDataType,
 } from "./HistoryList/HistoryListModel";
@@ -29,6 +30,7 @@ export {
   ClassificationModel,
   DateModel,
   DetailModel,
+  EditFlagModel,
   HistoryListModel,
   PaymentMethodModel,
   SelectedPaymentMethodModel,

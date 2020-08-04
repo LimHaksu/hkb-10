@@ -3,6 +3,7 @@ import HistoryItem from "./HistoryItem";
 import HistoryDay from "./HistoryDay";
 import {
   ClassificationModel,
+  EditFlagModel,
   DateModel,
   CategoryModel,
   SelectedCategoryModel,
@@ -23,6 +24,7 @@ interface HistoryListOption extends ComponentOption {
 
 class HistoryList extends Component {
   classificationModel = ClassificationModel;
+  editFlagModel = EditFlagModel;
   dateModel = DateModel;
   categoryModel = CategoryModel;
   selectedCategoryModel = SelectedCategoryModel;
@@ -222,6 +224,8 @@ class HistoryList extends Component {
     });
     this.amountModel.setAmount(amount);
     this.detailModel.setDetail(detail);
+
+    this.editFlagModel.setEditMode(true);
   }
 
   resetTotal() {

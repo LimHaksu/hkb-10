@@ -5,6 +5,7 @@ import {
   CategoryModel,
   SelectedCategoryModel,
   ClassificationModel,
+  EditFlagModel,
   DateModel,
   DetailModel,
   PaymentMethodModel,
@@ -19,6 +20,7 @@ import "./InputForm.scss";
 class InputForm extends Component {
   rootModel = RootModel;
   classificationModel = ClassificationModel;
+  editFlagModel = EditFlagModel;
   dateModel = DateModel;
   categoryModel = CategoryModel;
   selectedCategoryModel = SelectedCategoryModel;
@@ -29,6 +31,8 @@ class InputForm extends Component {
 
   buttonIncome: Button | null = null;
   buttonOutcome: Button | null = null;
+  buttonReset: Button | null = null;
+  buttonDelete: Button | null = null;
   inputDate: Input | null = null;
   selectCategory: Select | null = null;
   selectPaymentMethod: Select | null = null;
@@ -186,6 +190,19 @@ class InputForm extends Component {
       }
     );
 
+    this.editFlagModel.subscribe("subEditFlag", (isEditMode: boolean) => {
+      const buttonResetView = <HTMLButtonElement>this.buttonReset?.view;
+      const buttonDeletView = <HTMLButtonElement>this.buttonDelete?.view;
+
+      if (isEditMode) {
+        buttonResetView.classList.add("button-hidden");
+        buttonDeletView.classList.remove("button-hidden");
+      } else {
+        buttonResetView.classList.remove("button-hidden");
+        buttonDeletView.classList.add("button-hidden");
+      }
+    });
+
     this.dateModel.subscribe("subDate", (date: Date) => {
       (<HTMLInputElement>this.inputDate?.view).value = date
         .toISOString()
@@ -332,15 +349,29 @@ class InputForm extends Component {
         },
       ],
     });
-    const buttonDelete = new Button({
-      id: "button-delete",
-      classes: ["button-delete"],
+
+    this.buttonReset = new Button({
+      id: "button-reset",
+      classes: ["button-reset"],
       textContent: "내용 지우기",
       eventListeners: [
         {
           type: "click",
           listener: (event) => {
             this.resetInputs();
+          },
+        },
+      ],
+    });
+    this.buttonDelete = new Button({
+      id: "button-delete",
+      classes: ["button-reset", "button-hidden"],
+      textContent: "삭제",
+      eventListeners: [
+        {
+          type: "click",
+          listener: (event) => {
+            new ModalConfirm(() => {});
           },
         },
       ],
@@ -538,7 +569,8 @@ class InputForm extends Component {
           this.buttonIncome,
           this.buttonOutcome,
         ]),
-        buttonDelete,
+        this.buttonReset,
+        this.buttonDelete,
       ]),
       divRow2.appendChildren([
         new Component("span", { classes: ["row-flex"] }).appendChildren([
