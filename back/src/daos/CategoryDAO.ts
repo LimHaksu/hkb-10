@@ -20,9 +20,19 @@ class CategoryDAO extends DAO {
       const row = await this.executeQuery(connection, SELECT_CATEGORY, []);
 
       if (row instanceof Array) {
+        let incomeValue = 0;
+        let outcomValue = 0;
+        let value = 0;
         row.forEach((category: any) => {
-          const { id, content, is_income } = category;
-          categories.push(new Category(id, content, is_income));
+          const { content, is_income } = category;
+          if (is_income === 1) {
+            incomeValue++;
+            value = incomeValue;
+          } else {
+            outcomValue++;
+            value = outcomValue;
+          }
+          categories.push(new Category(value, content, is_income));
         });
       }
       await connection.commit();
