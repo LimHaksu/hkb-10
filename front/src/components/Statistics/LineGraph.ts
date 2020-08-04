@@ -1,11 +1,8 @@
 import Component from "../Component";
 import LineGraphModel from "../../models/LineGraphModel";
 import RootModel from "../../models/RootModel";
-import getDailyOutcomes, {
-  ApiResponse,
-  DataType,
-} from "../../fetch/getDailyOutcomes";
 
+import getDailyOutcomes, { DataType } from "../../fetch/getDailyOutcomes";
 import {
   getStandards,
   createAverageLine,
@@ -38,7 +35,6 @@ export default class LineGraph extends Component {
       this.setView(data);
     });
 
-    // this.setView();
     this.fetching();
   }
 
@@ -52,7 +48,7 @@ export default class LineGraph extends Component {
     );
   }
 
-  setView(data: DataType) {
+  setView(data: DataType): void {
     const { array, average } = getStandards(data.dates);
     const first = array[0];
     const last = array[array.length - 1];

@@ -15,7 +15,7 @@ class CalendarModel extends Observable {
     this.dateData.year = RootModel.getYear();
     this.dateData.month = RootModel.getMonth();
 
-    RootModel.subscribe("changeTimeCalendar", async (data: Date) => {
+    RootModel.subscribe("changeLineGraph", async (data: Date) => {
       this.dateData.year = data.year;
       this.dateData.month = data.month;
 
