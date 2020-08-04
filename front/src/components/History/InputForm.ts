@@ -3,6 +3,7 @@ import { Button, Input, Label, Select } from "../common";
 import {
   AmountModel,
   CategoryModel,
+  SelectedCategoryModel,
   ClassificationModel,
   DateModel,
   DetailModel,
@@ -144,7 +145,7 @@ class InputForm extends Component {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     // 카테고리 가져오기
-    const category = this.categoryModel.getSelectedCategory().value;
+    const category = this.selectedCategoryModel.getSelectedCategory().value;
 
     // 결제수단 가져오기
     const paymentMethod = this.paymentMethodModel.getSelectedPaymentMethod()
@@ -364,7 +365,10 @@ class InputForm extends Component {
             const idx = target.selectedIndex;
             const textContent = target[idx].textContent || "";
             const value = target[idx].getAttribute("value") || "";
-            this.categoryModel.setSelectedCategory({ textContent, value });
+            this.selectedCategoryModel.setSelectedCategory({
+              textContent,
+              value,
+            });
 
             // 인풋 체크
             // 선택한 index가 0보다 큼 === '선택하세요'가 아님

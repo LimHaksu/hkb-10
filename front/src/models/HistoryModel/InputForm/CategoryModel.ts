@@ -20,7 +20,13 @@ class CategoryModel extends Observable {
     income: [],
     outcome: [],
   };
-  private selectedCategory: SelectOption = { textContent: "", value: "" };
+  private categoryTextContentValueMap: {
+    income: Map<string, string>;
+    outcome: Map<string, string>;
+  } = {
+    income: new Map(),
+    outcome: new Map(),
+  };
 
   constructor() {
     super();
@@ -38,18 +44,17 @@ class CategoryModel extends Observable {
           textContent: content,
           value: value.toString(),
         });
+        this.categoryTextContentValueMap[
+          income === 1 ? "income" : "outcome"
+        ].set(content, value.toString());
       });
 
       this.notify(this.categories);
     });
   }
 
-  getSelectedCategory() {
-    return this.selectedCategory;
-  }
-
-  setSelectedCategory(selectedCategory: SelectOption) {
-    this.selectedCategory = selectedCategory;
+  getValueFromTextContent(type: "income" | "outcome", textContent: string) {
+    return this.categoryTextContentValueMap[type].get(textContent);
   }
 
   initData() {

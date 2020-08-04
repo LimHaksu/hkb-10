@@ -1,5 +1,6 @@
 import AmountModel from "./InputForm/AmountModel";
 import CategoryModel from "./InputForm/CategoryModel";
+import SelectedCategoryModel from "./InputForm/SelectedCategoryModel";
 import CheckboxModel, { TypeCheckbox } from "./Checkbox/CheckboxModel";
 import ClassificationModel, {
   TypeClassificaion,
@@ -22,6 +23,7 @@ export { HistoryDataType, SelectOption, TypeCheckbox, TypeClassificaion };
 export {
   AmountModel,
   CategoryModel,
+  SelectedCategoryModel,
   CheckboxModel,
   ClassificationModel,
   DateModel,
