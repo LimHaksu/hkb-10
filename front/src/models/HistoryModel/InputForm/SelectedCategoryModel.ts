@@ -2,7 +2,11 @@ import Observable from "../../Observable";
 import { SelectOption } from "../";
 
 class SelectedCategoryModel extends Observable {
-  private selectedCategory: SelectOption = { textContent: "", value: "" };
+  private selectedCategory: SelectOption = {
+    id: 0,
+    textContent: "",
+    value: "",
+  };
 
   constructor() {
     super();

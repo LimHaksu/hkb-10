@@ -112,6 +112,9 @@ class InputForm extends Component {
   }
 
   resetInputs() {
+    // 분류 초기화
+    this.classificationModel.setClassifiacation("outcome");
+
     // 날짜 초기화
     this.dateModel.setDate(new Date(Date.now()));
 
@@ -177,7 +180,9 @@ class InputForm extends Component {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     // 카테고리 가져오기
-    const category = this.selectedCategoryModel.getSelectedCategory().value;
+    const category = this.selectedCategoryModel
+      .getSelectedCategory()
+      .id!.toString();
 
     // 결제수단 가져오기
     const paymentMethod = this.selectedPaymentMethodModel.getSelectedPaymentMethod()
@@ -474,7 +479,13 @@ class InputForm extends Component {
             const idx = target.selectedIndex;
             const textContent = target[idx].textContent || "";
             const value = target[idx].getAttribute("value") || "";
+            const income = this.classificationModel.getClassification();
+            const id = this.categoryModel.getIdFromTextContent(
+              income,
+              textContent
+            );
             this.selectedCategoryModel.setSelectedCategory({
+              id,
               textContent,
               value,
             });

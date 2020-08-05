@@ -15,6 +15,7 @@ import PaymentMethodModel from "./InputForm/PaymentMethodModel";
 import SelectedPaymentMethodModel from "./InputForm/SelectedPaymentMethodModel";
 
 interface SelectOption {
+  id?: number;
   textContent: string;
   value: string;
   disabled?: boolean;
