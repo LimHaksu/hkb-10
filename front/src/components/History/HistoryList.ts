@@ -213,7 +213,12 @@ class HistoryList extends Component {
       incomeType,
       category
     );
+    const categoryId = this.categoryModel.getIdFromTextContent(
+      incomeType,
+      category
+    );
     this.selectedCategoryModel.setSelectedCategory({
+      id: categoryId,
       textContent: category,
       value: categoryValue!,
     });
