@@ -1,9 +1,12 @@
 import Component from "../Component";
+
 import RootModel from "../../models/RootModel";
+import PieChartModel from "../../models/PieChartModel";
 
-import dummyData from "./PieChartDummyData";
-
-// import getDailyOutcomes, { DataType } from "../../fetch/getDailyOutcomes";
+import getCategoryOutcome, {
+  CategoryInfo,
+  ApiResponse,
+} from "../../fetch/getCategoryOutcome";
 
 import "./PieChart.scss";
 
@@ -32,7 +35,11 @@ function makeColorCode(start: Color, diff: Color, index: number): string {
 }
 
 export default class PieChart extends Component {
-  _size: PieChartSize;
+  private _size: PieChartSize;
+  private cx: number;
+  private cy: number;
+  private r: number;
+
   private _startColor: Color;
   private _endColor: Color;
 
@@ -55,32 +62,46 @@ export default class PieChart extends Component {
       G: 180,
       B: 222,
     };
+    this.r = 20;
+    this.cx = 50;
+    this.cy = 50;
 
     this.view = document.createElement("div");
+
+    PieChartModel.subscribe("changeData", (data: CategoryInfo[]) => {
+      this.setView(data);
+    });
 
     this.fetching();
   }
 
   fetching(): void {
-    const data = dummyData;
-    data.sort((a, b) => {
-      return a.value < b.value ? 1 : -1;
-    });
+    const year = RootModel.getYear();
+    const month = RootModel.getMonth();
 
-    this.setView(data);
+    getCategoryOutcome(year, month).then((response: ApiResponse) => {
+      if (response.success) {
+        this.setView(response.data);
+      } else {
+        this.setView([
+          {
+            title: "empty data",
+            value: 1,
+          },
+        ]);
+      }
+    });
   }
 
   setView(data: Data[]): void {
-    const r = 20;
-    const cx = 50;
-    const cy = 50;
-    const maxLength = 3.14 * (r * 2);
+    const r = this.r;
+    const cx = this.cx;
+    const cy = this.cy;
     const arr: string[] = [];
-    // const svg = document.createElement("svg");
-    // svg.setAttribute("viewBox", "0 0 100 100");
-    // svg.className = "pie";
-    // svg.setAttribute("width", `${this._size.width}`);
-    // svg.setAttribute("height", `${this._size.height}`);
+
+    data.sort((a, b) => {
+      return a.value < b.value ? 1 : -1;
+    });
 
     let total = 0;
     const diff = {
@@ -143,9 +164,7 @@ export default class PieChart extends Component {
   }
 
   animate() {
-    const r = 20;
-    const cx = 50;
-    const cy = 50;
+    const r = this.r;
     const maxLength = 3.14 * (r * 2);
     const circleArr = this.view.querySelectorAll("circle");
     const textArr = this.view.querySelectorAll("text");
@@ -173,6 +192,6 @@ export default class PieChart extends Component {
   }
 
   reRender(): void {
-    this.setView(dummyData);
+    this.fetching();
   }
 }
