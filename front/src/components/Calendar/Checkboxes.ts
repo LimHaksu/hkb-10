@@ -4,8 +4,8 @@ import "./Checkboxes.scss";
 import CalendarCheckboxModel from "../../models/CalendarCheckboxModel";
 
 const checkbox = `
-<div class="check"><input type="checkbox" name="income" checked><p>수입</p> <p class="income"></p></div>
-<div class="check"><input type="checkbox" name="outcome" checked><p>지출</p> <p class="outcome"></p></div>
+<div class="check"><input type="checkbox" name="income" checked><p>수입</p> <p class="income">0</p></div>
+<div class="check"><input type="checkbox" name="outcome" checked><p>지출</p> <p class="outcome">0</p></div>
 `;
 
 export default class CheckboxOption extends Component {
