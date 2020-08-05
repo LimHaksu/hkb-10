@@ -1,6 +1,7 @@
 import Component from "../Component";
 import LineGraph from "./LineGraph";
 import PieChart from "./PieChart";
+import StickGraph from "./StickGraph";
 import Checkboxes from "./CheckBoxes";
 
 import StatisticsPageModel, { CASE } from "../../models/StatisticsPageModel";
@@ -8,6 +9,7 @@ import StatisticsPageModel, { CASE } from "../../models/StatisticsPageModel";
 export default class Statistics extends Component {
   $lineGraph: LineGraph;
   $pieChart: PieChart;
+  $stickGraph: StickGraph;
   $checkboxes: Checkboxes;
 
   constructor() {
@@ -15,6 +17,7 @@ export default class Statistics extends Component {
 
     this.$lineGraph = new LineGraph(800, 600);
     this.$pieChart = new PieChart(800, 600);
+    this.$stickGraph = new StickGraph(800, 600);
     this.$checkboxes = new Checkboxes();
 
     this.view = document.createElement("div");
@@ -28,6 +31,7 @@ export default class Statistics extends Component {
       }
       case CASE.PIE: {
         this.view.appendChild(this.$pieChart.view);
+        this.view.appendChild(this.$stickGraph.view);
         break;
       }
     }
@@ -36,6 +40,7 @@ export default class Statistics extends Component {
       switch (data) {
         case CASE.LINE: {
           this.view.removeChild(this.$pieChart.view);
+          this.view.removeChild(this.$stickGraph.view);
           this.view.appendChild(this.$lineGraph.view);
           this.$lineGraph.reRender();
           break;
@@ -43,7 +48,11 @@ export default class Statistics extends Component {
         case CASE.PIE: {
           this.view.removeChild(this.$lineGraph.view);
           this.view.appendChild(this.$pieChart.view);
+          this.view.appendChild(this.$stickGraph.view);
+
           this.$pieChart.reRender();
+          this.$stickGraph.reRender();
+
           break;
         }
       }
