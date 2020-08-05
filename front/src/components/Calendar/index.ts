@@ -43,25 +43,29 @@ export default class CalendarPage extends Component {
   }
 
   fetchData(year: number, month: number): void {
-    getDailyHistories(year, month).then((response: ApiResponse) => {
-      if (response.success) {
-        this.$calendar.setCalendar(response.data.data);
+    getDailyHistories(year, month)
+      .then((response: ApiResponse) => {
+        if (response.success) {
+          this.$calendar.setCalendar(response.data.data);
 
-        let income = 0;
-        let outcome = 0;
-        response.data.data.forEach((cur: DateInfo) => {
-          if (cur.income) {
-            income += cur.income;
-          }
-          if (cur.outcome) {
-            outcome += cur.outcome;
-          }
-        });
-        this.$checkboxes.changeCost(income, outcome);
-      } else {
+          let income = 0;
+          let outcome = 0;
+          response.data.data.forEach((cur: DateInfo) => {
+            if (cur.income) {
+              income += cur.income;
+            }
+            if (cur.outcome) {
+              outcome += cur.outcome;
+            }
+          });
+          this.$checkboxes.changeCost(income, outcome);
+        } else {
+          this.$calendar.setCalendar();
+        }
+      })
+      .catch(() => {
         this.$calendar.setCalendar();
-      }
-    });
+      });
   }
 
   reRender(): void {
