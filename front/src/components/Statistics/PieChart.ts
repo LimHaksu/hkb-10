@@ -103,16 +103,15 @@ export default class PieChart extends Component {
       return a.value < b.value ? 1 : -1;
     });
 
-    let total = 0;
     const diff = {
       R: (this._endColor.R - this._startColor.R) / data.length,
       G: (this._endColor.G - this._startColor.G) / data.length,
       B: (this._endColor.B - this._startColor.B) / data.length,
     };
 
-    data.forEach((cur) => {
-      total += cur.value;
-    });
+    const total = data.reduce((pre, cur) => {
+      return pre + cur.value;
+    }, 0);
 
     let before = 0;
     data.forEach((cur, index) => {
@@ -163,7 +162,7 @@ export default class PieChart extends Component {
     this.animate();
   }
 
-  animate() {
+  animate(): void {
     const r = this.r;
     const maxLength = 3.14 * (r * 2);
     const circleArr = this.view.querySelectorAll("circle");
