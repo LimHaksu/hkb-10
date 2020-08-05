@@ -24,7 +24,7 @@ class CategoryDAO extends DAO {
         let outcomValue = 0;
         let value = 0;
         row.forEach((category: any) => {
-          const { content, is_income } = category;
+          const { id, content, is_income } = category;
           if (is_income === 1) {
             incomeValue++;
             value = incomeValue;
@@ -32,7 +32,7 @@ class CategoryDAO extends DAO {
             outcomValue++;
             value = outcomValue;
           }
-          categories.push(new Category(value, content, is_income));
+          categories.push(new Category(id, value, content, is_income));
         });
       }
       await connection.commit();
