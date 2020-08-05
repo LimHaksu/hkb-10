@@ -6,7 +6,7 @@ import CalendarModel from "../../models/CalendarModel";
 
 import { DateInfo, DateData } from "../../fetch/getDailyHistories";
 
-const calendarHTML = `<thead>
+const calendarHTML = /* html */ `<thead>
     <tr>
       <th scope="col">일</th>
       <th scope="col">월</th>
