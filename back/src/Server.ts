@@ -21,7 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:8080", // 허락하고자 하는 요청 주소
     credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
   })
 );
