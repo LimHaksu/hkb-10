@@ -21,7 +21,11 @@ const historiesRouter = Router();
  * @apiSuccess {boolean} success  호출 성공 여부
  * @apiSuccess {Object} data  월별 하루당 수입 지출 정보
  */
-historiesRouter.get("/daily/:userId/:year/:month", getDailyHistories);
+historiesRouter.get(
+  "/daily/:userId/:year/:month",
+  passport.authenticate("jwt", { session: false }),
+  getDailyHistories
+);
 
 /**
  * @api {get} /histories/outcome/daily/:year/:month  해당 연 월의 일별 지출 합산을 가져옴
@@ -36,6 +40,7 @@ historiesRouter.get("/daily/:userId/:year/:month", getDailyHistories);
  */
 historiesRouter.get(
   "/outcome/daily/:userId/:year/:month",
+  passport.authenticate("jwt", { session: false }),
   dailyOutcomeMiddleWare
 );
 
@@ -52,6 +57,7 @@ historiesRouter.get(
  */
 historiesRouter.get(
   "/outcome/category/:userId/:year/:month",
+  passport.authenticate("jwt", { session: false }),
   categoricalDataMiddleware
 );
 
