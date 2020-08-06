@@ -2,6 +2,8 @@ import path from "./router/Path";
 import router from "./router/Router";
 
 import Login from "./components/Login";
+import Signup from "./components/Signup";
+
 import Header from "./components/Main/Header";
 import Menu from "./components/Main/Menu";
 
@@ -12,6 +14,7 @@ import Statistics from "./components/Statistics";
 import "./stylesheet/main.scss";
 
 router.setComponent("/login", new Login());
+router.setComponent("/signup", new Signup());
 router.setComponent("/history", new History());
 router.setComponent("/calendar", new Calendar());
 router.setComponent("/statistics", new Statistics());
