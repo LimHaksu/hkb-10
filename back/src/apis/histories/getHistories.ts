@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import HistoryDAO from "../../daos/HistoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  const { year, month } = req.params;
-  const histories = await HistoryDAO.getHistories(year, month);
+  const { userId, year, month } = req.params;
+  const histories = await HistoryDAO.getHistories(userId, year, month);
 
   const data = histories.map((history) => {
     const {
@@ -28,7 +28,6 @@ export default async (req: Request, res: Response): Promise<undefined> => {
       detail,
     };
   });
-  console.log(histories);
 
   const ret = {
     success: true,

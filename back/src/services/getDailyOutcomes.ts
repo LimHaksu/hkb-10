@@ -17,10 +17,12 @@ function getDateOfMonth(year: number, month: number) {
 }
 
 export default async function getCalenderData(
+  userId: string,
   year: number,
   month: number
 ): Promise<DataType> {
   const histories: History[] = await historyDao.getHistories(
+    `${userId}`,
     `${year}`,
     `${month}`
   );
