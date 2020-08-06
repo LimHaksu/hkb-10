@@ -1,12 +1,8 @@
 import Component from "../Component";
 
-import RootModel from "../../models/RootModel";
 import PieChartModel from "../../models/PieChartModel";
 
-import getCategoryOutcome, {
-  CategoryInfo,
-  ApiResponse,
-} from "../../fetch/getCategoryOutcome";
+import { CategoryInfo } from "../../fetch/getCategoryOutcome";
 
 import "./StickGraph.scss";
 
@@ -74,41 +70,24 @@ export default class StickGraph extends Component {
     PieChartModel.subscribe("changeStickData", (data: CategoryInfo[]) => {
       this.setView(data);
     });
-
-    this.fetching();
-  }
-
-  fetching(): void {
-    const year = RootModel.getYear();
-    const month = RootModel.getMonth();
-
-    getCategoryOutcome(year, month).then((response: ApiResponse) => {
-      if (response.success) {
-        this.setView(response.data);
-      } else {
-        this.setView([
-          {
-            title: "empty data",
-            value: 1,
-          },
-        ]);
-      }
-    });
   }
 
   setView(data: Data[]): void {
+    if (data.length === 0) {
+      return;
+    }
+
     const total = data.reduce((pre, cur) => {
       return pre + cur.value;
     }, 0);
-
     const diff = {
       R: (this._endColor.R - this._startColor.R) / data.length,
       G: (this._endColor.G - this._startColor.G) / data.length,
       B: (this._endColor.B - this._startColor.B) / data.length,
     };
+    const barWidth = this._size.width * 0.6;
 
     const arr: string[] = [];
-
     data.forEach((cur, index) => {
       const color = makeColorCode(this._startColor, diff, index);
       const percent = (cur.value / total) * 100;
@@ -132,10 +111,6 @@ export default class StickGraph extends Component {
 
     this.$ul.innerHTML = arr.join("\n<hr />\n");
 
-    const graph: HTMLDivElement =
-      this.$ul.querySelector("div.graph") || document.createElement("div");
-    const barWidth = graph.offsetWidth;
-
     const arrBar: NodeListOf<HTMLDivElement> = this.$ul.querySelectorAll(
       "div.bar"
     );
@@ -146,9 +121,5 @@ export default class StickGraph extends Component {
         stick.style.width = `${(percent / 100) * barWidth}px`;
       }, (1000 / data.length) * index);
     });
-  }
-
-  reRender(): void {
-    this.fetching();
   }
 }
