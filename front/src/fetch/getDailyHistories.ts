@@ -1,7 +1,7 @@
 const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 type DateInfo = {
-  day: number;
+  date: number;
   income: number;
   outcome: number;
 };
