@@ -3,6 +3,8 @@ import RootModel from "../../RootModel";
 import fetch, { HistoryDataType } from "../../../fetch";
 
 import { HISTORY } from "../../../router/PathConstants";
+import Path from "../../../router/Path";
+import LoginModel from "../../../models/LoginModel";
 
 class HistoryListModel extends Observable {
   private histories: HistoryDataType[] = [];
@@ -18,15 +20,18 @@ class HistoryListModel extends Observable {
   }
 
   fetchGetHistories(year: number, month: number) {
-    fetch
-      .getHistories(year, month)
-      .then((histories: HistoryDataType[]) => {
-        this.histories = histories;
-        this.notify(this.histories);
-      })
-      .catch((error: Error) => {
-        console.log(error);
-      });
+    const userId = LoginModel.getLoggedInUserId();
+    if (userId) {
+      fetch
+        .getHistories(userId, year, month)
+        .then((histories: HistoryDataType[]) => {
+          this.histories = histories;
+          this.notify(this.histories);
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
+    }
   }
 
   subscribeModels() {
