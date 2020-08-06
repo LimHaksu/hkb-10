@@ -1,6 +1,8 @@
 import Observable from "../../Observable";
 import fetch, { PaymentMethodDataType } from "../../../fetch";
 import { SelectOption } from "..";
+import Path from "../../../router/Path";
+import { HISTORY } from "../../../router/PathConstants";
 
 class PaymentMethodModel extends Observable {
   private paymentMethods: SelectOption[] = [];
@@ -8,6 +10,14 @@ class PaymentMethodModel extends Observable {
 
   constructor() {
     super();
+
+    Path.subscribe("paymentMethodChange", (pathName: string) => {
+      if (pathName !== HISTORY) {
+        return;
+      }
+
+      this.initData();
+    });
   }
 
   getValueFromTextContent(textContent: string) {
@@ -15,6 +25,10 @@ class PaymentMethodModel extends Observable {
   }
 
   initData() {
+    if (Path.getPath() !== HISTORY) {
+      return;
+    }
+
     fetch
       .getPaymentMethods()
       .then((paymentMethods: PaymentMethodDataType[]) => {
@@ -29,6 +43,16 @@ class PaymentMethodModel extends Observable {
         });
         this.notify(this.paymentMethods);
       });
+  }
+
+  async addMethod(method: SelectOption) {
+    // this.paymentMethod = await fetchAddMethod(method)
+    this.notify(this.paymentMethods);
+  }
+
+  async deleteMethod(method: SelectOption) {
+    //this.paymentMethod = await fetchDeleteMethod(method)
+    this.notify(this.paymentMethods);
   }
 }
 

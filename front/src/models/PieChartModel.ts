@@ -2,6 +2,9 @@ import Observable from "./Observable";
 
 import RootModel, { Date } from "./RootModel";
 import getCategoryOutcome, { CategoryInfo } from "../fetch/getCategoryOutcome";
+import Path from "../router/Path";
+
+import { STATISTICS } from "../router/PathConstants";
 
 class PieChartModel extends Observable {
   private pieData: CategoryInfo[] = [];
@@ -10,6 +13,9 @@ class PieChartModel extends Observable {
     super();
 
     RootModel.subscribe("pieChart", async (data: Date) => {
+      if (Path.getPath() !== STATISTICS) {
+        return;
+      }
       const { year, month } = data;
 
       const response = await getCategoryOutcome(year, month);
@@ -20,10 +26,18 @@ class PieChartModel extends Observable {
       this.notify(this.pieData);
     });
 
-    this.setData();
+    Path.subscribe("statisticPieChartModel", (pathName: string) => {
+      if (pathName !== STATISTICS) {
+        return;
+      }
+      this.setData();
+    });
   }
 
   setData() {
+    if (Path.getPath() !== STATISTICS) {
+      return;
+    }
     const year = RootModel.getYear();
     const month = RootModel.getMonth();
 

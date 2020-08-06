@@ -1,5 +1,8 @@
 import Observable from "../../Observable";
 
+import Path from "../../../router/Path";
+import { HISTORY } from "../../../router/PathConstants";
+
 interface TypeCheckbox {
   income: boolean;
   outcome: boolean;
@@ -23,6 +26,9 @@ class Checkbox extends Observable {
   }
 
   initData() {
+    if (Path.getPath() !== HISTORY) {
+      return;
+    }
     this.notify(this.isChecked);
   }
 }
