@@ -1,6 +1,5 @@
 import Observable from "../../Observable";
 import RootModel from "../../RootModel";
-import Path from "../../../router/Path";
 import fetch, { HistoryDataType } from "../../../fetch";
 
 import Path from "../../../router/Path";
