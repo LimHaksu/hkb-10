@@ -350,7 +350,6 @@ class InputForm extends Component {
     this.classificationModel.initData();
     this.dateModel.initData();
     this.categoryModel.initData();
-    this.paymentMethodModel.initData();
     this.amountModel.initData();
   }
 
