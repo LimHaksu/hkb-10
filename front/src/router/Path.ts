@@ -19,10 +19,22 @@ class PathModel extends Observable {
     });
   }
 
-  pushState(data: unknown, title: string, path: string) {
-    history.pushState(data, title, path);
+  private isLoggedIn(): boolean {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      return true;
+    }
+    return false;
+  }
 
-    this.changePath(path);
+  pushState(data: unknown, title: string, path: string) {
+    if (this.isLoggedIn()) {
+      history.pushState(data, title, path);
+
+      this.changePath(path);
+    } else {
+      location.href = "/login";
+    }
   }
 
   changePath(path: string) {
