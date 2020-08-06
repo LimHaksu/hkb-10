@@ -5,6 +5,7 @@ import StickGraph from "./StickGraph";
 import Checkboxes from "./CheckBoxes";
 
 import StatisticsPageModel, { CASE } from "../../models/StatisticsPageModel";
+import PieChartModel from "../../models/PieChartModel";
 
 export default class Statistics extends Component {
   $lineGraph: LineGraph;
@@ -42,6 +43,7 @@ export default class Statistics extends Component {
           this.view.removeChild(this.$pieChart.view);
           this.view.removeChild(this.$stickGraph.view);
           this.view.appendChild(this.$lineGraph.view);
+
           this.$lineGraph.reRender();
           break;
         }
@@ -50,9 +52,7 @@ export default class Statistics extends Component {
           this.view.appendChild(this.$pieChart.view);
           this.view.appendChild(this.$stickGraph.view);
 
-          this.$pieChart.reRender();
-          this.$stickGraph.reRender();
-
+          PieChartModel.customNotify();
           break;
         }
       }
@@ -60,8 +60,15 @@ export default class Statistics extends Component {
   }
 
   reRender(): void {
-    this.$lineGraph.reRender();
-    this.$pieChart.reRender();
-    this.$stickGraph.reRender();
+    switch (StatisticsPageModel.getCase()) {
+      case CASE.LINE: {
+        this.$lineGraph.reRender();
+        break;
+      }
+      case CASE.PIE: {
+        PieChartModel.customNotify();
+        break;
+      }
+    }
   }
 }
