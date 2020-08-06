@@ -1,12 +1,8 @@
 import Component from "../Component";
 
-import RootModel from "../../models/RootModel";
 import PieChartModel from "../../models/PieChartModel";
 
-import getCategoryOutcome, {
-  CategoryInfo,
-  ApiResponse,
-} from "../../fetch/getCategoryOutcome";
+import { CategoryInfo } from "../../fetch/getCategoryOutcome";
 
 import "./PieChart.scss";
 
@@ -71,26 +67,6 @@ export default class PieChart extends Component {
     PieChartModel.subscribe("changeData", (data: CategoryInfo[]) => {
       this.setView(data);
     });
-
-    this.fetching();
-  }
-
-  fetching(): void {
-    const year = RootModel.getYear();
-    const month = RootModel.getMonth();
-
-    getCategoryOutcome(year, month).then((response: ApiResponse) => {
-      if (response.success) {
-        this.setView(response.data);
-      } else {
-        this.setView([
-          {
-            title: "empty data",
-            value: 1,
-          },
-        ]);
-      }
-    });
   }
 
   setView(data: Data[]): void {
@@ -150,10 +126,11 @@ export default class PieChart extends Component {
   `;
       arr.push(circle);
     });
-    // svg.innerHTML += arr.reverse().join("\n");
 
     const content = `
-    <svg viewbox="0 0 100 100" class="pie" width="800" height="600">
+    <svg viewbox="0 0 100 100" class="pie" width="${
+      this._size.width
+    }" height="${this._size.height}">
       ${arr.reverse().join("\n")}
     </svg>`;
 
@@ -188,9 +165,5 @@ export default class PieChart extends Component {
           text.style.opacity = `${1}`;
         }, 100 + 200 + index * 100);
       });
-  }
-
-  reRender(): void {
-    this.fetching();
   }
 }
