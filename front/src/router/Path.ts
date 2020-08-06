@@ -28,12 +28,24 @@ class PathModel extends Observable {
   }
 
   pushState(data: unknown, title: string, path: string) {
-    if (this.isLoggedIn()) {
-      history.pushState(data, title, path);
-
-      this.changePath(path);
-    } else {
-      location.href = "/login";
+    switch (path) {
+      case "/signup":
+        if (this.isLoggedIn()) {
+          history.pushState(data, "이미 로그인하였습니다", "/history");
+          this.changePath("/history");
+        } else {
+          history.pushState(data, title, path);
+          this.changePath(path);
+        }
+        break;
+      default:
+        if (this.isLoggedIn()) {
+          history.pushState(data, title, path);
+          this.changePath(path);
+        } else {
+          location.href = "/login";
+        }
+        break;
     }
   }
 

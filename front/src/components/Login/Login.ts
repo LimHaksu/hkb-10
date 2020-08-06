@@ -2,9 +2,12 @@ import Component from "../Component";
 import { Button, Input } from "../common";
 import path from "../../router/Path";
 import fetch from "../../fetch";
+import LoginModel from "../../models/LoginModel";
 import "./Login.scss";
 
 class Login extends Component {
+  loginModel = LoginModel;
+
   formLogin: Component | null = null;
   inputId: Input | null = null;
   inputPw: Input | null = null;
@@ -33,6 +36,7 @@ class Login extends Component {
     fetch.login(id, password).then((token) => {
       if (token) {
         sessionStorage.setItem("token", `Bearer ${token}`);
+        this.loginModel.setIsLoggedIn(true);
         path.pushState(undefined, "로그인 성공!", "/history");
       }
     });
