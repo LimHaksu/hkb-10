@@ -1,10 +1,12 @@
 @import "./variable.scss";
 
 .history-item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   border-top: 1px solid #b0b0b0;
   padding: 0.5rem 0 0.5rem 0;
+  // z-index: 0;
 
   .history-item-category {
     color: white;
@@ -14,6 +16,12 @@
     flex-grow: 0.7;
     margin-right: 1rem;
     text-align: center;
+  }
+  .history-item-category-income {
+    background-color: $blue-color;
+  }
+  .history-item-category-outcome {
+    background-color: $mint-color;
   }
 
   .history-item-detail {
@@ -32,4 +40,31 @@
     padding: 0.5rem;
     text-align: right;
   }
+  .history-item-amount-income {
+    color: $blue-color;
+  }
+  .history-item-amount-outcome {
+    color: $mint-color;
+  }
+
+  .history-item-hover-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30px;
+    width: 50px;
+    transform: translate(-50%, -50%);
+  }
+  .history-item-hover-button-hidden {
+    display: none;
+  }
+}
+
+.history-item:hover {
+  background-color: $mint-hover-color;
+  // filter: opacity(0.5);
+}
+
+.history-item-hidden {
+  display: none;
 }

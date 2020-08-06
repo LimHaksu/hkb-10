@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-
-import dummyData from "./getHistoriesDummy";
+import CategoryDAO from "../../daos/CategoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  // const { year, month } = req.params;
+  const categories = await CategoryDAO.getCategories();
 
   const ret = {
     success: true,
-    data: dummyData,
+    data: categories,
   };
 
   res.status(200).json(ret);

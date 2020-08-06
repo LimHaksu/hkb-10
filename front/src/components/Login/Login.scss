@@ -1,0 +1,39 @@
+@import "../History/variable.scss";
+
+.login-page {
+  .form-login {
+    margin-top: 5rem;
+  }
+}
+
+.flex-column {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.input-common {
+  height: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 1px solid;
+  font-size: medium;
+  text-align-last: center;
+  padding: 1rem;
+  margin: 0.5rem 0 0.5rem 0;
+}
+.button-common {
+  border: solid 2px;
+  border-radius: 0.3rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin: 0.2rem;
+  cursor: pointer;
+}
+.button-primary {
+  color: white;
+  border-color: $mint-color;
+  background-color: $mint-color;
+}
+.button-secondary {
+  color: $mint-color;
+  background-color: white;
+}

@@ -13,12 +13,18 @@ header {
 
   display: flex;
   justify-content: space-between;
-}
+  div {
+    margin: auto 20px auto 20px;
+  }
+  div.title {
+    color: #ffffff;
+  }
 
-header div {
-  margin: auto 20px auto 20px;
-}
+  .wrapper-right-menu {
+    display: flex;
 
-header div.title {
-  color: #ffffff;
+    .display-none {
+      display: none;
+    }
+  }
 }

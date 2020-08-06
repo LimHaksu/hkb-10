@@ -2,10 +2,13 @@ import Component from "../Component";
 import "./Checkboxes.scss";
 
 import CalendarCheckboxModel from "../../models/CalendarCheckboxModel";
+import CalendarModel from "../../models/CalendarModel";
 
-const checkbox = `
-<div class="check"><input type="checkbox" name="income" checked><p>수입</p> <p class="income"></p></div>
-<div class="check"><input type="checkbox" name="outcome" checked><p>지출</p> <p class="outcome"></p></div>
+import { DateData } from "../../fetch/getDailyHistories";
+
+const checkbox = /* html */ `
+<div class="check"><input type="checkbox" name="income" checked><p>수입</p> <p class="income">0</p></div>
+<div class="check"><input type="checkbox" name="outcome" checked><p>지출</p> <p class="outcome">0</p></div>
 `;
 
 export default class CheckboxOption extends Component {
@@ -33,6 +36,19 @@ export default class CheckboxOption extends Component {
     this.$outcomeCheck =
       this.view.querySelector("input[name=outcome]") ||
       document.createElement("input");
+
+    CalendarModel.subscribe("changeIncomeOutcome", (data: DateData) => {
+      const values = data.data.reduce(
+        (pre, cur) => {
+          return {
+            income: pre.income + (cur.income || 0),
+            outcome: pre.outcome + (cur.outcome || 0),
+          };
+        },
+        { income: 0, outcome: 0 }
+      );
+      this.changeCost(values.income, values.outcome);
+    });
 
     this.addListeners();
   }

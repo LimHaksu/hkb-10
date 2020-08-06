@@ -19,15 +19,43 @@ class PathModel extends Observable {
     });
   }
 
-  pushState(data: unknown, title: string, path: string) {
-    history.pushState(data, title, path);
+  private isLoggedIn(): boolean {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      return true;
+    }
+    return false;
+  }
 
-    this.changePath(path);
+  pushState(data: unknown, title: string, path: string) {
+    switch (path) {
+      case "/signup":
+        if (this.isLoggedIn()) {
+          history.pushState(data, "이미 로그인하였습니다", "/history");
+          this.changePath("/history");
+        } else {
+          history.pushState(data, title, path);
+          this.changePath(path);
+        }
+        break;
+      default:
+        if (this.isLoggedIn()) {
+          history.pushState(data, title, path);
+          this.changePath(path);
+        } else {
+          location.href = "/login";
+        }
+        break;
+    }
   }
 
   changePath(path: string) {
     this.$pathName = path;
     this.notify(this.$pathName);
+  }
+
+  getPath() {
+    return this.$pathName;
   }
 }
 

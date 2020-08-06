@@ -11,6 +11,7 @@
 
   .button-primary {
     color: white;
+    border-color: $mint-color;
     background-color: $mint-color;
   }
 
@@ -22,6 +23,25 @@
   .button-form-submit {
     width: 100%;
     margin: 1rem 0 1rem 0;
+  }
+
+  .button-reset,
+  .button-delete {
+    color: $mint-color;
+    background-color: white;
+    border: 0;
+    height: 1rem;
+    cursor: pointer;
+  }
+
+  .button-disabled {
+    background-color: $mint-disabled-color;
+    border-color: $mint-disabled-color;
+    cursor: default;
+  }
+
+  .button-hidden {
+    display: none;
   }
 
   .history-row {

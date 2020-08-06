@@ -1,21 +1,14 @@
-const baseUrl = "http://localhost:3000/api";
+import getFetchHeaders from "../utils/getFetchHeaders";
 
-interface HistoryDataType {
-  year: number;
-  month: number;
-  day: number;
-  category: string;
-  paymentMethod: string;
-  income: boolean;
-  amount: number;
-  detail: string;
-}
+const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const getHistories = async (year: number, month: number) => {
   try {
-    const response = await fetch(`${baseUrl}/histories/${year}/${month}`, {
+    const headers = getFetchHeaders();
+    const response = await fetch(`${baseUrl}/api/histories/${year}/${month}`, {
       mode: "cors",
       method: "GET",
+      headers,
     });
     const result = await response.json();
     if (result.success) {
@@ -26,4 +19,4 @@ const getHistories = async (year: number, month: number) => {
   }
 };
 
-export { getHistories, HistoryDataType };
+export default getHistories;

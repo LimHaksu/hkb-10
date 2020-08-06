@@ -1,0 +1,44 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.line-graph .error {
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.line-graph .graph .average,
+.line-graph .graph .labels {
+  dominant-baseline: central;
+}
+
+.line-graph .graph .labels.x-labels {
+  text-anchor: middle;
+}
+
+.line-graph .graph .labels.y-labels {
+  text-anchor: end;
+}
+
+.line-graph .graph {
+  padding: 50px;
+}
+
+.line-graph .graph .grid {
+  stroke: #ccc;
+  stroke-dasharray: 0;
+  stroke-width: 1;
+}
+
+.line-graph .graph g polyline {
+  fill: none;
+  stroke: var(--main-color);
+  stroke-width: 3;
+}
+
+.line-graph .graph circle {
+  fill: #ffffff;
+  stroke: var(--main-color);
+  stroke-width: 3px;
+}

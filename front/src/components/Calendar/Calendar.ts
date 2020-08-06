@@ -2,14 +2,11 @@ import Component from "../Component";
 import "./Calendar.scss";
 
 import RootModel from "../../models/RootModel";
+import CalendarModel from "../../models/CalendarModel";
 
-type dayMoney = {
-  day: number;
-  income: number;
-  outcome: number;
-};
+import { DateInfo, DateData } from "../../fetch/getDailyHistories";
 
-const calendarHTML = `<thead>
+const calendarHTML = /* html */ `<thead>
     <tr>
       <th scope="col">일</th>
       <th scope="col">월</th>
@@ -23,7 +20,7 @@ const calendarHTML = `<thead>
   <tbody></tbody>
 `;
 
-function daysInMonth(year: number, month: number) {
+function datesInMonth(year: number, month: number) {
   return new Date(year, month, -1).getDate() + 1;
 }
 
@@ -56,64 +53,64 @@ export default class Calendar extends Component {
     this.$tbody =
       this.view.querySelector("tbody") || document.createElement("tbody");
 
-    this.setCalendar();
-    this.subscriptions();
+    CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
+      this.changeDate(data.year, data.month);
+
+      if (data.data.length === 0) {
+        this.setCalendar();
+      } else {
+        this.setCalendar(data.data);
+      }
+    });
   }
 
   changeDate(year: number, month: number): void {
     this.year = year;
     this.month = month;
-
-    this.$tbody.innerHTML = ``;
-
-    // newFetch();
-
-    this.setCalendar();
   }
 
-  setData(data: dayMoney[]): void {
-    this.$tbody.innerHTML = ``;
-
-    this.setCalendar(data);
-  }
-
-  setCalendar(data?: dayMoney[]): void {
+  setCalendar(data?: DateInfo[]): void {
     if (!this.$tbody) {
       return;
     }
 
     const tbody = this.$tbody;
+    tbody.innerHTML = ``;
     const { year, month } = this;
 
     const startDay = new Date(`${year}-${month}`).getDay();
-    const currentMonthDays = daysInMonth(year, month);
+    const currentMonthDates = datesInMonth(year, month);
 
     const lastMonth = getLastMonth(year, month);
-    const lastMonthDays = daysInMonth(lastMonth.year, lastMonth.month);
+    const lastMonthDates = datesInMonth(lastMonth.year, lastMonth.month);
 
     let dataIndex = 0;
 
-    let beforeCount = lastMonthDays - (startDay - 1);
-    let dayCount = 1;
+    let beforeCount = lastMonthDates - (startDay - 1);
+    let dateCount = 1;
     let newCount = 1;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
+      if (dateCount > currentMonthDates) {
+        break;
+      }
+
       const tr = document.createElement("tr");
 
-      for (let day = 0; day < 7; day++) {
+      for (let date = 0; date < 7; date++) {
         const td = document.createElement("td");
 
-        if (day < startDay && beforeCount <= lastMonthDays) {
+        if (date < startDay && beforeCount <= lastMonthDates) {
           td.innerHTML = `<label>${beforeCount}</label><div></div>`;
 
           td.className = "null";
           beforeCount += 1;
-        } else if (dayCount <= currentMonthDays) {
+        } else if (dateCount <= currentMonthDates) {
           const content = document.createElement("div");
 
           if (
             data &&
             dataIndex < data.length &&
-            data[dataIndex].day === dayCount
+            data[dataIndex].date === dateCount
           ) {
             const curData = data[dataIndex];
 
@@ -131,10 +128,10 @@ export default class Calendar extends Component {
             dataIndex += 1;
           }
 
-          td.innerHTML = `<label>${dayCount}</label>`;
+          td.innerHTML = `<label>${dateCount}</label>`;
           td.appendChild(content);
 
-          dayCount += 1;
+          dateCount += 1;
         } else {
           td.innerHTML = `<label>${newCount}</label><div></div>`;
 
@@ -145,8 +142,6 @@ export default class Calendar extends Component {
       }
 
       tbody.appendChild(tr);
-
-      if (dayCount == currentMonthDays) break;
     }
   }
 
@@ -167,12 +162,7 @@ export default class Calendar extends Component {
     }
   }
 
-  private subscriptions() {
-    RootModel.subscribe(
-      "changeCalendarContent",
-      (data: { year: number; month: number }) => {
-        this.changeDate(data.year, data.month);
-      }
-    );
+  reRender(): void {
+    this.setCalendar();
   }
 }

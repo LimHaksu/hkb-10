@@ -1,0 +1,1 @@
+cd front/ && yarn && cd ../back/ && yarn

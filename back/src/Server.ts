@@ -10,6 +10,9 @@ import logger from "@shared/Logger";
 
 import apiRouter from "./apis";
 
+import passport from "passport";
+import passportConfig from "./config/passport";
+
 // Init express
 const app = express();
 
@@ -22,6 +25,10 @@ app.use(
     credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
   })
 );
+
+// passport 등록
+app.use(passport.initialize());
+passportConfig();
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === "development") {

@@ -1,3 +1,9 @@
+export interface TypeObservable {
+  subscribe: (key: string, callback: Function) => void;
+  unsubscribe: (key: string) => void;
+  nofity: (data: any) => void;
+}
+
 export default class Observable {
   private observers: Map<string, Function> = new Map();
 

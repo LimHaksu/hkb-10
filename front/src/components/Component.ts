@@ -66,4 +66,8 @@ export default class Component {
   setInnerHtml(html: string): void {
     this.view.innerHTML = html;
   }
+
+  reRender(): void {
+    return;
+  }
 }

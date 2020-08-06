@@ -29,10 +29,10 @@ class HistoryDay extends Component {
 </span>
 <span class="history-day-second">
     <span class="history-day-total-income">
-        +${totalIncome}원
+        +${totalIncome.toLocaleString()}원
     </span>
     <span class="history-day-total-outcome">
-        -${totalOutcome}원
+        -${totalOutcome.toLocaleString()}원
     </span>
 </span>`
     );

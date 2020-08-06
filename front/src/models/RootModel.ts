@@ -1,5 +1,10 @@
 import Observable from "./Observable";
 
+export type Date = {
+  year: number;
+  month: number;
+};
+
 class RootModel extends Observable {
   private year: number;
   private month: number;
@@ -9,6 +14,15 @@ class RootModel extends Observable {
     const now = new Date();
     this.year = now.getFullYear();
     this.month = now.getMonth() + 1;
+  }
+
+  setDate(date: { year: number; month: number }) {
+    this.year = date.year;
+    this.month = date.month;
+    this.notify({
+      year: this.year,
+      month: this.month,
+    });
   }
 
   getYear(): number {
@@ -26,7 +40,7 @@ class RootModel extends Observable {
       this.month = 1;
     }
 
-    const date = {
+    const date: Date = {
       year: this.year,
       month: this.month,
     };
@@ -41,7 +55,7 @@ class RootModel extends Observable {
       this.month = 12;
     }
 
-    const date = {
+    const date: Date = {
       year: this.year,
       month: this.month,
     };
