@@ -6,6 +6,7 @@ import Checkboxes from "./CheckBoxes";
 
 import StatisticsPageModel, { CASE } from "../../models/StatisticsPageModel";
 import PieChartModel from "../../models/PieChartModel";
+import LineGraphModel from "../../models/LineGraphModel";
 
 export default class Statistics extends Component {
   $lineGraph: LineGraph;
@@ -44,7 +45,7 @@ export default class Statistics extends Component {
           this.view.removeChild(this.$stickGraph.view);
           this.view.appendChild(this.$lineGraph.view);
 
-          this.$lineGraph.reRender();
+          LineGraphModel.customNotify();
           break;
         }
         case CASE.PIE: {
@@ -62,7 +63,7 @@ export default class Statistics extends Component {
   reRender(): void {
     switch (StatisticsPageModel.getCase()) {
       case CASE.LINE: {
-        this.$lineGraph.reRender();
+        LineGraphModel.customNotify();
         break;
       }
       case CASE.PIE: {

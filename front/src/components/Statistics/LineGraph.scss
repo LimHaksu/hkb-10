@@ -2,36 +2,42 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
-.graph .average,
-.graph .labels {
+.line-graph .error {
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.line-graph .graph .average,
+.line-graph .graph .labels {
   dominant-baseline: central;
 }
 
-.graph .labels.x-labels {
+.line-graph .graph .labels.x-labels {
   text-anchor: middle;
 }
 
-.graph .labels.y-labels {
+.line-graph .graph .labels.y-labels {
   text-anchor: end;
 }
 
-.graph {
+.line-graph .graph {
   padding: 50px;
 }
 
-.graph .grid {
+.line-graph .graph .grid {
   stroke: #ccc;
   stroke-dasharray: 0;
   stroke-width: 1;
 }
 
-.graph g polyline {
+.line-graph .graph g polyline {
   fill: none;
   stroke: var(--main-color);
   stroke-width: 3;
 }
 
-.graph circle {
+.line-graph .graph circle {
   fill: #ffffff;
   stroke: var(--main-color);
   stroke-width: 3px;

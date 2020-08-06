@@ -1,8 +1,7 @@
 import Component from "../Component";
 import LineGraphModel from "../../models/LineGraphModel";
-import RootModel from "../../models/RootModel";
 
-import getDailyOutcomes, { DataType } from "../../fetch/getDailyOutcomes";
+import { DataType } from "../../fetch/getDailyOutcomes";
 import {
   getStandards,
   createAverageLine,
@@ -30,25 +29,20 @@ export default class LineGraph extends Component {
     };
 
     this.view = document.createElement("div");
+    this.view.className = "line-graph";
 
     LineGraphModel.subscribe("changeLineGraph", async (data: DataType) => {
       this.setView(data);
     });
-
-    this.fetching();
-  }
-
-  fetching(): void {
-    getDailyOutcomes(RootModel.getYear(), RootModel.getMonth()).then(
-      (response) => {
-        if (response.success) {
-          this.setView(response.data);
-        }
-      }
-    );
   }
 
   setView(data: DataType): void {
+    if (data.dates.length === 0) {
+      const error = /* html */ `<div class="error"><h1>데이터를 받아오지 못했습니다</h1></div>`;
+      this.view.innerHTML = error;
+      return;
+    }
+
     const { array, average } = getStandards(data.dates);
     const first = array[0];
     const last = array[array.length - 1];
@@ -75,10 +69,5 @@ ${createDots(data.dates, first, last, this._size).join("\n")}
 </svg>
 `;
     this.view.innerHTML = content;
-  }
-
-  reRender(): void {
-    const before = this.view.innerHTML;
-    this.view.innerHTML = before;
   }
 }
