@@ -34,6 +34,7 @@ export default class StickGraph extends Component {
   private _size: PieChartSize;
   private _startColor: Color;
   private _endColor: Color;
+  private delay: number;
 
   private $ul: HTMLUListElement;
 
@@ -56,6 +57,7 @@ export default class StickGraph extends Component {
       G: 180,
       B: 222,
     };
+    this.delay = 100;
 
     this.view = document.createElement("div");
     this.view.className = "stick_graph";
@@ -75,6 +77,7 @@ export default class StickGraph extends Component {
   setView(data: Data[]): void {
     // SAFE GUARD!!
     if (data.length === 0) {
+      this.setEmptyData();
       return;
     }
 
@@ -86,7 +89,7 @@ export default class StickGraph extends Component {
       G: (this._endColor.G - this._startColor.G) / data.length,
       B: (this._endColor.B - this._startColor.B) / data.length,
     };
-    const barWidth = this._size.width * 0.6;
+    const barWidth = this._size.width * 0.4;
 
     const arr: string[] = [];
     data.forEach((cur, index) => {
@@ -120,7 +123,24 @@ export default class StickGraph extends Component {
       setTimeout(() => {
         const percent = Number(stick.dataset.percent);
         stick.style.width = `${(percent / 100) * barWidth}px`;
-      }, (1000 / data.length) * index);
+      }, this.delay + (1000 / data.length) * index);
     });
+  }
+
+  setEmptyData(): void {
+    this.$ul.innerHTML = `<li>
+    <div class="category">
+      <p>내역이 없습니다.</p>
+    </div>
+    <div class="percent">
+      <p>0%</p>
+    </div>
+    <div class="graph">
+      <div class="bar" data-percent="100" style="background-color: #dddddd;"></div>
+    </div>
+    <div class="amount">
+      <p>0원</p>
+    </div>
+    </li>`;
   }
 }
