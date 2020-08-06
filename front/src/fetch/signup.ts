@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const signup = async (id: string, password: string) => {
   try {

@@ -1,6 +1,6 @@
 import getFetchHeaders from "../utils/getFetchHeaders";
 
-const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const getPaymentMethods = async () => {
   try {

@@ -1,7 +1,7 @@
 import { HistoryDataType } from "./";
 import getFetchHeaders from "../utils/getFetchHeaders";
 
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const postHistory = async (history: HistoryDataType) => {
   try {
