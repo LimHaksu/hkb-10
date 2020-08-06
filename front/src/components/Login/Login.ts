@@ -26,7 +26,8 @@ class Login extends Component {
   loginCheckBeforeRender() {
     const token = sessionStorage.getItem("token");
     if (token) {
-      path.pushState(undefined, "이미 로그인 하셨습니다", "/history");
+      // path.pushState(undefined, "이미 로그인 하셨습니다", "/history");
+      path.pushState(undefined, "이미 로그인 하셨습니다", path.getPath());
     }
   }
 
