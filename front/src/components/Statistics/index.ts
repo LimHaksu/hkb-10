@@ -62,5 +62,6 @@ export default class Statistics extends Component {
   reRender(): void {
     this.$lineGraph.reRender();
     this.$pieChart.reRender();
+    this.$stickGraph.reRender();
   }
 }
