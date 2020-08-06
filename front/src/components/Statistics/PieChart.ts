@@ -70,6 +70,11 @@ export default class PieChart extends Component {
   }
 
   setView(data: Data[]): void {
+    // SAFE GUARD!!
+    if (data.length === 0) {
+      return;
+    }
+
     const r = this.r;
     const cx = this.cx;
     const cy = this.cy;

@@ -73,6 +73,7 @@ export default class StickGraph extends Component {
   }
 
   setView(data: Data[]): void {
+    // SAFE GUARD!!
     if (data.length === 0) {
       return;
     }
