@@ -45,13 +45,18 @@ class CalendarModel extends Observable {
     }
     const { year, month } = this.dateData;
 
-    getDailyHistories(year, month).then((response: ApiResponse) => {
-      if (response.success) {
-        this.dateData.data = response.data.data;
-      }
+    getDailyHistories(year, month)
+      .then((response: ApiResponse) => {
+        if (response.success) {
+          this.dateData.data = response.data.data;
+        }
 
-      this.notify(this.dateData);
-    });
+        this.notify(this.dateData);
+      })
+      .catch(() => {
+        this.dateData.data = [];
+        this.notify(this.dateData);
+      });
   }
 
   getDateDate() {

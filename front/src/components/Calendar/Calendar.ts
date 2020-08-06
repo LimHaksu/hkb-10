@@ -55,15 +55,18 @@ export default class Calendar extends Component {
 
     CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
       this.changeDate(data.year, data.month);
-      this.setCalendar(data.data);
+
+      if (data.data.length === 0) {
+        this.setCalendar();
+      } else {
+        this.setCalendar(data.data);
+      }
     });
   }
 
   changeDate(year: number, month: number): void {
     this.year = year;
     this.month = month;
-
-    this.setCalendar();
   }
 
   setCalendar(data?: DateInfo[]): void {
