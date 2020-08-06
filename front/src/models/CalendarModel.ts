@@ -1,6 +1,9 @@
 import Observable from "./Observable";
 
 import RootModel, { Date } from "./RootModel";
+import Path from "../router/Path";
+
+import { CALENDAR } from "../router/PathConstants";
 
 import getDailyHistories, {
   ApiResponse,
@@ -19,28 +22,44 @@ class CalendarModel extends Observable {
     this.dateData.year = RootModel.getYear();
     this.dateData.month = RootModel.getMonth();
 
-    RootModel.subscribe("changeTimeCalendar", async (data: Date) => {
+    RootModel.subscribe("changeTimeCalendar", (data: Date) => {
       this.dateData.year = data.year;
       this.dateData.month = data.month;
 
-      await this.fetchData(data.year, data.month);
-
-      this.notify(this.dateData);
+      this.setData();
     });
 
-    this.fetchData(this.dateData.year, this.dateData.month);
+    Path.subscribe("calendarModel", (pathName: string) => {
+      if (pathName !== CALENDAR) {
+        return;
+      }
+      this.setData();
+    });
+
+    this.setData();
   }
 
-  fetchData(year: number, month: number): void {
+  setData(): void {
+    if (Path.getPath() !== CALENDAR) {
+      return;
+    }
+    const { year, month } = this.dateData;
+
     getDailyHistories(year, month).then((response: ApiResponse) => {
       if (response.success) {
         this.dateData.data = response.data.data;
       }
+
+      this.notify(this.dateData);
     });
   }
 
   getDateDate() {
     return this.dateData;
+  }
+
+  customNotify() {
+    this.notify(this.dateData);
   }
 }
 

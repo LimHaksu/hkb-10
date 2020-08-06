@@ -53,14 +53,15 @@ export default class Calendar extends Component {
     this.$tbody =
       this.view.querySelector("tbody") || document.createElement("tbody");
 
-    this.subscriptions();
+    CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
+      this.changeDate(data.year, data.month);
+      this.setCalendar(data.data);
+    });
   }
 
   changeDate(year: number, month: number): void {
     this.year = year;
     this.month = month;
-
-    this.$tbody.innerHTML = ``;
 
     this.setCalendar();
   }
@@ -158,15 +159,7 @@ export default class Calendar extends Component {
     }
   }
 
-  private subscriptions() {
-    CalendarModel.subscribe("changeCalendarContent", (data: DateData) => {
-      this.changeDate(data.year, data.month);
-      this.setCalendar(data.data);
-    });
-  }
-
   reRender(): void {
-    this.$tbody.innerHTML = ``;
     this.setCalendar();
   }
 }
