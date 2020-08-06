@@ -1,5 +1,6 @@
 import Observable from "../../Observable";
 import RootModel from "../../RootModel";
+import Path from "../../../router/Path";
 import fetch, { HistoryDataType } from "../../../fetch";
 
 import Path from "../../../router/Path";
@@ -8,10 +9,12 @@ import { HISTORY } from "../../../router/PathConstants";
 class HistoryListModel extends Observable {
   private histories: HistoryDataType[] = [];
   rootModel: typeof RootModel;
+  path: typeof Path;
   constructor() {
     super();
 
     this.rootModel = RootModel;
+    this.path = Path;
 
     this.subscribeModels();
   }
