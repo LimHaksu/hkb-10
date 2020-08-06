@@ -47,29 +47,24 @@ class CategoryModel extends Observable {
   }
 
   init() {
-    Path.subscribe("subPathInCategoryModel", (pathName: string) => {
-      if (pathName === HISTORY) {
-        fetch.getCategories().then((categories) => {
-          categories.forEach((category: Category) => {
-            const { id, value, content, income } = category;
-            this.classifiedCategories[income === 1 ? "income" : "outcome"].push(
-              {
-                id,
-                textContent: content,
-                value: value.toString(),
-              }
-            );
-            this.categoryTextContentValueMap[
-              income === 1 ? "income" : "outcome"
-            ].set(content, value.toString());
-            this.categoryTextContentIdMap[
-              income === 1 ? "income" : "outcome"
-            ].set(content, id);
-          });
-
-          this.notify(this.categories);
+    fetch.getCategories().then((categories) => {
+      categories.forEach((category: Category) => {
+        const { id, value, content, income } = category;
+        this.classifiedCategories[income === 1 ? "income" : "outcome"].push({
+          id,
+          textContent: content,
+          value: value.toString(),
         });
-      }
+        this.categoryTextContentValueMap[
+          income === 1 ? "income" : "outcome"
+        ].set(content, value.toString());
+        this.categoryTextContentIdMap[income === 1 ? "income" : "outcome"].set(
+          content,
+          id
+        );
+      });
+
+      this.notify(this.categories);
     });
   }
 
