@@ -41,6 +41,10 @@ class PathModel extends Observable {
     this.$pathName = path;
     this.notify(this.$pathName);
   }
+
+  getPath() {
+    return this.$pathName;
+  }
 }
 
 export default new PathModel();

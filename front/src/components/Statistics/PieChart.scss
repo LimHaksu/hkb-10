@@ -1,0 +1,39 @@
+svg.pie {
+  border: 1px #000000 solid;
+
+  background: #eee;
+}
+
+svg.pie circle {
+  fill: transparent;
+  stroke-dasharray: 0 158;
+  transition: stroke-dasharray 1s ease-out;
+}
+
+svg.pie circle.base {
+  fill: #fff;
+  transition: none;
+}
+
+svg.pie text {
+  font-size: 0.2em;
+  dominant-baseline: middle;
+
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+svg.pie text.left {
+  text-anchor: start;
+}
+svg.pie text.right {
+  text-anchor: end;
+}
+svg.pie text.middle {
+  text-anchor: middle;
+}
+
+svg.pie text.percent {
+  font-size: 0.15em;
+  fill: var(--main-color);
+}
