@@ -19,6 +19,25 @@ class PieChartModel extends Observable {
 
       this.notify(this.pieData);
     });
+
+    this.setData();
+  }
+
+  setData() {
+    const year = RootModel.getYear();
+    const month = RootModel.getMonth();
+
+    getCategoryOutcome(year, month).then((response) => {
+      if (response.success) {
+        this.pieData = response.data;
+      }
+
+      this.notify(this.pieData);
+    });
+  }
+
+  customNotify() {
+    this.notify(this.pieData);
   }
 }
 

@@ -22,10 +22,32 @@ class CalendarModel extends Observable {
       const response = await getDailyOutcomes(data.year, data.month);
       if (response.success) {
         this.dateData.dates = response.data.dates;
+        this.notify(this.dateData);
+      } else {
+        this.dateData.dates = [];
+        this.notify(this.dateData);
       }
-
-      this.notify(this.dateData);
     });
+
+    this.setData();
+  }
+
+  setData() {
+    getDailyOutcomes(this.dateData.year, this.dateData.month).then(
+      (response) => {
+        if (response.success) {
+          this.dateData.dates = response.data.dates;
+          this.notify(this.dateData);
+        } else {
+          this.dateData.dates = [];
+          this.notify(this.dateData);
+        }
+      }
+    );
+  }
+
+  customNotify() {
+    this.notify(this.dateData);
   }
 }
 
