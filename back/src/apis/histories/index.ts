@@ -3,6 +3,8 @@ import { Router } from "express";
 import getDailyHistories from "./getDailyHistories";
 import getHistories from "./getHistories";
 
+import passport from "passport";
+
 const historiesRouter = Router();
 
 /**
@@ -29,7 +31,11 @@ historiesRouter.get("/daily/:year/:month", getDailyHistories);
  * @apiSuccess {boolean} success  호출 성공 여부
  * @apiSuccess {Object} data  해당 월의 내역 전부
  */
-historiesRouter.get("/:year/:month", getHistories);
+historiesRouter.get(
+  "/:year/:month",
+  passport.authenticate("jwt", { session: false }),
+  getHistories
+);
 
 // Export the base-router
 export default historiesRouter;
