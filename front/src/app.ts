@@ -18,20 +18,31 @@ path.subscribe("changePath", (path: string) => {
   router.changeComponent(path);
 });
 
+function isLoggedIn(): boolean {
+  const token = sessionStorage.getItem("token");
+  if (token) {
+    return true;
+  }
+  return false;
+}
+
 function init() {
   const app = document.getElementById("app");
   if (!app) {
     return;
   }
 
-  const url = new URL(document.URL);
-  const pathName = url instanceof URL ? url.pathname : url;
-
   app.appendChild(new Header().view);
   app.appendChild(new Menu().view);
 
   app.appendChild(router.getWrapper());
-  path.changePath(pathName);
+  if (isLoggedIn()) {
+    const url = new URL(document.URL);
+    const pathName = url instanceof URL ? url.pathname : url;
+    path.changePath(pathName);
+  } else {
+    path.changePath("/login");
+  }
 }
 
 init();
