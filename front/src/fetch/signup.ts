@@ -9,9 +9,7 @@ const signup = async (id: string, password: string) => {
       body: JSON.stringify({ id, password }),
     });
     const result = await response.json();
-    if (result.success) {
-      return result.data;
-    }
+    return result.data;
   } catch (error) {
     console.log(error);
   }

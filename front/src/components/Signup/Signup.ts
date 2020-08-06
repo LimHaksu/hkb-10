@@ -2,6 +2,7 @@ import Component from "../Component";
 import { Button, Input } from "../common";
 import fetch from "../../fetch";
 import "./Signup.scss";
+import Path from "../../router/Path";
 
 class Signup extends Component {
   formSignup: Component | null = null;
@@ -22,8 +23,13 @@ class Signup extends Component {
   handleButtonSubmitClicked() {
     const id = (<HTMLInputElement>this.inputId?.view).value;
     const password = (<HTMLInputElement>this.inputPw?.view).value;
-    fetch.signup(id, password).then((response) => {
-      console.log("회원가입?", response);
+    fetch.signup(id, password).then((result) => {
+      if (result !== "conflictId") {
+        alert("회원가입 성공!");
+        Path.changePath("/login");
+      } else {
+        alert("이미 가입된 아이디입니다.");
+      }
     });
   }
 
