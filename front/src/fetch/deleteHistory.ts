@@ -5,7 +5,7 @@ const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 const deleteHistory = async (historyId: number) => {
   try {
     const headers = getFetchHeaders();
-    const response = await fetch(`${baseUrl}/history/${historyId}`, {
+    const response = await fetch(`${baseUrl}/api/history/${historyId}`, {
       mode: "cors",
       method: "DELETE",
       headers,

@@ -24,6 +24,7 @@ type ApiResponse =
     };
 
 async function getDailyHistories(
+  userId: string,
   year: number,
   month: number
 ): Promise<ApiResponse> {
@@ -31,7 +32,7 @@ async function getDailyHistories(
     success: false,
   };
   const headers = getFetchHeaders();
-  await fetch(`${baseUrl}/api/histories/daily/${year}/${month}`, {
+  await fetch(`${baseUrl}/api/histories/daily/${userId}/${year}/${month}`, {
     mode: "cors",
     method: "GET",
     headers,

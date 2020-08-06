@@ -26,8 +26,8 @@ export default class Header extends Component {
   }
 
   subscribeModels() {
-    this.loginModel.subscribe("subLoginInHeader", (isLoggedIn: boolean) => {
-      if (isLoggedIn) {
+    this.loginModel.subscribe("subLoginInHeader", (loggedInUserId: string) => {
+      if (loggedInUserId) {
         this.buttonLogout?.classList.remove("display-none");
       } else {
         this.buttonLogout?.classList.add("display-none");
@@ -38,7 +38,7 @@ export default class Header extends Component {
   init() {
     this.buttonLogout?.addEventListener("click", () => {
       sessionStorage.clear();
-      this.loginModel.setIsLoggedIn(false);
+      this.loginModel.setLogout();
       location.href = "/";
     });
   }

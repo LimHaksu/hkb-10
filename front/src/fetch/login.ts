@@ -2,7 +2,7 @@ const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const login = async (id: string, password: string) => {
   try {
-    const response = await fetch(`${baseUrl}/login`, {
+    const response = await fetch(`${baseUrl}/api/login`, {
       mode: "cors",
       method: "POST",
       headers: { "Content-Type": "application/json" },
