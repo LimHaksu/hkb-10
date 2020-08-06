@@ -1,15 +1,8 @@
 const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
-type DateInfo = {
-  date: number;
-  income: number;
-  outcome: number;
-};
-
-type DateData = {
-  year: number;
-  month: number;
-  data: DateInfo[];
+type CategoryInfo = {
+  value: number;
+  title: string;
 };
 
 type ApiResponse =
@@ -18,7 +11,7 @@ type ApiResponse =
     }
   | {
       success: true;
-      data: DateData;
+      data: CategoryInfo[];
     };
 
 async function getDailyHistories(
@@ -29,7 +22,7 @@ async function getDailyHistories(
     success: false,
   };
 
-  await fetch(`${baseUrl}/api/histories/daily/${year}/${month}`, {
+  await fetch(`${baseUrl}/api/histories/outcome/category/${year}/${month}`, {
     mode: "cors",
     method: "GET",
   })
@@ -42,4 +35,4 @@ async function getDailyHistories(
 }
 
 export default getDailyHistories;
-export { ApiResponse, DateData, DateInfo };
+export { ApiResponse, CategoryInfo };

@@ -11,13 +11,15 @@ import History from "./components/History";
 import Calendar from "./components/Calendar";
 import Statistics from "./components/Statistics";
 
+import { HISTORY, CALENDAR, STATISTICS } from "./router/PathConstants";
+
 import "./stylesheet/main.scss";
 
 router.setComponent("/login", new Login());
 router.setComponent("/signup", new Signup());
-router.setComponent("/history", new History());
-router.setComponent("/calendar", new Calendar());
-router.setComponent("/statistics", new Statistics());
+router.setComponent(HISTORY, new History());
+router.setComponent(CALENDAR, new Calendar());
+router.setComponent(STATISTICS, new Statistics());
 
 path.subscribe("changePath", (path: string) => {
   router.changeComponent(path);

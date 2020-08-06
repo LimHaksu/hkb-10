@@ -3,6 +3,9 @@ import RootModel from "../../RootModel";
 import Path from "../../../router/Path";
 import fetch, { HistoryDataType } from "../../../fetch";
 
+import Path from "../../../router/Path";
+import { HISTORY } from "../../../router/PathConstants";
+
 class HistoryListModel extends Observable {
   private histories: HistoryDataType[] = [];
   rootModel: typeof RootModel;
@@ -32,19 +35,26 @@ class HistoryListModel extends Observable {
     this.rootModel.subscribe(
       "subRootInHistoryListModel",
       (date: { year: number; month: number }) => {
+        if (Path.getPath() !== HISTORY) {
+          return;
+        }
         this.fetchGetHistories(date.year, date.month);
       }
     );
-    this.path.subscribe("subPathInHistoryListModel", (pathName: string) => {
-      if (pathName === "/history") {
-        const year = this.rootModel.getYear();
-        const month = this.rootModel.getMonth();
-        this.fetchGetHistories(year, month);
+    Path.subscribe("historyListModelChange", (pathName: string) => {
+      if (pathName !== HISTORY) {
+        return;
       }
+      const year = RootModel.getYear();
+      const month = RootModel.getMonth();
+      this.fetchGetHistories(year, month);
     });
   }
 
   initData() {
+    if (Path.getPath() !== HISTORY) {
+      return;
+    }
     const year = this.rootModel.getYear();
     const month = this.rootModel.getMonth();
     this.fetchGetHistories(year, month);

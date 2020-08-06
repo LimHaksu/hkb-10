@@ -1,5 +1,3 @@
-import data from "./dummyData";
-
 const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
 
 type DateInfo = {
@@ -26,10 +24,18 @@ async function getDailyHistories(
   year: number,
   month: number
 ): Promise<ApiResponse> {
-  const ret: ApiResponse = {
-    success: true,
-    data: data,
+  let ret: ApiResponse = {
+    success: false,
   };
+
+  await fetch(`${baseUrl}/api/histories/outcome/daily/${year}/${month}`, {
+    mode: "cors",
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((res: ApiResponse) => {
+      ret = res;
+    });
 
   return ret;
 }
