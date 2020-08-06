@@ -1,3 +1,5 @@
+import login from "./login";
+import signup from "./signup";
 import getCategories from "./getCategories";
 import getHistories from "./getHistories";
 import getPaymentMethods from "./getPaymentMethods";
@@ -22,6 +24,8 @@ interface PaymentMethodDataType {
 
 export { HistoryDataType, PaymentMethodDataType };
 export default {
+  login,
+  signup,
   getCategories,
   getHistories,
   getPaymentMethods,

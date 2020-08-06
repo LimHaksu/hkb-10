@@ -5,12 +5,13 @@ import Path from "../../../router/Path";
 import { HISTORY } from "../../../router/PathConstants";
 
 class PaymentMethodModel extends Observable {
+  path = Path;
   private paymentMethods: SelectOption[] = [];
   private paymentMethodTextContentValueMap: Map<string, string> = new Map();
 
   constructor() {
     super();
-
+    
     Path.subscribe("paymentMethodChange", (pathName: string) => {
       if (pathName !== HISTORY) {
         return;

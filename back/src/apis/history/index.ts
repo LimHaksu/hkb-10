@@ -4,6 +4,8 @@ import postHistory from "./postHistory";
 import putHistory from "./putHistory";
 import deleteHistory from "./deleteHistory";
 
+import passport from "passport";
+
 const historyRouter = Router();
 
 /**
@@ -21,7 +23,11 @@ const historyRouter = Router();
  * @apiSuccess {boolean} success  호출 성공 여부
  * @apiSuccess {Object} data  새로 생성한 내역
  */
-historyRouter.post("/", postHistory);
+historyRouter.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  postHistory
+);
 
 /**
  * @api {put} /history  기존 내역을 수정함
@@ -39,7 +45,11 @@ historyRouter.post("/", postHistory);
  * @apiSuccess {boolean} success  호출 성공 여부
  * @apiSuccess {Object} data  수정후 내역
  */
-historyRouter.put("/", putHistory);
+historyRouter.put(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  putHistory
+);
 
 /**
  * @api {delete} /history/:id  해당 id를 가진 내역을 갱신함
@@ -51,7 +61,11 @@ historyRouter.put("/", putHistory);
  * @apiSuccess {boolean} success  호출 성공 여부
  * @apiSuccess {Object} data  삭제한 내역의 데이터
  */
-historyRouter.delete("/:id", deleteHistory);
+historyRouter.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  deleteHistory
+);
 
 // Export the base-router
 export default historyRouter;
