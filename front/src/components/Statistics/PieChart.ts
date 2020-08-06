@@ -35,6 +35,7 @@ export default class PieChart extends Component {
   private cx: number;
   private cy: number;
   private r: number;
+  private delay: number;
 
   private _startColor: Color;
   private _endColor: Color;
@@ -61,6 +62,7 @@ export default class PieChart extends Component {
     this.r = 20;
     this.cx = 50;
     this.cy = 50;
+    this.delay = 100;
 
     this.view = document.createElement("div");
 
@@ -72,6 +74,7 @@ export default class PieChart extends Component {
   setView(data: Data[]): void {
     // SAFE GUARD!!
     if (data.length === 0) {
+      this.setEmptyData();
       return;
     }
 
@@ -160,7 +163,7 @@ export default class PieChart extends Component {
 
         setTimeout(() => {
           circle.style.strokeDasharray = `${result} ${maxLength - result}`;
-        }, 100 + index * 100);
+        }, this.delay + 100 + index * 100);
       });
 
     Array.from(textArr)
@@ -168,7 +171,33 @@ export default class PieChart extends Component {
       .forEach((text, index) => {
         setTimeout(() => {
           text.style.opacity = `${1}`;
-        }, 100 + 200 + index * 100);
+        }, this.delay + 100 + 200 + index * 100);
       });
+  }
+
+  setEmptyData() {
+    const r = this.r;
+    const cx = this.cx;
+    const cy = this.cy;
+
+    this.view.innerHTML = `
+<svg viewbox="0 0 100 100" class="pie" width="${this._size.width}" height="${
+      this._size.height
+    }">
+<circle
+r="${r}"
+stroke="#dddddd"
+data-percent="100"
+transform="rotate(-90) translate(-${cy} ${cx})"
+style="stroke-width: ${r * 2};"
+></circle>
+<text transform="translate(50 51)" percent" class="middle"
+>0%</text>
+<text transform="translate(50 47)" class="middle"
+>데이터가 없습니다.</text>
+</svg>
+    `;
+
+    this.animate();
   }
 }
