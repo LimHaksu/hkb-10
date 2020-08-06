@@ -37,14 +37,8 @@ export default class LineGraph extends Component {
   }
 
   setView(data: DataType): void {
-    if (data.dates.length === 0) {
-      const error = /* html */ `<div class="error"><h1>데이터를 받아오지 못했습니다</h1></div>`;
-      this.view.innerHTML = error;
-      return;
-    }
-
     const { array, average } = getStandards(data.dates);
-    const first = array[0];
+    const first = 0;
     const last = array[array.length - 1];
 
     const content = /*html*/ `

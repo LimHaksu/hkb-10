@@ -19,18 +19,18 @@ export type GraphSize = {
 export function getStandards(
   dateArray: DateData[]
 ): { array: number[]; average: number } {
-  if (dateArray.length === 0) {
-    return { array: [0], average: 0 };
-  }
-
   let max = dateArray[0].amount;
   let min = dateArray[0].amount;
   let sum = 0;
+  let zeroCount = 0;
 
   dateArray.forEach((cur) => {
     max = Math.max(cur.amount, max);
     min = Math.min(cur.amount, min);
     sum += cur.amount;
+    if (cur.amount === 0) {
+      zeroCount += 1;
+    }
   });
 
   const start = Math.floor(min / 5) * 5;
@@ -41,7 +41,11 @@ export function getStandards(
     arr.push(i);
   }
 
-  const average = Math.floor(sum / dateArray.length);
+  const average = sum / (dateArray.length - zeroCount);
+
+  if (max === 0) {
+    return { array: [0, 5], average: 0 };
+  }
 
   return { array: arr, average: average };
 }
@@ -54,8 +58,7 @@ export function createAverageLine(
 ): string {
   const graphHeight = size.height - size.top - size.bottom;
 
-  const percent = Math.floor(((average - first) / (last - first)) * 100);
-
+  const percent = ((average - first) / (last - first)) * 100;
   const averageY = (1 - percent / 100) * graphHeight + size.top;
 
   return /*html*/ `<line x1="80" x2="720" y1="${averageY}" y2="${averageY}" stroke-dasharray="5,5" stroke-width="2">
@@ -76,7 +79,7 @@ export function createStandardsLine(
 ): string[] {
   const elements: string[] = [];
   const graphHeight = size.height - size.top - size.bottom;
-  const standard = Math.floor(graphHeight / (dateArray.length - 1));
+  const standard = graphHeight / (dateArray.length - 1);
 
   dateArray.forEach((cur, index) => {
     const curY = graphHeight - index * standard + size.top;
