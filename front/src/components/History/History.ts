@@ -38,13 +38,15 @@ class History extends Component {
   setTotalIncomeOutcome(historyDatas: HistoryDataType[]) {
     this.totalIncome = 0;
     this.totalOutcome = 0;
-    historyDatas.forEach((data) => {
-      if (data.income) {
-        this.totalIncome += data.amount;
-      } else {
-        this.totalOutcome += data.amount;
-      }
-    });
+    if (historyDatas instanceof Array) {
+      historyDatas.forEach((data) => {
+        if (data.income) {
+          this.totalIncome += data.amount;
+        } else {
+          this.totalOutcome += data.amount;
+        }
+      });
+    }
     this.spanIncomeAmount?.setInnerHtml(
       `${this.totalIncome.toLocaleString()}원`
     );
