@@ -8,6 +8,7 @@ import {
   createDateStandards,
   createDots,
   createStandards,
+  createTotalAverageLine,
   createStandardsLine,
   createPolyLine,
   GraphSize,
@@ -37,7 +38,7 @@ export default class LineGraph extends Component {
   }
 
   setView(data: DataType): void {
-    const { array, average } = getStandards(data.dates);
+    const { array, average, totalAverage } = getStandards(data.dates);
     const first = 0;
     const last = array[array.length - 1];
 
@@ -49,6 +50,7 @@ export default class LineGraph extends Component {
     }" stroke-width="5"></line>
 ${createStandardsLine(array, this._size).join("\n")}
 ${createAverageLine(average, first, last, this._size)}
+${createTotalAverageLine(totalAverage, first, last, this._size)}
 </g>
 <g class="labels x-labels">
 ${createDateStandards(data.year, data.month, this._size).join("\n")}
