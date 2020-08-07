@@ -9,6 +9,7 @@ import {
   HistoryListModel,
   HistoryDataType,
 } from "../../models/HistoryModel";
+import Path from "../../router/Path";
 import "./History.scss";
 
 class History extends Component {
@@ -56,6 +57,11 @@ class History extends Component {
   }
 
   subscribeModels() {
+    Path.subscribe("subPathInHistory", (pathName: string) => {
+      CheckboxModel.setIsIncomeChecked(true);
+      CheckboxModel.setIsOutcomeChecked(true);
+    });
+
     this.checkboxModel.subscribe(
       "subCheckboxInHistory",
       (isChecked: TypeCheckbox) => {
