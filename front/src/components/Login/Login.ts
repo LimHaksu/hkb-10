@@ -38,6 +38,8 @@ class Login extends Component {
         sessionStorage.setItem("token", `Bearer ${token}`);
         this.loginModel.setLoggedInUserId(id);
         path.pushState(undefined, "로그인 성공!", "/history");
+      } else {
+        alert("로그인 실패! 아이디, 비밀번호를 다시 확인해주세요.");
       }
     });
   }
