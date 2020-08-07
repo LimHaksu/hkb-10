@@ -6,9 +6,9 @@ import {
   getEncryptedPasswordWithSalt,
 } from "../shared/functions";
 
-const SELECT_USER_BY_ID = `SELECT full_name id, password, salt FROM users WHERE full_name=?`;
+const SELECT_USER_BY_ID = `SELECT id, password, salt FROM users WHERE id=?`;
 
-const CREATE_USER = `INSERT INTO users (full_name, password, salt, is_deleted) VALUES (?, ?, ?, 0)`;
+const CREATE_USER = `INSERT INTO users (id, password, salt, is_deleted) VALUES (?, ?, ?, 0)`;
 
 class UserDAO extends DAO {
   constructor(option: mysql.PoolOptions) {

@@ -15,6 +15,7 @@ import {
   SelectOption,
 } from "../../models/HistoryModel";
 import { SelectedHistoryModel } from "../../models/HistoryModel/HistoryList";
+import LoginModel from "../../models/LoginModel";
 import RootModel from "../../models/RootModel";
 import fetch from "../../fetch/";
 import "./InputForm.scss";
@@ -112,6 +113,11 @@ class InputForm extends Component {
   }
 
   resetInputs() {
+    // 확인버튼을 위한 유효성 검사 초기화
+    this.validationMap.forEach((_, key) => {
+      this.validationMap.set(key, false);
+    });
+
     // 분류 초기화
     this.classificationModel.setClassifiacation("outcome");
 
@@ -129,11 +135,6 @@ class InputForm extends Component {
 
     // 내용 초기화
     (<HTMLInputElement>this.inputDetail?.view).value = "";
-
-    // 확인버튼을 위한 유효성 검사 초기화
-    this.validationMap.forEach((_, key) => {
-      this.validationMap.set(key, false);
-    });
 
     this.editFlagModel.setEditMode(false);
     this.checkAllInputsValidation();
@@ -155,15 +156,16 @@ class InputForm extends Component {
 
   fetchPostHistory(history: History) {
     const { year, month } = history;
-    fetch.postHistory(history).then((response) => {
+    const userId = LoginModel.getLoggedInUserId();
+    fetch.postHistory(userId, history).then((response) => {
       this.rootModel.setDate({ year, month });
     });
   }
 
   fetchPutHistory(history: History) {
     const { year, month } = history;
-    const id = this.selectedHistoryModel.getSelectedHistoryId();
-    fetch.putHistory(history).then((response) => {
+    const userId = LoginModel.getLoggedInUserId();
+    fetch.putHistory(userId, history).then((response) => {
       this.rootModel.setDate({ year, month });
     });
   }

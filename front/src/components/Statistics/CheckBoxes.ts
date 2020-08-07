@@ -2,6 +2,8 @@ import Component from "../Component";
 
 import StatisticsPageModel, { CASE } from "../../models/StatisticsPageModel";
 
+import "./CheckBoxes.scss";
+
 const checkbox = /* html */ `
 <p>카테고리별 지출 <input type="radio" name="display" value="category"/></p>
 <p>일별 지출 <input type="radio" name="display" value="daily"/></p>

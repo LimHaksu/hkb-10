@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import getCalenderData from "../../services/getCalenderData";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  const { year, month } = req.params;
+  const { userId, year, month } = req.params;
 
-  const data = await getCalenderData(Number(year), Number(month));
+  const data = await getCalenderData(userId, Number(year), Number(month));
 
   const ret = {
     success: true,

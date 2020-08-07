@@ -18,7 +18,7 @@ export type GraphSize = {
 
 export function getStandards(
   dateArray: DateData[]
-): { array: number[]; average: number } {
+): { array: number[]; average: number; totalAverage: number } {
   let max = dateArray[0].amount;
   let min = dateArray[0].amount;
   let sum = 0;
@@ -41,16 +41,40 @@ export function getStandards(
     arr.push(i);
   }
 
+  const totalAverage = sum / dateArray.length;
   const average = sum / (dateArray.length - zeroCount);
 
   if (max === 0) {
-    return { array: [0, 5], average: 0 };
+    return { array: [0, 5], average: 0, totalAverage: totalAverage };
   }
 
-  return { array: arr, average: average };
+  return { array: arr, average: average, totalAverage: totalAverage };
 }
 
 export function createAverageLine(
+  average: number,
+  first: number,
+  last: number,
+  size: GraphSize
+): string {
+  const graphHeight = size.height - size.top - size.bottom;
+
+  const percent = ((average - first) / (last - first)) * 100;
+  const averageY = (1 - percent / 100) * graphHeight + size.top;
+
+  return /*html*/ `<line x1="80" x2="680" y1="${averageY}" y2="${averageY}" stroke-dasharray="5,5" stroke-width="2" stroke="#760059">
+    <animate attributeName="y1" begin="0s" dur="${ANIMATION_TIME}s"
+    from="${graphHeight + size.top}" to="${averageY}" ${ANIMATION_CALC}/>
+    <animate attributeName="y2" begin="0s" dur="${ANIMATION_TIME}s"
+    from="${graphHeight + size.top}" to="${averageY}" ${ANIMATION_CALC}/>
+  </line>
+  <text y="${averageY}" x="680" class="average">이번달 지출 평균
+    <animate attributeName="y" begin="0s" dur="${ANIMATION_TIME}s"
+    from="${graphHeight + size.top}" to="${averageY}" ${ANIMATION_CALC}/>
+  </text>`;
+}
+
+export function createTotalAverageLine(
   average: number,
   first: number,
   last: number,

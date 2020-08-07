@@ -3,6 +3,7 @@ import fetch, { PaymentMethodDataType } from "../../../fetch";
 import { SelectOption } from "..";
 import Path from "../../../router/Path";
 import { HISTORY } from "../../../router/PathConstants";
+import LoginModel from "../../../models/LoginModel";
 
 class PaymentMethodModel extends Observable {
   path = Path;
@@ -11,7 +12,7 @@ class PaymentMethodModel extends Observable {
 
   constructor() {
     super();
-    
+
     Path.subscribe("paymentMethodChange", (pathName: string) => {
       if (pathName !== HISTORY) {
         return;
@@ -25,34 +26,41 @@ class PaymentMethodModel extends Observable {
     return this.paymentMethodTextContentValueMap.get(textContent);
   }
 
+  getPaymentMethods() {
+    return this.paymentMethods;
+  }
+
   initData() {
     if (Path.getPath() !== HISTORY) {
       return;
     }
+    this.fetchGetPaymentMethods();
+  }
 
+  fetchGetPaymentMethods() {
+    const userId = LoginModel.getLoggedInUserId();
     fetch
-      .getPaymentMethods()
+      .getPaymentMethods(userId)
       .then((paymentMethods: PaymentMethodDataType[]) => {
-        this.paymentMethods = paymentMethods.map((element, idx) => {
-          const textContent = element.name;
-          const value = (idx + 1).toString();
-          this.paymentMethodTextContentValueMap.set(textContent, value);
-          return {
-            textContent,
-            value,
-          };
-        });
-        this.notify(this.paymentMethods);
+        if (paymentMethods instanceof Array) {
+          this.paymentMethods = paymentMethods.map((element, idx) => {
+            const id = element.id;
+            const textContent = element.name;
+            const value = (idx + 1).toString();
+            this.paymentMethodTextContentValueMap.set(textContent, value);
+            return {
+              id,
+              textContent,
+              value,
+            };
+          });
+          this.notify(this.paymentMethods);
+        }
       });
   }
 
-  async addMethod(method: SelectOption) {
-    // this.paymentMethod = await fetchAddMethod(method)
-    this.notify(this.paymentMethods);
-  }
-
-  async deleteMethod(method: SelectOption) {
-    //this.paymentMethod = await fetchDeleteMethod(method)
+  async updateList() {
+    this.fetchGetPaymentMethods();
     this.notify(this.paymentMethods);
   }
 }

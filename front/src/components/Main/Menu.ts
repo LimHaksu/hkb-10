@@ -3,6 +3,7 @@ import Component from "../Component";
 import ChangeMonth from "./ChangeMonth";
 
 import path from "../../router/Path";
+import LoginModel from "../../models/LoginModel";
 
 import "./Menu.scss";
 
@@ -19,12 +20,14 @@ export default class Header extends Component {
   $menu: HTMLDivElement;
   $changeMonth: ChangeMonth;
 
+  loginModel = LoginModel;
   constructor() {
     super();
     this.$changeMonth = new ChangeMonth();
 
     this.view = document.createElement("section");
-    this.view.className = "menu";
+    this.view.classList.add("menu");
+    this.view.classList.add("display-none");
 
     this.view.appendChild(this.$changeMonth.view);
 
@@ -38,6 +41,15 @@ export default class Header extends Component {
     this.$btn_statistics = this.view.querySelector("#statistics");
 
     this.addButtonEvent();
+    this.subscribeModels();
+  }
+
+  subscribeModels() {
+    this.loginModel.subscribe("subLoginInMenu", (loggedInUserId: string) => {
+      if (loggedInUserId) {
+        this.view.classList.remove("display-none");
+      }
+    });
   }
 
   private addButtonEvent() {

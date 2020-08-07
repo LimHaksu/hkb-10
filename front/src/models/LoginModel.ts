@@ -1,17 +1,23 @@
 import Observable from "./Observable";
 
 class LoginModel extends Observable {
-  isLoggedIn = false;
+  loggedInUserId = "";
   constructor() {
     super();
   }
 
-  setIsLoggedIn(flag: boolean) {
-    this.isLoggedIn = flag;
-    this.notify(this.isLoggedIn);
+  setLogout() {
+    this.loggedInUserId = "";
+    this.notify(this.loggedInUserId);
   }
-  getIsLoggedIn() {
-    return this.getIsLoggedIn;
+
+  setLoggedInUserId(userId: string) {
+    this.loggedInUserId = userId;
+    this.notify(this.loggedInUserId);
+  }
+
+  getLoggedInUserId() {
+    return this.loggedInUserId;
   }
 }
 

@@ -1,11 +1,11 @@
 import getFetchHeaders from "../utils/getFetchHeaders";
 
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const getCategories = async () => {
   try {
     const headers = getFetchHeaders();
-    const response = await fetch(`${baseUrl}/categories`, {
+    const response = await fetch(`${baseUrl}/api/categories`, {
       mode: "cors",
       method: "GET",
       headers,

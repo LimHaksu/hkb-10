@@ -18,7 +18,7 @@ interface HistoryDataType {
 const SELECT_HISTORY = `SELECT h.id id, h.date date, c.content category, h.content detail, h.payment payment, h.amount amount, h.is_income is_income
 FROM histories h
 JOIN categories c ON h.pk_category = c.id
-WHERE h.date BETWEEN ? AND ?
+WHERE (h.date BETWEEN ? AND ?) AND h.pk_user = ?
 ORDER BY h.date ASC`;
 
 const INSERT_HISTORY = `INSERT INTO histories (pk_user, date, pk_category, payment, amount, content, is_income)
@@ -34,7 +34,7 @@ class HistoryDAO extends DAO {
     super(option);
   }
 
-  getEndDay(month: number) {
+  private getEndDay(month: number) {
     const endDays = [
       "0",
       "31",
@@ -53,7 +53,7 @@ class HistoryDAO extends DAO {
     return endDays[month];
   }
 
-  async getHistories(year: string, month: string) {
+  async getHistories(userId: string, year: string, month: string) {
     const connection = await this.getConnection();
     let histories: History[] = [];
 
@@ -73,6 +73,7 @@ class HistoryDAO extends DAO {
       const row = await this.executeQuery(connection, SELECT_HISTORY, [
         startDate,
         endDate,
+        userId,
       ]);
 
       if (row instanceof Array) {
@@ -101,7 +102,7 @@ class HistoryDAO extends DAO {
     return histories;
   }
 
-  async createHistory(history: HistoryDataType) {
+  async createHistory(userId: string, history: HistoryDataType) {
     const connection = await this.getConnection();
     let result = false;
 
@@ -124,7 +125,7 @@ class HistoryDAO extends DAO {
         connection,
         INSERT_HISTORY,
         [
-          "2",
+          userId,
           date,
           category,
           paymentMethod,
@@ -146,7 +147,7 @@ class HistoryDAO extends DAO {
     return result;
   }
 
-  async editHistory(history: HistoryDataType) {
+  async editHistory(userId: string, history: HistoryDataType) {
     const connection = await this.getConnection();
     let result = false;
 
@@ -170,7 +171,7 @@ class HistoryDAO extends DAO {
         connection,
         UPDATE_HISTORY,
         [
-          "2",
+          userId,
           date,
           category,
           paymentMethod,

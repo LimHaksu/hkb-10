@@ -3,6 +3,7 @@ import Observable from "./Observable";
 import RootModel, { Date } from "./RootModel";
 import getDailyOutcomes, { DataType } from "../fetch/getDailyOutcomes";
 import Path from "../router/Path";
+import LoginModel from "../models/LoginModel";
 
 import { STATISTICS } from "../router/PathConstants";
 
@@ -25,8 +26,8 @@ class CalendarModel extends Observable {
 
       this.dateData.year = data.year;
       this.dateData.month = data.month;
-
-      const response = await getDailyOutcomes(data.year, data.month);
+      const userId = LoginModel.getLoggedInUserId();
+      const response = await getDailyOutcomes(userId, data.year, data.month);
       if (response.success) {
         this.dateData.dates = response.data.dates;
         this.notify(this.dateData);
@@ -48,7 +49,8 @@ class CalendarModel extends Observable {
     if (Path.getPath() !== STATISTICS) {
       return;
     }
-    getDailyOutcomes(this.dateData.year, this.dateData.month).then(
+    const userId = LoginModel.getLoggedInUserId();
+    getDailyOutcomes(userId, this.dateData.year, this.dateData.month).then(
       (response) => {
         if (response.success) {
           this.dateData.dates = response.data.dates;

@@ -1,11 +1,11 @@
 import getFetchHeaders from "../utils/getFetchHeaders";
 
-const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
-const getPaymentMethods = async () => {
+const getPaymentMethods = async (userId: string) => {
   try {
     const headers = getFetchHeaders();
-    const response = await fetch(`${baseUrl}/api/payment-method`, {
+    const response = await fetch(`${baseUrl}/api/payment-method/${userId}`, {
       mode: "cors",
       method: "GET",
       headers,
