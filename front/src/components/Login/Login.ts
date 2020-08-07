@@ -119,7 +119,7 @@ class Login extends Component {
         this.inputPw,
         this.buttonLocalLogin,
       ]),
-      this.buttonGithubLogin,
+      // this.buttonGithubLogin, // 깃허브 로그인, 추후에...
       this.buttonSignUp,
     ]);
   }
