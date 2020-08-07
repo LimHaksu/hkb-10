@@ -23,7 +23,6 @@ export default class Statistics extends Component {
     this.$checkboxes = new Checkboxes();
 
     this.view = document.createElement("div");
-    this.view.innerText = "statistics";
     this.view.appendChild(this.$checkboxes.view);
 
     switch (StatisticsPageModel.getCase()) {
