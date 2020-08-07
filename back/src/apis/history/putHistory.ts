@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import HistoryDAO from "../../daos/HistoryDAO";
 
 export default async (req: Request, res: Response): Promise<undefined> => {
-  const result = await HistoryDAO.editHistory(req.body);
+  const { userId, history } = req.body;
+  const result = await HistoryDAO.editHistory(userId, history);
 
   //todo.. result === true일때 데이터 리턴 어떻게 할 것인가
 

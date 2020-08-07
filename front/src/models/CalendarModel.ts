@@ -2,7 +2,7 @@ import Observable from "./Observable";
 
 import RootModel, { Date } from "./RootModel";
 import Path from "../router/Path";
-
+import LoginModel from "../models/LoginModel";
 import { CALENDAR } from "../router/PathConstants";
 
 import getDailyHistories, {
@@ -44,8 +44,8 @@ class CalendarModel extends Observable {
       return;
     }
     const { year, month } = this.dateData;
-
-    getDailyHistories(year, month)
+    const userId = LoginModel.getLoggedInUserId();
+    getDailyHistories(userId, year, month)
       .then((response: ApiResponse) => {
         if (response.success) {
           this.dateData.data = response.data.data;

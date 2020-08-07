@@ -36,7 +36,7 @@ class Login extends Component {
     fetch.login(id, password).then((token) => {
       if (token) {
         sessionStorage.setItem("token", `Bearer ${token}`);
-        this.loginModel.setIsLoggedIn(true);
+        this.loginModel.setLoggedInUserId(id);
         path.pushState(undefined, "로그인 성공!", "/history");
       }
     });

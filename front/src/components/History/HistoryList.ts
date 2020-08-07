@@ -83,7 +83,7 @@ class HistoryList extends Component {
 
   setHistoryListOption(option?: HistoryListOption) {
     if (!option) return;
-    if (option.historyItemOptions) {
+    if (option.historyItemOptions && option.historyItemOptions.length > 0) {
       // 첫날 설정
       this.prevDay = option.historyItemOptions[0].day;
 

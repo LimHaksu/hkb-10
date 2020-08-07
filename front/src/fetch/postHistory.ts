@@ -1,16 +1,16 @@
 import { HistoryDataType } from "./";
 import getFetchHeaders from "../utils/getFetchHeaders";
 
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
-const postHistory = async (history: HistoryDataType) => {
+const postHistory = async (userId: string, history: HistoryDataType) => {
   try {
     const headers = getFetchHeaders();
-    const response = await fetch(`${baseUrl}/history`, {
+    const response = await fetch(`${baseUrl}/api/history`, {
       mode: "cors",
       method: "POST",
       headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify(history),
+      body: JSON.stringify({ userId, history }),
     });
     const result = await response.json();
     if (result.success) {

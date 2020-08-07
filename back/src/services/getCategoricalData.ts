@@ -7,10 +7,12 @@ type CategoryInfo = {
 };
 
 export default async function getCategoricalData(
+  userId: string,
   year: number,
   month: number
 ): Promise<CategoryInfo[]> {
   const histories: History[] = await historyDao.getHistories(
+    `${userId}`,
     `${year}`,
     `${month}`
   );

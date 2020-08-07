@@ -1,4 +1,6 @@
-const baseUrl = `${process.env.API_HOST}:${process.env.API_PORT}`;
+import getFetchHeaders from "../utils/getFetchHeaders";
+
+const baseUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 type DateInfo = {
   date: number;
@@ -22,16 +24,18 @@ type ApiResponse =
     };
 
 async function getDailyHistories(
+  userId: string,
   year: number,
   month: number
 ): Promise<ApiResponse> {
   let ret: ApiResponse = {
     success: false,
   };
-
-  await fetch(`${baseUrl}/api/histories/daily/${year}/${month}`, {
+  const headers = getFetchHeaders();
+  await fetch(`${baseUrl}/api/histories/daily/${userId}/${year}/${month}`, {
     mode: "cors",
     method: "GET",
+    headers,
   })
     .then((res) => res.json())
     .then((res: ApiResponse) => {
