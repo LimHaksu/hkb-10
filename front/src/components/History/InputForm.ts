@@ -113,6 +113,11 @@ class InputForm extends Component {
   }
 
   resetInputs() {
+    // 확인버튼을 위한 유효성 검사 초기화
+    this.validationMap.forEach((_, key) => {
+      this.validationMap.set(key, false);
+    });
+
     // 분류 초기화
     this.classificationModel.setClassifiacation("outcome");
 
@@ -130,11 +135,6 @@ class InputForm extends Component {
 
     // 내용 초기화
     (<HTMLInputElement>this.inputDetail?.view).value = "";
-
-    // 확인버튼을 위한 유효성 검사 초기화
-    this.validationMap.forEach((_, key) => {
-      this.validationMap.set(key, false);
-    });
 
     this.editFlagModel.setEditMode(false);
     this.checkAllInputsValidation();
