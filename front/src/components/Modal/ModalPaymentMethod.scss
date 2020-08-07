@@ -1,0 +1,65 @@
+@import "../History/variable.scss";
+
+.modal-content {
+  .button {
+    border: solid 2px;
+    border-radius: 0.3rem;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: 0.2rem;
+    cursor: pointer;
+  }
+
+  .button-primary {
+    color: white;
+    border-color: $mint-color;
+    background-color: $mint-color;
+  }
+
+  .button-secondary {
+    color: $mint-color;
+    background-color: white;
+  }
+
+  .button-close {
+    border: 0;
+    color: white;
+    background-color: $mint-color;
+    cursor: pointer;
+  }
+  .modal-input-form {
+    display: flex;
+    justify-content: space-around;
+    height: 2.5rem;
+  }
+  .input-payment-method {
+    width: 250px;
+    height: 2.5rem;
+  }
+  .list-payment-method {
+    margin-top: 2rem;
+
+    .li-payment-method {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 3rem;
+      margin-right: 6rem;
+
+      .button-delete:hover {
+        color: white;
+        border-color: $mint-color;
+        background-color: $mint-color;
+      }
+    }
+  }
+}
+.flex-direction-column {
+  flex-direction: column;
+}
+.input-select-common {
+  height: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 1px solid;
+  font-size: medium;
+  text-align-last: center;
+}

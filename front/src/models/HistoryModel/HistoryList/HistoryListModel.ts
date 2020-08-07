@@ -4,7 +4,6 @@ import fetch, { HistoryDataType } from "../../../fetch";
 import Path from "../../../router/Path";
 
 import { HISTORY } from "../../../router/PathConstants";
-import Path from "../../../router/Path";
 import LoginModel from "../../../models/LoginModel";
 
 class HistoryListModel extends Observable {
