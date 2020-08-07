@@ -1,9 +1,6 @@
 # 가계부 서비스 10팀
 
 <p>
-  <a href="https://www.npmjs.com/package/front" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/front.svg">
-  </a>
   <a href="#" target="_blank">
     <img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-yellow.svg" />
   </a>
@@ -12,6 +9,12 @@
 > 가계부 서비스 입니다.
 
 ![main](https://user-images.githubusercontent.com/38618187/89118751-2f08ec00-d4e3-11ea-81ae-1fedf50090dc.gif)
+
+![pie](https://user-images.githubusercontent.com/38618187/89609494-000fc300-d8b3-11ea-88ac-14d43456ce7e.gif)
+
+## 배포 주소
+
+[배포 주소](http://13.125.235.10/)를 클릭하면 배포된 주소로 들어갑니다!
 
 ## 폴더 구조
 
@@ -38,6 +41,7 @@
 ├── models      # 데이터를 갖는 model 파일들
 ├── router      # 라우팅 관련 코드
 ├── store       # 전역으로 사용하고자 하는 객체
+├── stylesheet  # 전역으로 사용하는 공통 스타일
 └── utils       # 유틸성 파일들
 ```
 
@@ -45,8 +49,10 @@
 
 ```bash
 ├── apis          # API 관련 코드
-├── controllers   # 컨트롤러
+├── config        # 모듈의 설정 파일
 ├── daos          # DAO 객체들
+├── routes        # 라우팅 코드 (사용하지 않습니다)
+├── services      # 서비스 로직
 └── shared        # 공통으로 사용할 파일들 (constant, log ...)
 ```
 
@@ -54,11 +60,16 @@
 
 이 프로젝트는 SPA (single page application) 으로 되어있습니다.
 
-```text
+```bash
+/login        # 로그인 페이지 입니다.
 /history      # 내역 페이지 입니다.
 /calendar     # 달력 페이지 입니다.
 /statistics   # 통계 페이지 입니다.
 ```
+
+## 데이터 베이스 스키마 구조
+
+schema.sql파일을 참고해주세요!
 
 ## 설치
 
@@ -90,19 +101,34 @@ touch .env
 
 #### backend env
 
-```env
-# 서버 설정
-PORT=3000
+.development.env 파일을 다음 위치에 생성해주세요
 
-# 데이터베이스 설정
-DB_HOST=DB 서버주소
-DB_PORT=DB 서버포트
-DB_USER=DB 유저
-DB_PASSWORD=DB 비밀번호
-DB_NAME=DB 이름
+```bash
+back/env
+```
+
+```env
+# Server
+PORT=백엔드 서버의 포트 번호
+
+# DB
+DB_HOST=데이터베이스 서버 주소
+DB_PORT=데이터베이스 포트 번호
+DB_USER=데이터베이스 유저 아이디
+DB_PASSWORD=데이터베이스 유저 비밀번호
+DB_NAME=사용할 데이터베이스
+
+# JWT
+JWT_SECRET=사용할 JWT 토큰 영어
 ```
 
 #### frontend env
+
+.production.env 파일을 다음 위치에 생성해주세요
+
+```bash
+front/env
+```
 
 ```env
 # 백엔드 서버 주소
